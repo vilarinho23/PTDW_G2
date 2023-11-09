@@ -1,57 +1,40 @@
 body {
-    font-family: 'Inter', sans-serif;
-    margin: 0px;
-    padding: 0px;
-}
-
-#header-container {
-    background-color: #0EB4BD;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#header-titulo {
-    font-size: 18px;
-    color: #000;
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
+    padding: 0;
 }
 
-#container {
-    margin: 0 auto;
-    text-align: center;
-    margin-top: 200px;
+.button-style {
+    background-color: #3F3F3F;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 17px;
 }
+
+.button-style:hover {
+    cursor: pointer;
+    background-color: #616161
+}
+
+#botao-preencher, #botao-comicao {
+    width: 150px;
+    height: 40px;
+}
+
 #texto-mensagem {
     font-size: 20px;
     font-weight: 600;
     color: #000;
 }
 
-#texto-opcao {
-    margin-top: 100px;
-    font-size: 15px;
-    color: #3f3f3f;
-    font-weight: 400;
-}
-
-#botao-docente, #botao-comicao {
-    margin-top: 20px;
-    width: 200px;
-    height: 50px;
-    background-color: #3F3F3F;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-weight: 700;
-    font-size: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
-}
-
-#botao-docente:hover, #botao-comicao:hover {
-    cursor: pointer;
+#container-por-preencher{
+    width: 500px; 
+    height: 200px; 
+    background-color: #f0f0f0; 
+    text-align: center; 
+    padding: 20px;  
+    border-radius: 10px;
+    margin: 0 auto;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }

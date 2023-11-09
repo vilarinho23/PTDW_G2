@@ -20,3 +20,11 @@ Route::get('/', function () {
 Route::get('/idp', function () {
     return view('idp');
 });
+
+Route::get('/por_preencher', function(){
+    return view('por_preencher');
+});
+
+Route::get('/restricoes',function(){
+    return view('restricoes');
+});

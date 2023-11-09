@@ -55,3 +55,30 @@ body {
 #botao-docente:hover, #botao-comicao:hover {
     cursor: pointer;
 }
+
+#botao-preencher, #botao-comicao {
+    
+    width: 150px;
+    height: 40px;
+    background-color: #3F3F3F;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 17px;
+
+}
+#botao-preencher:hover, #botao-comicao:hover {
+    cursor: pointer;
+}
+
+#container-por-preencher{
+    width: 500px; 
+    height: 200px; 
+    background-color: #f0f0f0; 
+    text-align: center; 
+    padding: 20px;  
+    border-radius: 10px;
+    margin: 0 auto;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}

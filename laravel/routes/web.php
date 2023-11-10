@@ -28,3 +28,7 @@ Route::get('/docente', function(){
 Route::get('/restricoes',function(){
     return view('restricoes');
 });
+
+Route::get('/docenteSemUC',function(){
+    return view('docenteSemUCAtribuidas');
+});

@@ -44,8 +44,8 @@
             </div>
             <div>
 
-                <div class="container mt-3 d-flex align-items-center justify-content-center">
-                    <table class="table ">
+                <div class="container mt-3 text-center">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Nº</th>

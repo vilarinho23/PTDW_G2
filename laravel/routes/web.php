@@ -37,3 +37,6 @@ Route::get('/atribuicaouc',function(){
     return view('atribuicaouc');
 });
   
+Route::get('/docentePreenchido',function(){
+    return view('docentePreenchido');
+});

@@ -32,3 +32,11 @@ Route::get('/restricoes',function(){
 Route::get('/gestorDocentes',function(){
     return view('gestorDocentes');
 });
+Route::get('/docenteSemUC',function(){
+    return view('docenteSemUCAtribuidas');
+});
+
+Route::get('/atribuicaouc',function(){
+    return view('atribuicaouc');
+});
+

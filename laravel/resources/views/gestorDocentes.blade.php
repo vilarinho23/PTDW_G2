@@ -30,13 +30,13 @@
                 </div>
 
                 <div class="d-flex gap-5">
-                    <button type="button" class="button-style" style="width: 150px; height: 40px;"
+                    <button type="button" class="button-style" style="width: 200px; height: 40px;"
                         data-bs-toggle="modal" data-bs-target="#adicionarModal">Adicionar docente</button>
                 </div>
             </div>
             <div>
 
-                <div class="container mt-3 d-flex align-items-center justify-content-center">
+                <div class="container mt-3 text-center">
                     <table class="table">
                         <thead>
                             <tr>

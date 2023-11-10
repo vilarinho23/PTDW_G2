@@ -29,6 +29,11 @@ Route::get('/restricoes',function(){
     return view('restricoes');
 });
 
+Route::get('/docenteSemUC',function(){
+    return view('docenteSemUCAtribuidas');
+});
+
 Route::get('/atribuicaouc',function(){
     return view('atribuicaouc');
 });
+  

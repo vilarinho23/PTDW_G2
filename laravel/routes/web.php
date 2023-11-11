@@ -25,6 +25,10 @@ Route::get('/docente', function(){
     return view('docentePorPreencher');
 });
 
+Route::get('/docente2', function(){
+    return view('docentePreenchido');
+});
+
 Route::get('/restricoes',function(){
     return view('restricoes');
 });

@@ -40,3 +40,7 @@ Route::get('/atribuicaouc',function(){
     return view('atribuicaouc');
 });
 
+Route::get('/submissoes',function(){
+    return view('submissoes');
+});
+

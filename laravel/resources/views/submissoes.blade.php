@@ -25,7 +25,7 @@
             </div>
             <div class="d-flex flex-column align-items-center gap-3 ps-5">
                 <div class="h-50">
-                    <button type="button" class="button-style" style="width: 200px;height: 40px">Definir Data de Término</button>
+                    <button type="button" class="button-style" style="width: 200px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Término</button>
                     
                 </div>
                 <div class="h-50">
@@ -47,7 +47,7 @@
                 </div>
     
                 <div class="d-flex align-items-center me-5">
-                    <p class="m-0"> <strong>Data de Conclusão:</strong> data</p>
+                    <p class="m-0"> <strong>Data de Conclusão:</strong> 22/22/2222</p>
                 </div>
             </div>
     
@@ -106,6 +106,25 @@
             </table>
         </div>
         
+    </div>
+
+    <div class="modal" id="modalTerminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">           
+            <div class="modal-content border-0">             
+                <div class="modal-header border-0">               
+                    <h5 class="modal-title mx-auto" id="exampleModalLabel">Definir Data de Término</h5>             
+                </div>               
+                <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker gap-3">                 
+                    <label for="" class="d-flex justify-content-center align-items-center mb-3 ml-2">Data:                     
+                        <input id="escolher-data" type="date" name="" value="" class="ms-3">                  
+                    </label>             
+                </div>                 
+                <div class="modal-footer d-flex justify-content-center border-0">               
+                    <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>               
+                    <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Cancelar</button>
+                </div>    
+            </div> 
+        </div>                  
     </div>
 
     

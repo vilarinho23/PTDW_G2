@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/welcome.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
     <title>Restrições</title>
 </head>
 <body>
@@ -146,7 +146,7 @@
                             <th scope="col">Manhã</th>
                             <td scope="col"><input class="form-check-input " type="checkbox" id="checkboxNoLabel" value="" aria-label="..."></td>
                             <td scope="col"><input class="form-check-input " type="checkbox" id="checkboxNoLabel" value="" aria-label="..."></td>
-                            <td scope="col"><input class="form-check-input " type="checkbox" id="checkboxNoLabel" value="" aria-label="..."></ scope="col">
+                            <td scope="col"><input class="form-check-input " type="checkbox" id="checkboxNoLabel" value="" aria-label="..."></td>
                             <td scope="col"><input class="form-check-input " type="checkbox" id="checkboxNoLabel" value="" aria-label="..."></td>
                             <td scope="col"><input class="form-check-input " type="checkbox" id="checkboxNoLabel" value="" aria-label="..."></td>
                             <td scope="col"><input class="form-check-input " type="checkbox" id="checkboxNoLabel" value="" aria-label="..."></td>

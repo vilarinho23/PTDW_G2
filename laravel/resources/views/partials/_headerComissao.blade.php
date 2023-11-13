@@ -1,9 +1,9 @@
 <nav class="navbar w-100 position-relative" style="background-color: #0EB4BD; height: 60px;">
   <div class="navbar-brand m-0 p-0 d-inline-flex gap-5 position-absolute top-50 start-50 translate-middle">
-      <p class="m-0 p-0" style="color: black; font-family: 'Inter', sans-serif;">Submissões</p>
-      <p class="m-0 p-0" style="color: black; font-family: 'Inter', sans-serif;">Gestor de Docentes</p>
-      <p class="m-0 p-0" style="color: black; font-family: 'Inter', sans-serif;">Gestor de UC's</p>
-      <p class="m-0 p-0" style="color: black; font-family: 'Inter', sans-serif;">Atribuição UC's</p>
+      <a class="m-0 p-0 text-decoration-none" style="color: black; font-family: 'Inter', sans-serif;" href="{{url("submissoes")}}">Submissões</a>
+      <a class="m-0 p-0 text-decoration-none" style="color: black; font-family: 'Inter', sans-serif;" href="{{url("gestorDocentes")}}">Gestor de Docentes</a>
+      <a class="m-0 p-0 text-decoration-none" style="color: black; font-family: 'Inter', sans-serif;" href="{{url("")}}">Gestor de UC's</a>
+      <a class="m-0 p-0 text-decoration-none" style="color: black; font-family: 'Inter', sans-serif;" href="{{url("atribuicaouc")}}">Atribuição UC's</a>
   </div>
   <div class="position-absolute end-0 d-flex align-items-center">
       <p class="m-0 p-0 me-3" style="color: black; font-family: 'Inter', sans-serif;">Pedro Antunes</p>

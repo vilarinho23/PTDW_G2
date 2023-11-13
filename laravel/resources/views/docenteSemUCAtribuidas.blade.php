@@ -3,7 +3,7 @@
     @include('partials._head',["titulo"=>"Página Sem UC Atribuídas"])
 </head>
 <body>
-    @include('partials._headererDocente')
+    @include('partials._headerDocente')
     
     <div class="d-flex flex-column align-items-center justify-content-center" style="height: 60vh;">
     <h1 class="mt-4">Sem Unidades Currculares Associadas</h1>

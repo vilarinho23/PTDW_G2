@@ -8,17 +8,17 @@
       <div class="p-5  " style="min-height: 80vh;">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Nome UC 1</button>
+              <button class="nav-link active text-black" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Nome UC 1</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Nome UC 2</button>
+              <button class="nav-link text-black" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Nome UC 2</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Restrições</button>
+              <button class="nav-link text-black" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Restrições</button>
             </li>
           </ul>
           <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade border border-primary p-5 show active tabela" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fadey p-5 show active tabela shadow-lg p-3 mb-5 bg-white rounded" id="home" role="tabpanel" aria-labelledby="home-tab">
               <div class="d-flex ">
                 <p class="w-50"> <strong>Unidade Curricular: </strong>Nome da uni C</p>
                 <p class="w-25"><strong>Curso: </strong>Ti</p>
@@ -44,7 +44,7 @@
                     
                   </div>
 
-                  <div class="d-flex gap-3">
+                  <div class="d-flex gap-3 ">
                     <p><strong>Laboratórios Possíveis: </strong></p>
 
                     <div class="dropdown">
@@ -119,9 +119,9 @@
                 
               </div>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">2</div>
-            <div class="tab-pane fade tabela" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-              <div class="container">
+            <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab">2</div>
+            <div class="tab-pane fade tabela shadow-lg p-3 mb-5 bg-white rounded" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+              <div class="container mt-5 ">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -165,13 +165,13 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex gap-3 ms-3">
+            <div class="d-flex gap-3 ms-3 mt-5">
               <div>
                 <img src="images/info.png" alt="info">
               </div>
               <p>Deve deixar pelo menos 2 blocos disponíveis.</p>
             </div>
-            <div class="d-flex justify-content-end mt-4">
+            <div class="d-flex justify-content-end mt-5">
               <button type="button" class="button-style" id="botao-preencher" data-bs-toggle="modal" data-bs-target="#myModal">Submeter</button>
             </div>
             <div class="modal" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -192,7 +192,6 @@
     </div>
     </div> 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>

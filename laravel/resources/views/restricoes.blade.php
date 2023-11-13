@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    @include('partials._head',["titulo"=>"Restrições"])
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
     <title>Restrições</title>
 </head>
 <body>
-    @include('partials._headDocente')
+    @include('partials._headerDocente')
     <div class="d-flex align-items-center justify-content-center">
       <div class="p-5  " style="min-height: 80vh;">
         <ul class="nav nav-tabs" id="myTab" role="tablist">

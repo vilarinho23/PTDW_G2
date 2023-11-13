@@ -54,3 +54,9 @@ Route::get('/docentePreenchido',function(){
     return view('docentePreenchido');
 });
 
+
+Route::get('/gestoruc',function(){
+    return view('gestorUc');
+});
+
+

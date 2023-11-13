@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     @include('partials._head',["titulo"=>"Inicio"])
-</head>
+
 <body>
     <nav class="navbar w-100 position-relative" style="background-color: #0EB4BD; height: 60px;">
         <p class="navbar-brand m-0 p-0 position-absolute top-50 start-50 translate-middle" style="color: black; font-family: 'Inter', sans-serif;">Docente</p>

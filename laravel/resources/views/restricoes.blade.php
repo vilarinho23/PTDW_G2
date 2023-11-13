@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     @include('partials._head',["titulo"=>"Restriçoes"])
+    
 <body>
     @include('partials._headerDocente')
     <div class="d-flex align-items-center justify-content-center">

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
     @include('partials._head',["titulo"=>"Gestor de Docentes"])
-</head>
 
 <body>
     @include('partials._headerComissao')

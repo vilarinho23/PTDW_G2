@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     @include('partials._head',["titulo"=>"Página Sem UC Atribuídas"])
-</head>
+
 <body>
     @include('partials._headerDocente')
     

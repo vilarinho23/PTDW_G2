@@ -44,10 +44,19 @@ Route::get('/atribuicaouc',function(){
     return view('atribuicaouc');
 });
 
+
+Route::get('/submissoes',function(){
+    return view('submissoes');
+});
+
+
 Route::get('/docentePreenchido',function(){
     return view('docentePreenchido');
 });
 
+
 Route::get('/gestoruc',function(){
     return view('gestorUc');
 });
+
+

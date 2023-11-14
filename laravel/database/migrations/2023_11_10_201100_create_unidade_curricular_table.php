@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nome_uc');
             $table->integer('horas_uc')->unsigned();
             $table->string('acn_uc');
-            $table->integer('num_func_resp')->unsigned()->nullable();
+            $table->integer('num_func_resp')->unsigned();
             $table->enum('sala_avaliacoes', ['sala_aula', 'laboratorio', 'ambos'])->nullable();
             $table->enum('utilizacao_laboratorios', ['obrigatorio', 'preferencial'])->nullable();
             $table->text('software_necessario')->nullable();
@@ -26,7 +26,7 @@ return new class extends Migration
                 ->references('num_func')
                 ->on('docente')
                 ->onUpdate('cascade')
-                ->onDelete('set null');
+                ->onDelete('restrict');
 
             $table->primary('cod_uc');
         });

@@ -19,7 +19,7 @@
       </div>
       
       <div class="modal-footer d-flex justify-content-center border-0">
-        <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Sair</button>
+        <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" id="logOut-button">Sair</button>
         <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </div>

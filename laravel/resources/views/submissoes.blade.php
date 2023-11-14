@@ -12,7 +12,7 @@
                 <p class="m-0">numero</p>
             </div>
             <div class="border rounded d-flex flex-column gap-2 px-4 py-2 " style=" background-color:#D9D9D9">
-                <p class="m-0"><strong>Formulários Submetidos</strong></p>
+                <p class="m-0"><strong>Formulários Pendentes</strong></p>
                 <p class="m-0">numero</p>
             </div>
             <div class="d-flex flex-column align-items-center gap-3 ps-5">

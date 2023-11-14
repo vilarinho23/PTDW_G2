@@ -121,7 +121,8 @@
             </div>
             <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab">2</div>
             <div class="tab-pane fade tabela shadow-lg p-3 mb-5 bg-white rounded" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-              <div class="container mt-5 ">
+              <div class="container mt-4 ">
+                <p class="text-center mb-4"><strong>Assinalar Impedimentos</strong></p>
                 <table class="table table-bordered">
                     <thead>
                         <tr>

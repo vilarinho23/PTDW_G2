@@ -41,7 +41,7 @@ Route::get('/docenteSemUC',function(){
 });
 
 Route::get('/atribuicaouc',function(){
-    return view('atribuicaouc');
+    return view('atribuicaoUc');
 });
 
 

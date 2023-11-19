@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Enums\DiaSemana;
+use App\Models\Enums\ParteDia;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('restricao_horario', function (Blueprint $table) {
+        $diasSemana = array_map(fn (DiaSemana $diasemana) => $diasemana->value, DiaSemana::cases());
+        $partesDia = array_map(fn (ParteDia $partedia) => $partedia->value, ParteDia::cases());
+
+        Schema::create('restricao_horario', function (Blueprint $table) use ($diasSemana, $partesDia) {
             $table->integer('num_func')->unsigned();
-            $table->enum('dia_semana', ['segunda', 'terca', 'quarta', 'quinta', 'sexta']);
-            $table->enum('parte_dia', ['manha', 'tarde', 'noite']);
+            $table->enum('dia_semana', $diasSemana);
+            $table->enum('parte_dia', $partesDia);
             $table->timestamps();
 
             $table->foreign('num_func')

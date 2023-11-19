@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Enums\SalaAvaliacoes;
+use App\Models\Enums\UtilizacaoLaboratorios;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,14 +13,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('unidade_curricular', function (Blueprint $table) {
+        $salasAvaliacoes = array_map(fn (SalaAvaliacoes $salaAvaliacoes) => $salaAvaliacoes->value, SalaAvaliacoes::cases());
+        $utilizacaoLaboratorios = array_map(fn (UtilizacaoLaboratorios $utilizacaoLaboratorios) => $utilizacaoLaboratorios->value, UtilizacaoLaboratorios::cases());
+
+        Schema::create('unidade_curricular', function (Blueprint $table) use ($salasAvaliacoes, $utilizacaoLaboratorios) {
             $table->integer('cod_uc')->unsigned();
             $table->string('nome_uc');
             $table->integer('horas_uc')->unsigned();
             $table->string('acn_uc');
             $table->integer('num_func_resp')->unsigned();
-            $table->enum('sala_avaliacoes', ['sala_aula', 'laboratorio', 'ambos'])->nullable();
-            $table->enum('utilizacao_laboratorios', ['obrigatorio', 'preferencial'])->nullable();
+            $table->enum('sala_avaliacoes', $salasAvaliacoes)->nullable();
+            $table->enum('utilizacao_laboratorios', $utilizacaoLaboratorios)->nullable();
             $table->text('software_necessario')->nullable();
             $table->timestamps();
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    @include('partials._head',["titulo"=>"Gestor de Uc's"])
+    @include('partials._head',["titulo"=>"Gestor de UC's"])
 
 <body>
     @include('partials._headerComissao')

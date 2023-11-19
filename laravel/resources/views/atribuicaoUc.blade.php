@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    @include('partials._head',["titulo"=>"Atribuição de Uc's"])
+    @include('partials._head',["titulo"=>"Atribuição de UC's"])
 
 <body>
     @include('partials._headerComissao')
@@ -10,7 +10,7 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-2">
                     <div class="input-group rounded">
-                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
                     </div>
                     <div>
                         <img src="images/search-interface-symbol.png" alt="search">
@@ -53,7 +53,7 @@
                                 <td>Tecnologias da informação</td>
                                 <td>25</td>
                                 <td>23</td>
-                                <td><img src="images\edit.png" alt="edit" data-bs-toggle="modal"
+                                <td><img src="images/edit.png" alt="edit" data-bs-toggle="modal"
                                     data-bs-target="#editarModal"></td>
                             </tr>
                             <tr>
@@ -67,7 +67,7 @@
                                 <td>Tecnologias da informação</td>
                                 <td>25</td>
                                 <td>23</td>
-                                <td><img src="images\edit.png" alt="edit"></td>
+                                <td><img src="images/edit.png" alt="edit"></td>
                             </tr>
                             <tr>
                                 <th scope="row">3</th>
@@ -80,10 +80,10 @@
                                 <td>Tecnologias da informação</td>
                                 <td>25</td>
                                 <td>23</td>
-                                <td><img src="images\edit.png" alt="edit"></td>
+                                <td><img src="images/edit.png" alt="edit"></td>
                             </tr>
-                        </tbody> 
-                    </table>       
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="/">
                         @csrf
                         <div class="container">
 
@@ -112,10 +112,10 @@
 
                                 <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Nº funcionário</label>
+                                        <label for="dropdownAtribuirNFuncionario" class="col-form-label">Nº funcionário</label>
                                     </div>
                                     <div>
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownAtribuirNFuncionario" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Dropdown button
                                             </button>
                                     </div>
@@ -123,15 +123,15 @@
 
                                 <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                     <div>
-                                        <label for="inputNFuncionario" class="col-form-label">Código UC</label>
+                                        <label for="dropdownAtribuirCodUc" class="col-form-label">Código UC</label>
                                     </div>
                                     <div>
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownAtribuirCodUc" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Dropdown button
                                             </button>
                                     </div>
                                 </div>
-                                
+
                             </div>
 
 
@@ -139,34 +139,34 @@
 
                                 <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Nome Docente</label>
+                                        <label for="inputAtribuirNomeDocente" class="col-form-label">Nome Docente</label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputAtribuirNomeDocente" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                     <div>
-                                        <label for="inputNFuncionario" class="col-form-label">Nome UC</label>
+                                        <label for="inputAtribuirNomeUc" class="col-form-label">Nome UC</label>
                                     </div>
                                     <div>
-                                        <input type="text" class="form-control" id="inputACNDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputAtribuirNomeUc" placeholder="">
                                     </div>
                                 </div>
-                                
+
                             </div>
 
                             <div class="d-flex justify-content-center align-items-center mt-5 gap-2">
                                 <div>
-                                    <label for="inputNFuncionario" class="col-form-label">%</label>
+                                    <label for="inputAtribuirPerc" class="col-form-label">%</label>
                                 </div>
                                 <div style="width: 45px">
-                                    <input type="text" class="form-control" id="inputACNDocente" placeholder="">
+                                    <input type="text" class="form-control" id="inputAtribuirPerc" placeholder="">
                                 </div>
 
                             </div>
-                    
+
 
                         </div>
                     </form>
@@ -192,7 +192,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="/">
                         @csrf
                         <div class="container">
 
@@ -200,10 +200,10 @@
 
                                 <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Nº funcionário</label>
+                                        <label for="dropdownEditarNFuncionario" class="col-form-label">Nº funcionário</label>
                                     </div>
                                     <div>
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownEditarNFuncionario" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Dropdown button
                                             </button>
                                     </div>
@@ -211,15 +211,15 @@
 
                                 <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                     <div>
-                                        <label for="inputNFuncionario" class="col-form-label">Código UC</label>
+                                        <label for="dropdownEditarCodUc" class="col-form-label">Código UC</label>
                                     </div>
                                     <div>
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownEditarCodUc" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Dropdown button
                                             </button>
                                     </div>
                                 </div>
-                                
+
                             </div>
 
 
@@ -227,34 +227,34 @@
 
                                 <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Nome Docente</label>
+                                        <label for="inputEditarNomeDocente" class="col-form-label">Nome Docente</label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputEditarNomeDocente" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                     <div>
-                                        <label for="inputNFuncionario" class="col-form-label">Nome UC</label>
+                                        <label for="inputEditarNomeUc" class="col-form-label">Nome UC</label>
                                     </div>
                                     <div>
-                                        <input type="text" class="form-control" id="inputACNDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputEditarNomeUc" placeholder="">
                                     </div>
                                 </div>
-                                
+
                             </div>
 
                             <div class="d-flex justify-content-center align-items-center mt-5 gap-2">
                                 <div>
-                                    <label for="inputNFuncionario" class="col-form-label">%</label>
+                                    <label for="inputEditarPerc" class="col-form-label">%</label>
                                 </div>
                                 <div style="width: 45px">
-                                    <input type="text" class="form-control" id="inputACNDocente" placeholder="">
+                                    <input type="text" class="form-control" id="inputEditarPerc" placeholder="">
                                 </div>
 
                             </div>
-                    
+
 
                         </div>
                     </form>
@@ -280,7 +280,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="/">
                         @csrf
 
                         <div class="container-fluid">
@@ -305,10 +305,10 @@
                             <div class="row g-3 align-items-center m-1">
                                 <div class="col-sm">
                                     <div class="mb-3">
-                                        <label for="fileUpload"
+                                        <label for="fileUploadCarregar"
                                             class="form-label fw-bold text-decoration-underline">Selecione o
                                             ficheiro</label>
-                                        <input class="form-control" type="file" id="fileUpload">
+                                        <input class="form-control" type="file" id="fileUploadCarregar">
                                     </div>
                                 </div>
                             </div>
@@ -328,8 +328,8 @@
     </div>
 
 
-    
 
-    
+
+
 </body>
 </html>

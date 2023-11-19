@@ -10,13 +10,13 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-2">
                     <div class="input-group rounded">
-                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
                     </div>
                     <div>
                         <img src="images/search-interface-symbol.png" alt="search">
                     </div>
                 </div>
-                <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal" data-bs-target="#atribuirUcModal">Adicionar UC</button>
+                <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal" data-bs-target="#adicionarUcModal">Adicionar UC</button>
             </div>
             <div>
 
@@ -41,7 +41,7 @@
                                 <td>Matemática Complementar</td>
                                 <td>Tecnologias da informação</td>
                                 <td>25</td>
-                                <td><img src="images\edit.png" alt="edit" data-bs-toggle="modal"
+                                <td><img src="images/edit.png" alt="edit" data-bs-toggle="modal"
                                     data-bs-target="#editarModal"></td>
                             </tr>
                             <tr>
@@ -51,7 +51,7 @@
                                 <td>Matemática Complementar</td>
                                 <td>Tecnologias da informação</td>
                                 <td>25</td>
-                                <td><img src="images\edit.png" alt="edit"></td>
+                                <td><img src="images/edit.png" alt="edit"></td>
                             </tr>
                             <tr>
                                 <td>999999</td>
@@ -60,10 +60,10 @@
                                 <td>Matemática Complementar</td>
                                 <td>Tecnologias da informação</td>
                                 <td>25</td>
-                                <td><img src="images\edit.png" alt="edit"></td>
+                                <td><img src="images/edit.png" alt="edit"></td>
                             </tr>
-                        </tbody> 
-                    </table>       
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -75,16 +75,16 @@
           </div>
     </div>
 
-    <div class="modal modal-lg" id="atribuirUcModal" tabindex="-1" aria-labelledby="atribuirUcModalLabel"
+    <div class="modal modal-lg" id="adicionarUcModal" tabindex="-1" aria-labelledby="adicionarUcModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
             <div class="modal-content border-0">
                 <div class="modal-header border-0 p-4">
-                    <h5 class="modal-title mx-auto" id="atribuirUcModalLabel">Adicionar Nova Unidade Curricular</h5>
+                    <h5 class="modal-title mx-auto" id="adicionarUcModalLabel">Adicionar Nova Unidade Curricular</h5>
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="/">
                         @csrf
                         <div class="container">
 
@@ -92,24 +92,24 @@
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Curso: </label>
+                                        <label for="inputAdicionarCurso" class="col-form-label">Curso: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputAdicionarCurso" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Nome UC: </label>
+                                        <label for="inputAdicionarNome" class="col-form-label">Nome UC: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputAdicionarNome" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
-                                
+
                             </div>
 
 
@@ -117,50 +117,50 @@
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Cód. UC: </label>
+                                        <label for="inputAdicionarCod" class="col-form-label">Cód. UC: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputAdicionarCod" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">ACN UC: </label>
+                                        <label for="inputAdicionarAcn" class="col-form-label">ACN UC: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputAdicionarAcn" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
-                                
+
                             </div>
 
                             <div class="d-flex justify-content-center  gap-5 mb-5">
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Horas: </label>
+                                        <label for="inputAdicionarHoras" class="col-form-label">Horas: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputAdicionarHoras" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Doc. Responsável: </label>
+                                        <label for="inputAdicionarResponsavel" class="col-form-label">Doc. Responsável: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputAdicionarResponsavel" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end"></div>
-                                
+
                             </div>
-                    
+
 
                         </div>
                     </form>
@@ -186,7 +186,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="/">
                         @csrf
                         <div class="container">
 
@@ -194,24 +194,24 @@
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Curso: </label>
+                                        <label for="inputEditarCurso" class="col-form-label">Curso: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputEditarCurso" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Nome UC: </label>
+                                        <label for="inputEditarNome" class="col-form-label">Nome UC: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputEditarNome" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
-                                
+
                             </div>
 
 
@@ -219,50 +219,50 @@
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Cód. UC: </label>
+                                        <label for="inputEditarCod" class="col-form-label">Cód. UC: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputEditarCod" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">ACN UC: </label>
+                                        <label for="inputEditarAcn" class="col-form-label">ACN UC: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputEditarAcn" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
-                                
+
                             </div>
 
                             <div class="d-flex justify-content-center  gap-5 mb-5">
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Horas: </label>
+                                        <label for="inputEditarHoras" class="col-form-label">Horas: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputEditarHoras" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div >
-                                        <label for="inputNFuncionario" class="col-form-label">Doc. Responsável: </label>
+                                        <label for="inputEditarResponsavel" class="col-form-label">Doc. Responsável: </label>
                                     </div>
                                     <div >
-                                        <input type="text" class="form-control" id="inputNomeDocente" placeholder="">
+                                        <input type="text" class="form-control" id="inputEditarResponsavel" placeholder="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end"></div>
-                                
+
                             </div>
-                    
+
 
                         </div>
                     </form>
@@ -277,6 +277,6 @@
             </div>
         </div>
     </div>
-    
+
 </body>
 </html>

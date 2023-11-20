@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Curso;
 use App\Models\Docente;
+use App\Models\KeyValue;
 use App\Models\Laboratorio;
 use App\Models\RestricaoHorario;
 use App\Models\UnidadeCurricular;
@@ -129,7 +130,7 @@ class TesteController extends Controller
     }
 
 
-    public function index()
+    public function testarModels()
     {
         // Buscar/criar dados
         $cursos = $this->cursos();
@@ -195,6 +196,46 @@ class TesteController extends Controller
             "uc_{$ucId}_laboratorios" => $uc->laboratorios,
             "uc_{$ucId}_resp" => $uc->responsavel,
             "uc_{$ucId}_docentes" => $uc->docentes
+        ]);
+    }
+
+
+    public function testarKV()
+    {
+        // Flush keys
+        KeyValue::set('flush', 'flush');
+        KeyValue::flush();
+
+        // Set keys
+        KeyValue::set('key', 'value');
+        KeyValue::set('key', 'newvalue');
+
+        KeyValue::set('key1', 'value1');
+        KeyValue::set('key2', 'value2');
+        KeyValue::set('key3', 'value3');
+
+        KeyValue::set('key_null', 'null');
+        KeyValue::set('key_null', null);
+
+        // Copy key
+        KeyValue::copy('key', 'key_copy');
+
+        // Del key
+        KeyValue::del('key1');
+
+
+        // Return JSON
+        return response()->json([
+            'key' => KeyValue::val('key'),
+            'key1' => KeyValue::val('key1'),
+            'key_null' => KeyValue::val('key_null'),
+
+            'exists_key_e_key1' => KeyValue::exists('key', 'key1'),
+            'exists_key_null' => KeyValue::exists('key_null'),
+
+            'size' => KeyValue::size(),
+            'all' => KeyValue::all(),
+            'all_keys' => KeyValue::keys()
         ]);
     }
 }

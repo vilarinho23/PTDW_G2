@@ -61,4 +61,5 @@ Route::get('/gestoruc',function(){
 });
 
 
-Route::get('/testar', [TesteController::class, 'index']);
+Route::get('/testar/models', [TesteController::class, 'testarModels']);
+Route::get('/testar/kv', [TesteController::class, 'testarKV']);

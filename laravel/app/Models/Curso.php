@@ -23,7 +23,7 @@ class Curso extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'nome_curso';
+    protected $primaryKey = 'acron_curso';
 
     /**
      * The "type" of the auto-incrementing ID.
@@ -54,6 +54,7 @@ class Curso extends Model
      * @var array
      */
     protected $fillable = [
+        'acron_curso',
         'nome_curso'
     ];
 
@@ -77,7 +78,7 @@ class Curso extends Model
             UnidadeCurricular::class,
             'curso_uc',
 
-            'nome_curso',
+            'acron_curso',
             'cod_uc'
         )->withTimestamps();
     }

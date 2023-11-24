@@ -94,7 +94,7 @@ class UnidadeCurricular extends Model
             'curso_uc',
 
             'cod_uc',
-            'nome_curso'
+            'acron_curso'
         )->withTimestamps();
     }
 

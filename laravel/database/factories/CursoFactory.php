@@ -16,8 +16,11 @@ class CursoFactory extends Factory
      */
     public function definition(): array
     {
+        $word = $this->faker->unique()->word();
+
         return [
-            'nome_curso' => $this->faker->unique()->word()
+            'acron_curso' => $word,
+            'nome_curso' => $word
         ];
     }
 }

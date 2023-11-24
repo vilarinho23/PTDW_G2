@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    @include('partials._head',["titulo"=>"Atribuição de Uc's"])
+    @include('partials._head',["titulo"=>"Submissões"])
 
 <body>
     @include('partials._headerComissao')
@@ -31,7 +31,7 @@
             <div class="d-flex justify-content-between gap-2 mt-3">
                 <div class="d-flex align-items-center gap-2">
                     <div class="input-group rounded">
-                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
                     </div>
                     <div>
                         <img src="images/search-interface-symbol.png" alt="search">
@@ -107,8 +107,8 @@
                     <h5 class="modal-title mx-auto" id="modalTerminarLabel">Definir Data de Término</h5>
                 </div>
                 <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker gap-3">
-                    <label for="" class="d-flex justify-content-center align-items-center mb-3 ml-2">Data:
-                        <input id="escolher-data" type="date" name="" value="" class="ms-3">
+                    <label for="escolher-data" class="d-flex justify-content-center align-items-center mb-3 ml-2">Data:
+                        <input id="escolher-data" type="date" name="escolher-data" class="ms-3">
                     </label>
                 </div>
                 <div class="modal-footer d-flex justify-content-center border-0">

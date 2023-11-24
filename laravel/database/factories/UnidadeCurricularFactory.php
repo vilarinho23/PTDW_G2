@@ -23,7 +23,7 @@ class UnidadeCurricularFactory extends Factory
             'cod_uc' => $this->faker->unique()->numberBetween(1, 999999),
             'nome_uc' => $this->faker->unique()->word(),
             'horas_uc' => $this->faker->numberBetween(1, 10),
-            'acn_uc' => $this->faker->title(),
+            'acn_uc' => $this->faker->word(),
             'num_func_resp' => Docente::factory(),
             'sala_avaliacoes' => $this->faker->randomElement(SalaAvaliacoes::cases()),
             'utilizacao_laboratorios' => $this->faker->randomElement(UtilizacaoLaboratorios::cases()),

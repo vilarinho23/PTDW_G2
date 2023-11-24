@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Curso;
 use App\Models\Docente;
+use App\Models\KeyValue;
 use App\Models\Laboratorio;
 use App\Models\RestricaoHorario;
 use App\Models\UnidadeCurricular;
@@ -15,14 +16,14 @@ class TesteController extends Controller
 {
     private function cursos()
     {
-        $cursos = Curso::all();
+        $cursos = Curso::with('unidadesCurriculares')->get();
         if ($cursos->isEmpty())
         {
             // Criar cursos se não existirem (seeder)
             $seeder = new CursoSeeder();
             $seeder->run();
 
-            $cursos = Curso::all();
+            $cursos = Curso::with('unidadesCurriculares')->get();
         }
 
         return $cursos;
@@ -30,14 +31,14 @@ class TesteController extends Controller
 
     private function laboratorios()
     {
-        $laboratorios = Laboratorio::all();
+        $laboratorios = Laboratorio::with('unidadesCurriculares')->get();
         if ($laboratorios->isEmpty())
         {
             // Criar laboratorios se não existirem (seeder)
             $seeder = new LaboratorioSeeder();
             $seeder->run();
 
-            $laboratorios = Laboratorio::all();
+            $laboratorios = Laboratorio::with('unidadesCurriculares')->get();
         }
 
         return $laboratorios;
@@ -45,14 +46,14 @@ class TesteController extends Controller
 
     private function docentes()
     {
-        $docentes = Docente::all();
+        $docentes = Docente::with('restricoes', 'respUnidadesCurriculares', 'unidadesCurriculares')->get();
         if ($docentes->isEmpty())
         {
             // Criar docentes se não existirem
             $modelsMade = Docente::factory(5)->make();
-            foreach ($modelsMade as $model) $model->save();
+            foreach ($modelsMade as $model) Docente::firstOrCreate($model->toArray());
 
-            $docentes = Docente::all();
+            $docentes = Docente::with('restricoes', 'respUnidadesCurriculares', 'unidadesCurriculares')->get();
         }
 
         return $docentes;
@@ -60,16 +61,16 @@ class TesteController extends Controller
 
     private function restricoes($docentes)
     {
-        $restricoes = RestricaoHorario::all();
+        $restricoes = RestricaoHorario::with('docente')->get();
         if ($restricoes->isEmpty())
         {
             // Criar restrições se não existirem e associar a docentes
             $modelsMade = RestricaoHorario::factory(10)
                 ->recycle($docentes)
                 ->make();
-            foreach ($modelsMade as $model) $model->save();
+            foreach ($modelsMade as $model) RestricaoHorario::firstOrCreate($model->toArray());
 
-            $restricoes = RestricaoHorario::all();
+            $restricoes = RestricaoHorario::with('docente')->get();
         }
 
         return $restricoes;
@@ -77,14 +78,14 @@ class TesteController extends Controller
 
     private function ucs($cursos, $laboratorios, $docentes)
     {
-        $ucs = UnidadeCurricular::all();
+        $ucs = UnidadeCurricular::with('cursos', 'laboratorios', 'responsavel', 'docentes')->get();
         if ($ucs->isEmpty())
         {
             // Criar UCs se não existirem e associar a docentes (responsável)
             $uc_results = UnidadeCurricular::factory(10)
                 ->recycle($docentes)
                 ->make();
-            foreach ($uc_results as $model) $model->save();
+            foreach ($uc_results as $model) UnidadeCurricular::firstOrCreate($model->toArray());
 
             // Fake instance
             $fake = fake();
@@ -104,7 +105,7 @@ class TesteController extends Controller
 
                 // Associar cursos
                 $uc_cursos = $fake->randomElements($cursos, $number_of_courses);
-                foreach ($uc_cursos as $curso) $uc->cursos()->attach($curso->nome_curso);
+                foreach ($uc_cursos as $curso) $uc->cursos()->attach($curso->acron_curso);
 
                 // Associar docentes (responsável)
                 $uc->docentes()->attach(
@@ -122,14 +123,14 @@ class TesteController extends Controller
                     );
             }
 
-            $ucs = UnidadeCurricular::all();
+            $ucs = UnidadeCurricular::with('cursos', 'laboratorios', 'responsavel', 'docentes')->get();
         }
 
         return $ucs;
     }
 
 
-    public function index()
+    public function testarModels()
     {
         // Buscar/criar dados
         $cursos = $this->cursos();
@@ -138,63 +139,53 @@ class TesteController extends Controller
         $restricoes = $this->restricoes($docentes);
         $ucs = $this->ucs($cursos, $laboratorios, $docentes);
 
-
-        // Obter exemplos de relações
-        $cursoId = -1;
-        $curso = null;
-        do
-        {
-            $cursoId++;
-            $curso = $cursos[$cursoId];
-        } while ($curso->unidadesCurriculares == []);
-
-        $laboratorioId = -1;
-        $laboratorio = null;
-        do
-        {
-            $laboratorioId++;
-            $laboratorio = $laboratorios[$laboratorioId];
-        } while ($laboratorio->unidadesCurriculares == []);
-
-        $docenteId = -1;
-        $docente = null;
-        do
-        {
-            $docenteId++;
-            $docente = $docentes[$docenteId];
-        } while ($docente->respUnidadesCurriculares == []);
-
-        $restricaoId = 0;
-        $restricao = $restricoes[$restricaoId];
-
-        $ucId = -1;
-        $uc = null;
-        do
-        {
-            $ucId++;
-            $uc = $ucs[$ucId];
-        } while ($uc->laboratorios == []);
-
-
         // Retornar JSON
         return response()->json([
             'cursos' => $cursos,
             'laboratorios' => $laboratorios,
             'docentes' => $docentes,
             'restricoes' => $restricoes,
-            'ucs' => $ucs,
+            'ucs' => $ucs
+        ]);
+    }
 
 
-            "curso_{$cursoId}_ucs" => $curso->unidadesCurriculares,
-            "laboratorio_{$laboratorioId}_ucs" => $laboratorio->unidadesCurriculares,
-            "docente_{$docenteId}_ucs" => $docente->unidadesCurriculares,
-            "docente_{$docenteId}_restricoes" => $docente->restricoes,
-            "docente_{$docenteId}_resp_ucs" => $docente->respUnidadesCurriculares,
-            "restricao_{$restricaoId}_docente" => $restricao->docente,
-            "uc_{$ucId}_cursos" => $uc->cursos,
-            "uc_{$ucId}_laboratorios" => $uc->laboratorios,
-            "uc_{$ucId}_resp" => $uc->responsavel,
-            "uc_{$ucId}_docentes" => $uc->docentes
+    public function testarKV()
+    {
+        // Flush keys
+        KeyValue::set('flush', 'flush');
+        KeyValue::flush();
+
+        // Set keys
+        KeyValue::set('key', 'value');
+        KeyValue::set('key', 'newvalue');
+
+        KeyValue::set('key1', 'value1');
+        KeyValue::set('key2', 'value2');
+        KeyValue::set('key3', 'value3');
+
+        KeyValue::set('key_null', 'null');
+        KeyValue::set('key_null', null);
+
+        // Copy key
+        KeyValue::copy('key', 'key_copy');
+
+        // Del key
+        KeyValue::del('key1');
+
+
+        // Return JSON
+        return response()->json([
+            'key' => KeyValue::val('key'),
+            'key1' => KeyValue::val('key1'),
+            'key_null' => KeyValue::val('key_null'),
+
+            'exists_key_e_key1' => KeyValue::exists('key', 'key1'),
+            'exists_key_null' => KeyValue::exists('key_null'),
+
+            'size' => KeyValue::size(),
+            'all' => KeyValue::all(),
+            'all_keys' => KeyValue::keys()
         ]);
     }
 }

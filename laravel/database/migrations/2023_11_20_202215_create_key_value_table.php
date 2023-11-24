@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('curso', function (Blueprint $table) {
-            $table->string('acron_curso', 10);
-            $table->string('nome_curso');
-            $table->timestamps();
+        Schema::create('key_value', function (Blueprint $table) {
+            $table->string('key');
+            $table->string('value')->nullable();
 
-            $table->primary('acron_curso');
+            $table->primary('key');
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('curso');
+        Schema::dropIfExists('key_value');
     }
 };

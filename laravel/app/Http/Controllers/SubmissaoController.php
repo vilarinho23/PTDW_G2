@@ -31,8 +31,8 @@ class SubmissaoController extends Controller
         $dataConclusao = KeyValue::val('data_conclusao');
 
 
-        // Retornar docente
-        return response()->json([
+        // Retornar informações para a view
+        return view('docente', [
             'nomeDocente' => $nomeDocente,
             'ucs' => $ucs,
             'restricoes' => $restricoes,

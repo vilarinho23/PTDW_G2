@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
-use App\Http\Controllers\SubmissaoController;
+use App\Http\Controllers\RestricaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ Route::get('/idp', function () {
 });
 
 
-Route::get('/docente', [SubmissaoController::class, 'docente']);
+Route::get('/docente', [RestricaoController::class, 'docente']);
 
 Route::get('/restricoes',function(){
     return view('restricoes');

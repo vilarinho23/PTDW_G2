@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Docente;
 use App\Models\KeyValue;
 
-class SubmissaoController extends Controller
+class RestricaoController extends Controller
 {
     public function docente()
     {

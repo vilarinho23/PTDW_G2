@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Docente;
 use App\Models\KeyValue;
 
-class SubmissaoController extends Controller
+class RestricaoController extends Controller
 {
     public function docente()
     {
@@ -31,8 +31,8 @@ class SubmissaoController extends Controller
         $dataConclusao = KeyValue::val('data_conclusao');
 
 
-        // Retornar docente
-        return response()->json([
+        // Retornar informações para a view
+        return view('docente', [
             'nomeDocente' => $nomeDocente,
             'ucs' => $ucs,
             'restricoes' => $restricoes,

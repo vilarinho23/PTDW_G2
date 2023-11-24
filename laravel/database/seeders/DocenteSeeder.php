@@ -31,11 +31,16 @@ class DocenteSeeder extends Seeder
             $docenteComUCs->save();
         }
 
-        if ($docenteComUCs->unidadesCurriculares->count() == 0)
+        if ($docenteComUCs->unidadesCurriculares->isEmpty())
         {
             $ucs = UnidadeCurricular::all();
             $ucsDocente = fake()->randomElements($ucs, 2);
-            foreach ($ucsDocente as $uc) $docenteComUCs->unidadesCurriculares()->attach($uc->id);
+            foreach ($ucsDocente as $uc){
+                $docenteComUCs->unidadesCurriculares()->attach(
+                    $uc->cod_uc,
+                    ['perc_horas' => fake()->numberBetween(0, 100)]
+                );
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
-use App\Http\Controllers\SubmissaoController;
+use App\Http\Controllers\RestricaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,27 +23,11 @@ Route::get('/idp', function () {
     return view('idp');
 });
 
-Route::get('/docente', function(){
-    return view('docentePorPreencher');
-});
 
-Route::get('/docente2', function(){
-    return view('docentePreenchido');
-});
+Route::get('/docente', [RestricaoController::class, 'docente']);
 
 Route::get('/restricoes',function(){
     return view('restricoes');
-});
-
-Route::get('/gestorDocentes',function(){
-    return view('gestorDocentes');
-});
-Route::get('/docenteSemUC',function(){
-    return view('docenteSemUCAtribuidas');
-});
-
-Route::get('/atribuicaouc',function(){
-    return view('atribuicaoUc');
 });
 
 
@@ -51,17 +35,17 @@ Route::get('/submissoes',function(){
     return view('submissoes');
 });
 
-
-Route::get('/docentePreenchido',function(){
-    return view('docentePreenchido');
+Route::get('/gestorDocentes',function(){
+    return view('gestorDocentes');
 });
-
 
 Route::get('/gestoruc',function(){
     return view('gestorUc');
 });
 
-Route::get('/docentenew', [SubmissaoController::class, 'docente']);
+Route::get('/atribuicaouc',function(){
+    return view('atribuicaoUc');
+});
 
 
 Route::get('/testar/models', [TesteController::class, 'testarModels']);

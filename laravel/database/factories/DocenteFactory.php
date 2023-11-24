@@ -19,7 +19,7 @@ class DocenteFactory extends Factory
         return [
             'num_func' => $this->faker->unique()->numberBetween(1, 999999),
             'nome_docente' => $this->faker->unique()->name(),
-            'acn_docente' => $this->faker->title(),
+            'acn_docente' => $this->faker->word(),
             'submetido' => $this->faker->boolean(),
             'observacoes' => $this->faker->text(),
         ];

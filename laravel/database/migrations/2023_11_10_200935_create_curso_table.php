@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('curso', function (Blueprint $table) {
+            $table->string('acron_curso', 10);
             $table->string('nome_curso');
             $table->timestamps();
 
-            $table->primary('nome_curso');
+            $table->primary('acron_curso');
         });
     }
 

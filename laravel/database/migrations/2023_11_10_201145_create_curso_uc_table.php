@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('curso_uc', function (Blueprint $table) {
-            $table->string('nome_curso');
+            $table->string('acron_curso', 10);
             $table->integer('cod_uc')->unsigned();
             $table->timestamps();
 
-            $table->foreign('nome_curso')
-                ->references('nome_curso')
+            $table->foreign('acron_curso')
+                ->references('acron_curso')
                 ->on('curso')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -33,7 +33,7 @@ return new class extends Migration
             "Composite" Primary Keys não são suportadas pelos Models do Laravel/Eloquent
             Mas neste caso não há problema porque é uma tabela pivot
             */
-            $table->primary(['nome_curso', 'cod_uc']);
+            $table->primary(['acron_curso', 'cod_uc']);
         });
     }
 

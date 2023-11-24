@@ -58,7 +58,7 @@ class Docente extends Model
         'num_func',
         'nome_docente',
         'acn_docente',
-        'submetido',
+        'data_submissao',
         'observacoes'
     ];
 
@@ -68,7 +68,7 @@ class Docente extends Model
      * @var array
      */
     protected $casts = [
-        'submetido' => 'boolean'
+        'data_submissao' => 'datetime'
     ];
 
 

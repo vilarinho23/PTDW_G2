@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('docente', function (Blueprint $table) {
-            $table->boolean('submetido')->default(false);
+            $table->dateTime('data_submissao')->nullable();
             $table->text('observacoes')->nullable();
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('docente', function (Blueprint $table) {
-            $table->dropColumn('submetido');
+            $table->dropColumn('data_submissao');
             $table->dropColumn('observacoes');
         });
     }

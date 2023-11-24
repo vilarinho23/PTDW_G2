@@ -18,11 +18,11 @@ body {
 }
 
 #container-por-preencher{
-    width: 500px; 
-    height: 200px; 
-    background-color: #f0f0f0; 
-    text-align: center; 
-    padding: 20px;  
+    width: 500px;
+    height: 200px;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 20px;
     border-radius: 10px;
     margin: 0 auto;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
@@ -31,7 +31,6 @@ body {
 .border-atribuicao{
     margin-top: 5em;
     height: 900px;
-    
 }
 
 .tabela{
@@ -58,4 +57,8 @@ td > input[type="checkbox"]:checked{
 
 .modal {
     backdrop-filter: blur(3px);
+}
+
+#image_logout:hover {
+    cursor: pointer;
 }

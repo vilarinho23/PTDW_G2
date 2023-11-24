@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
+use App\Http\Controllers\SubmissaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,8 @@ Route::get('/docentePreenchido',function(){
 Route::get('/gestoruc',function(){
     return view('gestorUc');
 });
+
+Route::get('/docentenew', [SubmissaoController::class, 'docente']);
 
 
 Route::get('/testar/models', [TesteController::class, 'testarModels']);

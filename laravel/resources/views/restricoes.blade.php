@@ -49,7 +49,7 @@
                         $percentagemHoras = $uc->pivot->perc_horas;
                         $docenteResponsavel = $uc->responsavel->nome_docente;
 
-                        $isResponsavel = !$uc->isresponsavel;
+                        $isResponsavel = $uc->isresponsavel;
                     @endphp
 
                     <div class="tab-pane fade tabela shadow-lg p-5 mb-5 bg-white rounded {{$active}}" id="{{$id}}"

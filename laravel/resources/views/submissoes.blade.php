@@ -36,7 +36,7 @@
                     <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
                 </div>
                 <div>
-                    <img src="images/search-interface-symbol.png" alt="search">
+                    <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
                 </div>
             </div>
 

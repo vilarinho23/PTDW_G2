@@ -15,7 +15,7 @@
                     <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
                 </div>
                 <div>
-                    <img src="images/search-interface-symbol.png" alt="search">
+                    <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
                 </div>
             </div>
 
@@ -41,21 +41,21 @@
                             <th scope="row">1</th>
                             <td>Paulo Rui Santos</td>
                             <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td><img src="images/edit.png" alt="edit" data-bs-toggle="modal"
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
                                     data-bs-target="#editarModal"></td>
                         </tr>
                         <tr>
                             <th scope="row">2</th>
                             <td>Paulo Rui Santos</td>
                             <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td><img src="images/edit.png" alt="edit" data-bs-toggle="modal"
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
                                     data-bs-target="#editarModal"></td>
                         </tr>
                         <tr>
                             <th scope="row">3</th>
                             <td>Paulo Rui Santos</td>
                             <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td><img src="images/edit.png" alt="edit" data-bs-toggle="modal"
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
                                     data-bs-target="#editarModal"></td>
                         </tr>
                     </tbody>
@@ -65,7 +65,7 @@
     </div>
     <div class="d-flex gap-3 ms-3">
         <div>
-            <img src="images/info.png" alt="info">
+            <img src="{{ asset('images/info.svg') }}" alt="info">
         </div>
         <p>INFORMAÇÃO DE AJUDA</p>
     </div>

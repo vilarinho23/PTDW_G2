@@ -17,36 +17,41 @@ use App\Http\Controllers\RestricaoController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/idp', function () {
     return view('idp');
 });
 
-
-Route::get('/docente', [RestricaoController::class, 'docente']);
-
-Route::get('/restricoes',function(){
-    return view('restricoes');
+Route::prefix('/docente')->group(function () {
+    Route::get('/', [RestricaoController::class, 'docente'])->name('docente');
+    Route::get('/restricoes', [RestricaoController::class, 'restricoes'])->name('restricoes');
+    Route::post('/restricoes/submeter', [RestricaoController::class, 'submeter'])->name('restricoesSubmeter');
 });
 
+Route::prefix('/comissao')->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('submissoes');
+    })->name('comissao');
 
-Route::get('/submissoes',function(){
-    return view('submissoes');
+    Route::get('/submissoes', function () {
+        return view('submissoes');
+    })->name('submissoes');
+
+    Route::get('/docentes', function () {
+        return view('gestorDocentes');
+    })->name('gestorDocentes');
+
+    Route::get('/ucs', function () {
+        return view('gestorUcs');
+    })->name('gestorUcs');
+
+    Route::get('/atribuicaoucs', function () {
+        return view('atribuicaoUcs');
+    })->name('atribuicaoUcs');
 });
 
-Route::get('/gestorDocentes',function(){
-    return view('gestorDocentes');
+Route::prefix('/testar')->group(function () {
+    Route::get('/models', [TesteController::class, 'testarModels']);
+    Route::get('/kv', [TesteController::class, 'testarKV']);
 });
-
-Route::get('/gestoruc',function(){
-    return view('gestorUc');
-});
-
-Route::get('/atribuicaouc',function(){
-    return view('atribuicaoUc');
-});
-
-
-Route::get('/testar/models', [TesteController::class, 'testarModels']);
-Route::get('/testar/kv', [TesteController::class, 'testarKV']);

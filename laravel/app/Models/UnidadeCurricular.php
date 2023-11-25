@@ -62,6 +62,7 @@ class UnidadeCurricular extends Model
         'nome_uc',
         'horas_uc',
         'acn_uc',
+        'semestre_uc',
         'num_func_resp',
         'sala_avaliacoes',
         'utilizacao_laboratorios',
@@ -75,6 +76,7 @@ class UnidadeCurricular extends Model
      */
     protected $casts = [
         'horas_uc' => 'integer',
+        'semestre_uc' => 'integer',
         'num_func_resp' => 'integer',
         'sala_avaliacoes' => SalaAvaliacoes::class,
         'utilizacao_laboratorios' => UtilizacaoLaboratorios::class

@@ -34,6 +34,8 @@ class DocenteSeeder extends Seeder
         if ($docenteComUCs->unidadesCurriculares->isEmpty())
         {
             $ucs = UnidadeCurricular::all();
+            if ($ucs->count() < 2) return;
+
             $ucsDocente = fake()->randomElements($ucs, 2);
             foreach ($ucsDocente as $uc)
                 $uc->docentes()->attach(

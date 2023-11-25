@@ -29,7 +29,10 @@ class RestricaoController extends Controller
         $ucs = $docente->unidadesCurriculares;
         $respUCs = $docente->respUnidadesCurriculares;
 
-        $ucs = $ucs->merge($respUCs);
+        // Merge das UCs e das UCs que o docente é responsável (sem repetições)
+        $ucs = $respUCs->merge($ucs);
+
+        // Adicionar campo isresponsavel para as UCs que o docente é responsável
         foreach ($ucs as $uc) $uc->isresponsavel = $respUCs->contains($uc);
 
         // Restrições, data de submissao e nome

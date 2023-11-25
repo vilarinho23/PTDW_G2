@@ -35,12 +35,18 @@ class DocenteSeeder extends Seeder
         {
             $ucs = UnidadeCurricular::all();
             $ucsDocente = fake()->randomElements($ucs, 2);
-            foreach ($ucsDocente as $uc){
-                $docenteComUCs->unidadesCurriculares()->attach(
-                    $uc->cod_uc,
+            foreach ($ucsDocente as $uc)
+                $uc->docentes()->attach(
+                    $docenteComUCs->num_func,
                     ['perc_horas' => fake()->numberBetween(0, 100)]
                 );
-            }
+        }
+
+        if ($docenteComUCs->respUnidadesCurriculares->isEmpty())
+        {
+            $primeiraUC = $docenteComUCs->unidadesCurriculares[0];
+            $primeiraUC->responsavel()->associate($docenteComUCs);
+            $primeiraUC->save();
         }
     }
 }

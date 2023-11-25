@@ -119,14 +119,13 @@ class UnidadeCurricular extends Model
     /**
      * Get the Docente (Responsavel) that has the UnidadeCurricular.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function responsavel()
     {
-        return $this->hasOne(
+        return $this->belongsTo(
             Docente::class,
 
-            'num_func',
             'num_func_resp'
         );
     }

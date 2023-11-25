@@ -1,9 +1,9 @@
 @extends('partials._document')
 @section('head')
-    @include('partials._head', ['titulo' => 'Restrições'])
+@include('partials._head', ['titulo' => 'Restrições'])
 @endsection
 @section('header')
-    @include('partials._headerDocente')
+@include('partials._headerDocente')
 @endsection
 
 @section('content')
@@ -46,10 +46,10 @@
                         $ariaLabelledBy = $id . '-tab';
 
                         $cursosUc = $uc->cursos->pluck('acron_curso')->implode(', ');
-                        $percentagemHoras = $uc->pivot->perc_horas;
+                        $percentagemHoras = $uc->pivot->perc_horas ?? 0;
                         $docenteResponsavel = $uc->responsavel->nome_docente;
 
-                        $isResponsavel = $uc->isresponsavel;
+                        $isResponsavel = $uc->isresponsavel ?? false;
                     @endphp
 
                     <div class="tab-pane fade tabela shadow-lg p-5 mb-5 bg-white rounded {{$active}}" id="{{$id}}"

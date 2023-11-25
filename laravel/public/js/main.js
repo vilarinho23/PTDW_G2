@@ -19,3 +19,24 @@ const botaoPreencher = document.getElementById("preencher-button");
 botaoPreencher?.addEventListener('click', () => {
     window.location.href = preencherUrl;
 })
+
+
+const botoesSeguinte = document.getElementsByClassName("botao-seguinte");
+Array.from(botoesSeguinte).forEach(botao => {
+    botao.addEventListener('click', () => {
+        const btnTabAtiva = document.querySelector("#myTab > .nav-item > .active");
+        const tabAtiva = btnTabAtiva.parentElement;
+
+        const tabSeguinte = tabAtiva.nextElementSibling;
+        if (tabSeguinte == null) return;
+
+        const btnTabSeguinte = tabSeguinte.firstElementChild;
+        btnTabSeguinte.dispatchEvent(new Event('click'));
+    });
+});
+
+const botaoSubmeter = document.getElementById("botao-submeter");
+botaoSubmeter?.addEventListener('click', () => {
+    const form = document.getElementById("form-restricoes");
+    form.submit();
+})

@@ -15,7 +15,7 @@
                     <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
                 </div>
                 <div>
-                    <img src="images/search-interface-symbol.png" alt="search">
+                    <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
                 </div>
             </div>
 
@@ -55,7 +55,7 @@
                             <td>Tecnologias da informação</td>
                             <td>25</td>
                             <td>23</td>
-                            <td><img src="images/edit.png" alt="edit" data-bs-toggle="modal"
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
                                 data-bs-target="#editarModal"></td>
                         </tr>
                         <tr>
@@ -69,7 +69,7 @@
                             <td>Tecnologias da informação</td>
                             <td>25</td>
                             <td>23</td>
-                            <td><img src="images/edit.png" alt="edit"></td>
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
                         </tr>
                         <tr>
                             <th scope="row">3</th>
@@ -82,7 +82,7 @@
                             <td>Tecnologias da informação</td>
                             <td>25</td>
                             <td>23</td>
-                            <td><img src="images/edit.png" alt="edit"></td>
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -91,7 +91,7 @@
     </div>
     <div class="d-flex gap-3 ms-3">
         <div>
-            <img src="images/info.png" alt="info">
+            <img src="{{ asset('images/info.svg') }}" alt="info">
         </div>
         <p>INFORMAÇÃO DE AJUDA</p>
         </div>

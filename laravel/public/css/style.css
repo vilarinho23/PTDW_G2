@@ -17,7 +17,7 @@ body {
     background-color: #616161
 }
 
-#container-por-preencher{
+#container-por-preencher {
     width: 500px;
     height: 200px;
     background-color: #f0f0f0;
@@ -28,31 +28,31 @@ body {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-.border-atribuicao{
+.border-atribuicao {
     margin-top: 5em;
     height: 900px;
 }
 
-.tabela{
+.tabela {
     width: 1000px;
     height: 560px;
 }
 
-td,th {
+td, th {
     text-align: center;
     vertical-align: middle;
 }
 
-td > input[type="checkbox"]{
+input.impedimento-check {
     width: 50px;
     height: 50px;
     margin: 0 auto;
 }
 
-td > input[type="checkbox"]:checked{
-    width: 50px;
-    height: 50px;
-    background-color: black;
+input.impedimento-check:checked.form-check-input:checked[type="checkbox"] {
+    --bs-form-check-bg-image: var(--url-close);
+    background-color: var(--bs-form-check-bg);
+    border-color: var(--bs-border-color);
 }
 
 .modal {

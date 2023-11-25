@@ -40,10 +40,13 @@ class DocenteSeeder extends Seeder
                     $docenteComUCs->num_func,
                     ['perc_horas' => fake()->numberBetween(0, 100)]
                 );
+            $docenteComUCs = Docente::find(2);
         }
 
         if ($docenteComUCs->respUnidadesCurriculares->isEmpty())
         {
+            if ($docenteComUCs->unidadesCurriculares->isEmpty()) return;
+
             $primeiraUC = $docenteComUCs->unidadesCurriculares[0];
             $primeiraUC->responsavel()->associate($docenteComUCs);
             $primeiraUC->save();

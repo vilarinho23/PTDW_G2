@@ -14,7 +14,7 @@ use Carbon\Carbon;
 
 class RestricaoController extends Controller
 {
-    private function getDocente(): Docente
+    private function getDocente(): Docente|null
     {
         // Obter docente
         $docenteNrFunc = 2;

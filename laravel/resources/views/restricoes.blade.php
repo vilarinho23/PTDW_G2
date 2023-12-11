@@ -9,6 +9,14 @@
 @section('content')
 <div class="d-flex align-items-center justify-content-center">
     <div class="p-5" style="min-height: 80vh;">
+        {{-- Erros --}}
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Erro!</strong> {{$error}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endforeach
+
         <form method="POST" action="{{route('restricoesSubmeter')}}" id="form-restricoes">
             @csrf
 
@@ -55,7 +63,7 @@
                     <div class="tab-pane fade tabela shadow-lg p-5 mb-5 bg-white rounded {{$active}}" id="{{$id}}"
                         role="tabpanel" aria-labelledby="{{$ariaLabelledBy}}">
                         <div class="d-flex">
-                            <p class="w-50"><strong>Unidade Curricular: </strong>{{$uc->nome_uc}}</p>
+                            <p class="w-50"><strong>UC: </strong>{{$uc->cod_uc}} - {{$uc->nome_uc}}</p>
                             <p class="w-25"><strong>Cursos: </strong>{{$cursosUc}}</p>
                             <p class="w-25"><strong>Percentagem de horas: </strong>{{$percentagemHoras}}%</p>
                         </div>
@@ -69,10 +77,19 @@
                                     <div class="d-flex gap-2">
                                         {{-- utilizacao_laboratorios --}}
                                         @if ($isResponsavel)
-                                            <select class="form-select" name="{{$id}}_utilizacao_laboratorios">
-                                                <option>nao definido</option>
+                                            @php $fieldName = "${id}_utilizacao_laboratorios"; @endphp
+                                            <select class="form-select" name="{{$fieldName}}">
+                                                @php
+                                                    $ulSelected = old($fieldName, $uc->utilizacao_laboratorios->value ?? '') ?? '';
+                                                @endphp
+
+                                                <option value="null">nao definido</option>
                                                 @foreach ($utilizacaoLab as $ul)
-                                                    @php $selected = $uc->utilizacao_laboratorios == $ul ? 'selected' : ''; @endphp
+                                                    @php
+                                                        $ul = $ul->value;
+
+                                                        $selected = $ulSelected == $ul ? 'selected' : '';
+                                                    @endphp
 
                                                     <option value="{{$ul}}" {{$selected}}>{{$ul}}</option>
                                                 @endforeach
@@ -87,18 +104,22 @@
                                     <p><strong>Laboratórios Possíveis: </strong></p>
                                     <div class="d-flex gap-2">
                                         {{-- laboratorios --}}
+                                        @php $laboratoriosUc = $uc->laboratorios->pluck('designacao_lab'); @endphp
                                         @if ($isResponsavel)
-                                            <select class="form-select" multiple name="{{$id}}_laboratorios[]">
+                                            @php $fieldName = "${id}_laboratorios"; @endphp
+                                            <select class="form-select" multiple name="{{$fieldName}}[]">
+                                                @php
+                                                    $labSelected = old($fieldName) ?? [];
+                                                    if (old("_token") == null) $labSelected = $laboratoriosUc->toArray() ?? [];
+                                                @endphp
                                                 @foreach ($laboratorios as $lab)
-                                                    @php $selected = $uc->laboratorios->contains($lab) ? 'selected' : ''; @endphp
+                                                    @php $selected = in_array($lab->designacao_lab, $labSelected) ? 'selected' : ''; @endphp
 
                                                     <option value="{{$lab->designacao_lab}}" {{$selected}}>{{$lab->designacao_lab}}</option>
                                                 @endforeach
                                             </select>
                                         @else
-                                            @php $laboratoriosUc = $uc->laboratorios->pluck('designacao_lab')->implode(', '); @endphp
-
-                                            {{$laboratoriosUc ?? ''}}
+                                            {{$laboratoriosUc->implode(', ') ?? ''}}
                                         @endif
                                     </div>
                                 </div>
@@ -108,9 +129,16 @@
                                     <div class="d-flex gap-2">
                                         {{-- sala_avaliacoes --}}
                                         @if ($isResponsavel)
-                                            <select class="form-select" name="{{$id}}_sala_avaliacoes">
+                                            @php $fieldName = "${id}_sala_avaliacoes"; @endphp
+                                            <select class="form-select" name="{{$fieldName}}">
+                                                @php
+                                                    $saSelected = old($fieldName, $uc->sala_avaliacoes->value ?? '') ?? '';
+                                                @endphp
                                                 @foreach ($salaAvaliacoes as $sa)
-                                                    @php $selected = $uc->sala_avaliacoes == $sa ? 'selected' : ''; @endphp
+                                                    @php
+                                                        $sa = $sa->value;
+                                                        $selected = $saSelected == $sa ? 'selected' : '';
+                                                    @endphp
 
                                                     <option value="{{$sa}}" {{$selected}}>{{$sa}}</option>
                                                 @endforeach
@@ -124,10 +152,15 @@
                                 <div class="d-flex gap-4 mt-5">
                                     <p><strong>Software Necessário:</strong></p>
                                     {{-- software_necessario --}}
-                                    @php $disabled = $isResponsavel ? '' : 'disabled readonly'; @endphp
+                                    @php
+                                        $fieldName = "${id}_software_necessario";
+                                        $disabled = $isResponsavel ? '' : 'disabled readonly';
+                                    @endphp
 
                                     <div class="input-group input-group-md">
-                                        <textarea class="form-control" name="{{$id}}_software_necessario" rows="3" {{$disabled}}>{{$uc->software_necessario ?? ''}}</textarea>
+                                        <textarea class="form-control" name="{{$fieldName}}" rows="3" {{$disabled}}>{{
+                                            old($fieldName, $uc->software_necessario) ?? ''
+                                        }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -153,19 +186,27 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $fieldName = 'impedimentos';
+
+                                    $impSelected = old($fieldName) ?? [];
+                                    if (old("_token") == null) $impSelected = $restricoes->map(function ($restricao) {
+                                        return ($restricao->dia_semana->value) . '_' . ($restricao->parte_dia->value);
+                                    })->toArray();
+                                @endphp
                                 @foreach ($partesDia as $parteDia)
+                                    @php $parteDia = $parteDia->value; @endphp
                                     <tr>
                                         <th scope="col">{{$parteDia}}</th>
                                         @foreach ($diasSemana as $dia)
                                             @php
-                                                $checked = $restricoes->contains(function ($restricao) use ($dia, $parteDia) {
-                                                    return $restricao->dia == $dia && $restricao->parte_dia == $parteDia;
-                                                }) ? 'checked' : '';
+                                                $dia = $dia->value;
 
-                                                $disabled = $dia->value == 'sabado' && ($parteDia->value == 'tarde' || $parteDia->value == 'noite') ? 'disabled' : '';
+                                                $checked = in_array($dia . '_' . $parteDia, $impSelected) ? 'checked' : '';
+                                                $disabled = $dia == 'sabado' && $parteDia == 'noite' ? 'disabled' : '';
                                             @endphp
 
-                                            <td><input class="form-check-input impedimento-check" type="checkbox" name="impedimentos[]" value="{{$dia}}_{{$parteDia}}" aria-label="..." {{$checked}} {{$disabled}}></td>
+                                            <td><input class="form-check-input impedimento-check" type="checkbox" name="{{$fieldName}}[]" value="{{$dia}}_{{$parteDia}}" aria-label="..." {{$checked}} {{$disabled}}></td>
                                         @endforeach
                                     </tr>
                                 @endforeach

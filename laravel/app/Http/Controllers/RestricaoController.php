@@ -15,7 +15,7 @@ use Carbon\Carbon;
 
 class RestricaoController extends Controller
 {
-    private function getDocente(): Docente|null
+    private function getDocente(): ?Docente
     {
         // TODO Obter docente atual
         $docenteNrFunc = 2;
@@ -26,9 +26,18 @@ class RestricaoController extends Controller
 
     private function getDadosDocente(Docente $docente): array
     {
+        $semestre = $this->getSemestre();
+
         // Unidades Curriculares
         $ucs = $docente->unidadesCurriculares;
         $respUCs = $docente->respUnidadesCurriculares;
+
+        // Filtrar UCs por semestre (se definido)
+        if ($semestre != null)
+        {
+            $ucs = $ucs->where('semestre_uc', $semestre);
+            $respUCs = $respUCs->where('semestre_uc', $semestre);
+        }
 
         // Merge das UCs e das UCs que o docente é responsável (sem repetições)
         $ucs = $respUCs->merge($ucs);
@@ -49,13 +58,22 @@ class RestricaoController extends Controller
         ];
     }
 
-    private function getDataConclusao(): Carbon|null
+    private function getDataConclusao(): ?Carbon
     {
         // Obter data de conclusao
         $dataConclusao = KeyValue::val('data_conclusao');
         if ($dataConclusao == null) return null;
 
         return Carbon::createFromFormat('d/m/Y', $dataConclusao);
+    }
+
+    private function getSemestre(): ?int
+    {
+        // Obter semestre
+        $semestre = KeyValue::val('semestre');
+        if ($semestre == null) return null;
+
+        return intval($semestre);
     }
 
 

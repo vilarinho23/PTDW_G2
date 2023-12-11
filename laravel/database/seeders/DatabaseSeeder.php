@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Database\Seeders\CursoSeeder;
-use Database\Seeders\LaboratorioSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,5 +13,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CursoSeeder::class);
         $this->call(LaboratorioSeeder::class);
+
+        $this->call(DocenteSeeder::class);
+        $this->call(RestricoesSeeder::class);
+        $this->call(UCSeeder::class);
+
+        $this->call(DocenteTesteSeeder::class);
+        $this->call(KeyValueSeeder::class);
     }
 }

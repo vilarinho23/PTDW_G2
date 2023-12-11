@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Docente;
-use App\Models\UnidadeCurricular;
+use Illuminate\Database\Seeder;
 
 class DocenteSeeder extends Seeder
 {
@@ -13,45 +12,9 @@ class DocenteSeeder extends Seeder
      */
     public function run(): void
     {
-        // Docente sem UCs
-        $docenteSemUCs = Docente::find(1);
-        if ($docenteSemUCs == null)
-        {
-            $docenteSemUCs = Docente::factory()->make();
-            $docenteSemUCs->num_func = 1;
-            $docenteSemUCs->save();
-        }
+        // Criar docentes se não existirem
+        $modelsMade = Docente::factory(5)->make();
 
-        // Docente com UCs
-        $docenteComUCs = Docente::find(2);
-        if ($docenteComUCs == null)
-        {
-            $docenteComUCs = Docente::factory()->make();
-            $docenteComUCs->num_func = 2;
-            $docenteComUCs->save();
-        }
-
-        if ($docenteComUCs->unidadesCurriculares->isEmpty())
-        {
-            $ucs = UnidadeCurricular::all();
-            if ($ucs->count() < 2) return;
-
-            $ucsDocente = fake()->randomElements($ucs, 2);
-            foreach ($ucsDocente as $uc)
-                $uc->docentes()->attach(
-                    $docenteComUCs->num_func,
-                    ['perc_horas' => fake()->numberBetween(0, 100)]
-                );
-            $docenteComUCs = Docente::find(2);
-        }
-
-        if ($docenteComUCs->respUnidadesCurriculares->isEmpty())
-        {
-            if ($docenteComUCs->unidadesCurriculares->isEmpty()) return;
-
-            $primeiraUC = $docenteComUCs->unidadesCurriculares[0];
-            $primeiraUC->responsavel()->associate($docenteComUCs);
-            $primeiraUC->save();
-        }
+        foreach ($modelsMade as $model) Docente::firstOrCreate($model->toArray());
     }
 }

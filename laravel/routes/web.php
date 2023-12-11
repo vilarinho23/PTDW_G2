@@ -26,7 +26,7 @@ Route::get('/idp', function () {
 Route::prefix('/docente')->group(function () {
     Route::get('/', [RestricaoController::class, 'docente'])->name('docente');
     Route::get('/restricoes', [RestricaoController::class, 'restricoes'])->name('restricoes');
-    Route::post('/restricoes/submeter', [RestricaoController::class, 'submeter'])->name('restricoesSubmeter');
+    Route::post('/restricoes', [RestricaoController::class, 'submeter'])->name('restricoesSubmeter');
 });
 
 Route::prefix('/comissao')->group(function () {

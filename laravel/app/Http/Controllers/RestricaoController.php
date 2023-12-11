@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\RestricoesRequest;
 use App\Models\Docente;
 use App\Models\Enums\DiaSemana;
 use App\Models\Enums\ParteDia;
@@ -10,13 +10,14 @@ use App\Models\Enums\SalaAvaliacoes;
 use App\Models\Enums\UtilizacaoLaboratorios;
 use App\Models\KeyValue;
 use App\Models\Laboratorio;
+use App\Models\UnidadeCurricular;
 use Carbon\Carbon;
 
 class RestricaoController extends Controller
 {
     private function getDocente(): Docente|null
     {
-        // Obter docente
+        // TODO Obter docente atual
         $docenteNrFunc = 2;
         $docente = Docente::find($docenteNrFunc);
 
@@ -61,14 +62,14 @@ class RestricaoController extends Controller
     public function docente()
     {
         // Obter docente
-        $docente = self::getDocente();
+        $docente = $this->getDocente();
         if ($docente == null) return redirect()->route('home');
 
         // Obter dados do docente
-        $dados = self::getDadosDocente($docente);
+        $dados = $this->getDadosDocente($docente);
 
         // Obter data de conclusao
-        $dados['dataConclusao'] = self::getDataConclusao();
+        $dados['dataConclusao'] = $this->getDataConclusao();
 
         // Retornar informações para a view
         return view('docente', $dados);
@@ -78,15 +79,15 @@ class RestricaoController extends Controller
     public function restricoes()
     {
         // Obter docente
-        $docente = self::getDocente();
+        $docente = $this->getDocente();
         if ($docente == null) return redirect()->route('home');
 
         // Obter data de conclusao
-        $dataConclusao = self::getDataConclusao();
+        $dataConclusao = $this->getDataConclusao();
         if ($dataConclusao == null) return redirect()->route('docente');
 
         // Obter dados do docente
-        $dados = self::getDadosDocente($docente);
+        $dados = $this->getDadosDocente($docente);
         if ($docente->unidadesCurriculares->isEmpty()) return redirect()->route('docente');
 
         // Retornar informações para a view
@@ -100,8 +101,55 @@ class RestricaoController extends Controller
         return view('restricoes', $dados);
     }
 
-    public function submeter(Request $request)
+    public function submeter(RestricoesRequest $request)
     {
-        return response()->json($request->all());
+        // Obter docente
+        $docente = $this->getDocente();
+        if ($docente == null) return redirect()->route('home');
+
+        // Obter data de conclusao
+        $dataConclusao = $this->getDataConclusao();
+        if ($dataConclusao == null) return redirect()->route('docente');
+
+        // Validar dados
+        $safe = $request->safe();
+
+        // Salvar UCs com as restrições submetidas
+        foreach ($safe['ucs'] as $cod_uc => $uc)
+        {
+            $ucModel = UnidadeCurricular::find($cod_uc);
+            if ($ucModel == null) continue;
+
+            $ucModel->sala_avaliacoes = $uc['sala_avaliacoes'] ?? null;
+            $ucModel->utilizacao_laboratorios = $uc['utilizacao_laboratorios'] ?? null;
+            $ucModel->software_necessario = $uc['software_necessario'] ?? null;
+
+            // Salvar laboratórios
+            $ucModel->laboratorios()->detach();
+            foreach ($uc['laboratorios'] ?? [] as $laboratorio)
+            {
+                $labModel = Laboratorio::find($laboratorio);
+                if ($labModel == null) continue;
+
+                $ucModel->laboratorios()->attach($labModel);
+            }
+            $ucModel->save();
+        }
+
+        // Salvar impedimentos
+        $docente->restricoes()->delete();
+        foreach ($safe['impedimentos'] ?? [] as $impedimento)
+        {
+            $docente->restricoes()->create([
+                'dia_semana' => $impedimento['dia'],
+                'parte_dia' => $impedimento['parte']
+            ]);
+        }
+
+        // Atualizar data de submissao
+        $docente->data_submissao = Carbon::now();
+        $docente->save();
+
+        return redirect()->route('docente');
     }
 }

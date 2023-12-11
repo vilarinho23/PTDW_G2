@@ -25,7 +25,7 @@
 
                     <h4 class="h-4" id="texto-restricoes">Restrições</h4>
                     <p class="p-5" id="texto-mensagem">
-                        Submetido: {{ $dataSubmissao->format('d/m/Y h:i') }}
+                        Submetido: {{ $dataSubmissao->format('d/m/Y H:i') }}
                     </p>
                 @endif
 

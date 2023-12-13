@@ -7,6 +7,7 @@
 @endsection
 
 @section('content')
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <div class="container">
     <div class="border-atribuicao mx-auto">
         <div class="d-flex justify-content-between">
@@ -37,27 +38,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Paulo Rui Santos</td>
-                            <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
-                                    data-bs-target="#editarModal"></td>
+                        @foreach ($docentes as $docente)
+                        <tr data-id={{$docente->num_func}} data-url={{ route("docente.show",$docente->num_func) }}>
+                            <th scope="row">{{ $docente->num_func }}</th>
+                            <td>{{ $docente->nome_docente }}</td>
+                            <td>{{ $docente->acn_docente }}</td>
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Paulo Rui Santos</td>
-                            <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
-                                    data-bs-target="#editarModal"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Paulo Rui Santos</td>
-                            <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
-                                    data-bs-target="#editarModal"></td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -80,7 +68,7 @@
             </div>
 
             <div class="modal-body">
-                <form method="POST" action="/">
+                <form method="POST" action="{{ route('adicionar.docente') }}">
                     @csrf
                     <div class="container-fluid">
                         <div class="row g-3 align-items-center">
@@ -112,7 +100,7 @@
             </div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style"
+                <button type="button" id="btnConfirmar" class="mx-2 button-style"
                     style="width: 130px; height: 30px;">Confirmar</button>
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
@@ -130,7 +118,7 @@
             </div>
 
             <div class="modal-body">
-                <form method="POST" action="/">
+                <form method="POST" action="/docente/{{$docente->num_func}}">
                     @csrf
                     <div class="container-fluid">
                         <div class="row g-3 align-items-center">
@@ -138,7 +126,7 @@
                                 <label for="inputEditarNFuncionario" class="col-form-label">Nº funcionário</label>
                             </div>
                             <div class="col-sm">
-                                <input type="text" class="form-control" id="inputEditarNFuncionario" placeholder="">
+                                <input type="text" class="form-control" id="inputEditarNFuncionario" name="num_func" >
                             </div>
                         </div>
                         <div class="row mt-2 g-3 align-items-center">
@@ -146,7 +134,7 @@
                                 <label for="inputEditarNome" class="col-form-label">Nome docente</label>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" id="inputEditarNome" placeholder="">
+                                <input type="text" class="form-control" id="inputEditarNome" >
                             </div>
                         </div>
                         <div class="row mt-2 g-3 align-items-center">
@@ -154,7 +142,7 @@
                                 <label for="inputEditarAcn" class="col-form-label">ACN docente</label>
                             </div>
                             <div class="col">
-                                <input type="text" class="form-control" id="inputEditarAcn" placeholder="">
+                                <input type="text" class="form-control" id="inputEditarAcn" >
                             </div>
                         </div>
                     </div>
@@ -162,7 +150,7 @@
             </div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style"
+                <button type="button" class="mx-2 button-style" id="btnCfm"
                     style="width: 130px; height: 30px;">Confirmar</button>
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
@@ -170,4 +158,63 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('body').on('click', 'tr', function () {
+            var userURL = $(this).data('url');
+            $.get(userURL, function (data) {
+                $('#editarModal').modal('show');
+                $('#inputEditarNFuncionario').val(data.num_func);
+                $('#inputEditarNome').val(data.nome_docente);
+                $('#inputEditarAcn').val(data.acn_docente);
+
+                $(".modal-body > form").attr("action", `/docente/${data.num_func}`);
+
+            });
+        });
+    });
+    document.getElementById("btnCfm").onclick = function(){
+        console.log("click")
+    }
+</script>
+
+/*<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Adicione um identificador ao formulário para referência
+    var form = document.getElementById('formAdicionar');
+
+    // Adicione um ouvinte ao evento de clique do botão "Confirmar"
+    document.getElementById('btnConfirmar').addEventListener('click', function () {
+        // Serialize os dados do formulário
+        var formData = $(form).serialize();
+
+        // Envie uma requisição AJAX para o controlador Laravel
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('adicionar.docente') }}',
+            data: formData,
+            success: function (data) {
+                // Manipule a resposta do servidor, se necessário
+                console.log(data);
+
+                // Feche o modal, se desejar
+                $('#adicionarModal').modal('hide');
+
+                // Faça algo com a resposta do servidor, se necessário
+                // Redirecione ou atualize a página, etc.
+            },
+            error: function (error) {
+                // Manipule erros, se necessário
+                console.log(error);
+            }
+        });
+    });
+});
+
+
+</script>
+
+
 @endsection

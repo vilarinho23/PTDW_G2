@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
 use App\Http\Controllers\RestricaoController;
+use App\Http\Controllers\SubmissoesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +35,7 @@ Route::prefix('/comissao')->group(function () {
         return redirect()->route('submissoes');
     })->name('comissao');
 
-    Route::get('/submissoes', function () {
-        return view('submissoes');
-    })->name('submissoes');
+    Route::get('/submissoes', [SubmissoesController::class, 'submissoes'])->name('submissoes');
 
     Route::get('/docentes', function () {
         return view('gestorDocentes');

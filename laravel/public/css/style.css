@@ -62,3 +62,12 @@ input.impedimento-check:checked.form-check-input:checked[type="checkbox"] {
 #image_logout:hover {
     cursor: pointer;
 }
+
+#searchInput{
+    background: url(/images/search-interface-symbol.svg) no-repeat right center;
+    background-position: calc(100% - 10px) center;
+}
+
+#searchInput:not(:placeholder-shown) {
+    background-size: 0 20px;
+}

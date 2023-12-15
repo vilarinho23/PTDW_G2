@@ -11,11 +11,11 @@
     <div class="d-flex justify-content-center mt-5 gap-5 p-4 text-center w-75 mx-auto" >
         <div class="border rounded d-flex flex-column gap-2 px-4 py-2 " style=" background-color:#D9D9D9">
             <p class="m-0"><strong>Formulários Submetidos</strong></p>
-            <p class="m-0">numero</p>
+            <p class="m-0">{{ $nrSubmissoes }}</p>
         </div>
         <div class="border rounded d-flex flex-column gap-2 px-4 py-2 " style=" background-color:#D9D9D9">
             <p class="m-0"><strong>Formulários Pendentes</strong></p>
-            <p class="m-0">numero</p>
+            <p class="m-0">{{ $nrPorSubmeter }}</p>
         </div>
         <div class="d-flex flex-column align-items-center gap-3 ps-5">
             <div class="h-50">
@@ -29,73 +29,46 @@
         </div>
     </div>
 
-    <div class="w-75 mx-auto">
+    <div class="w-75 mx-auto" id="tableContainer">
         <div class="d-flex justify-content-between gap-2 mt-3">
-            <div class="d-flex align-items-center gap-2">
-                <div class="input-group rounded">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
+            <div class="d-flex gap-4">
+                <div class="input-group w-50">
+                    <input type="search" class="form-control rounded" placeholder="Número" aria-label="Search" id="searchInput">
                 </div>
-                <div>
-                    <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
+                <div class="d-flex align-items-center w-50">
+                    <label for="sortDropdown" class="me-2">Ordem:</label>
+                    <select class="form-select" id="sortDropdown">
+                        <option value="desc">Mais Recente</option>
+                        <option value="asc">Mais Antigo</option>
+                    </select>
                 </div>
             </div>
-
-            <div class="d-flex align-items-center me-5">
-                <p class="m-0"> <strong>Data de Conclusão:</strong> 22/22/2222</p>
+    
+            <div class="d-flex align-items-center me-2">
+                @if ($dataConclusao)
+                    <p class="m-0"><strong>Data de Conclusão:</strong> {{ $dataConclusao }}</p>
+                @else
+                    <p class="m-0"><strong>Data de Conclusão:</strong> Sem Data Definida</p>
+                @endif
             </div>
         </div>
-
-        <table class="table table-striped mt-5">
-
+    
+        <table class="table table-striped mt-2">
+            <thead>
+                <tr>
+                    <th class="text-center">Nº</th>
+                    <th class="text-start">Nome Docente</th>
+                    <th class="text-center">Data</th>
+                </tr>
+            </thead>
             <tbody>
-                <tr>
-                    <td class="w-50">999999 - NOME DOCENTE</td>
-                    <td class="w-50">19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>23-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>23-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
+                @foreach(collect($submissoes)->sortBy('data_submissao', SORT_REGULAR, false) as $item)
+                    <tr>
+                        <td class="col-3">{{ $item['num_func'] }}</td>
+                        <td class="text-start">{{ $item['nome_docente'] }}</td>
+                        <td class="aligned-td">{{ \Carbon\Carbon::parse($item['data_submissao'])->format('d-m-Y') }}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -120,4 +93,78 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchInput = document.getElementById('searchInput');
+        var tableRows = document.querySelectorAll('.table tbody tr');
+        var sortDropdown = document.getElementById('sortDropdown');
+
+        function sortTableByDate(order) {
+            var tbody = document.querySelector('.table tbody');
+            var rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.sort(function(a, b) {
+                var dateA = parseDate(a.querySelector('td:last-child').textContent);
+                var dateB = parseDate(b.querySelector('td:last-child').textContent);
+
+                if (order === 'asc') {
+                    return dateA - dateB;
+                } else {
+                    return dateB - dateA;
+                }
+            });
+            rows.forEach(function(row) {
+                tbody.appendChild(row);
+            });
+        }
+
+        function parseDate(dateString) {
+            var parts = dateString.split('-');
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+
+        function renderTable() {
+            var searchText = searchInput.value.toLowerCase();
+            var matchingRows = 0;
+
+            tableRows.forEach(function(row) {
+                var numFunc = row.querySelector('td:first-child').textContent.toLowerCase();
+
+                if (numFunc.includes(searchText)) {
+                    row.style.display = 'table-row';
+                    matchingRows++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            var noResultsMessage = document.getElementById('noResultsMessage');
+            if (matchingRows === 0) {
+                if (!noResultsMessage) {
+                    noResultsMessage = document.createElement('p');
+                    noResultsMessage.id = 'noResultsMessage';
+                    noResultsMessage.classList.add('text-center', 'mt-5');
+                    noResultsMessage.textContent = 'Sem resultados.';
+                    document.getElementById('tableContainer').appendChild(noResultsMessage);
+                }
+
+                noResultsMessage.style.display = 'block';
+            } else {
+                if (noResultsMessage) {
+                    noResultsMessage.style.display = 'none';
+                }
+            }
+        }
+
+        searchInput.addEventListener('input', function() {
+            renderTable();
+        });
+        sortDropdown.addEventListener('change', function() {
+            var selectedValue = sortDropdown.value;
+            sortTableByDate(selectedValue);
+        });
+        sortTableByDate('desc');
+    });
+</script>
 @endsection

@@ -81,15 +81,19 @@
             <div class="modal-header border-0">
                 <h5 class="modal-title mx-auto" id="modalTerminarLabel">Definir Data de Término</h5>
             </div>
-            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker gap-3">
-                <label for="escolher-data" class="d-flex justify-content-center align-items-center mb-3 ml-2">Data:
-                    <input id="escolher-data" type="date" name="escolher-data" class="ms-3">
-                </label>
-            </div>
-            <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
-            </div>
+            <form id="updateForm">
+                @csrf
+                <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker gap-3">
+                    <label for="escolher-data" class="d-flex justify-content-center align-items-center mb-3 ml-2">
+                        Data:
+                        <input id="escolher-data" type="date" name="escolher-data" class="ms-3">
+                    </label>
+                </div>
+                <div class="modal-footer d-flex justify-content-center border-0">
+                    <button type="button" onclick="updateData()" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
+                    <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -166,5 +170,37 @@
         });
         sortTableByDate('desc');
     });
+
+    function updateData() {
+        var chosenDateStr = document.getElementById("escolher-data").value;
+        var chosenDate = new Date(chosenDateStr);
+        var currentDate = new Date();
+
+        if (chosenDate > currentDate) {
+            var formattedChosenDate = `${chosenDate.getDate()}/${chosenDate.getMonth() + 1}/${chosenDate.getFullYear()}`;
+
+            fetch('{{ route ('submeter.data')}}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({
+                    chosenDate: formattedChosenDate,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            var modal = new bootstrap.Modal(document.getElementById('modalTerminar'));
+            modal.hide();
+        } else {
+            console.log('Chosen date must be in the future');
+        }
+    }
 </script>
 @endsection

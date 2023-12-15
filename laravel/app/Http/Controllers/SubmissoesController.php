@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Docente;
 use App\Models\KeyValue;
+use DateTime;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -37,5 +39,13 @@ class SubmissoesController extends Controller
         ];
 
         return view('submissoes', $data);
+    }
+
+    public function submeterData(Request $request)
+    {
+        $data = $request->json()->all();
+
+        KeyValue::set('data_conclusao', $data['chosenDate']);
+        return response()->json(['status' => 'success'], 200);
     }
 }

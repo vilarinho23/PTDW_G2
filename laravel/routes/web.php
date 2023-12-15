@@ -36,6 +36,7 @@ Route::prefix('/comissao')->group(function () {
     })->name('comissao');
 
     Route::get('/submissoes', [SubmissoesController::class, 'submissoes'])->name('submissoes');
+    Route::post('/submissoes', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
 
     Route::get('/docentes', function () {
         return view('gestorDocentes');

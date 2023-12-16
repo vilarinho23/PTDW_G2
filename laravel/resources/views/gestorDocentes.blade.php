@@ -7,13 +7,12 @@
 @endsection
 
 @section('content')
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <div class="container">
     <div class="border-atribuicao mx-auto">
         <div class="d-flex justify-content-between">
             <div class="d-flex align-items-center gap-2">
                 <div class="input-group rounded">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
+                    <input id="inputPesquisar" type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
                 </div>
                 <div>
                     <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
@@ -40,7 +39,7 @@
                     <tbody>
                         @foreach ($docentes as $docente)
                         <tr data-id={{$docente->num_func}} data-url={{ route("docente.show",$docente->num_func) }}>
-                            <th scope="row">{{ $docente->num_func }}</th>
+                            <td scope="row">{{ $docente->num_func }}</td>
                             <td>{{ $docente->nome_docente }}</td>
                             <td>{{ $docente->acn_docente }}</td>
                             <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
@@ -118,7 +117,7 @@
             </div>
 
             <div class="modal-body">
-                <form method="POST" action="/docente/{{$docente->num_func}}">
+                <form method="PUT" action="/docente/{{$docente->num_func}}">
                     @csrf
                     <div class="container-fluid">
                         <div class="row g-3 align-items-center">
@@ -175,45 +174,80 @@
             });
         });
     });
-    document.getElementById("btnCfm").onclick = function(){
-        console.log("click")
-    }
-</script>
+    document.getElementById("btnCfm").onclick = function() {
 
-/*<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // Adicione um identificador ao formulário para referência
-    var form = document.getElementById('formAdicionar');
+        const id = document.getElementById('inputEditarNFuncionario').value;
 
-    // Adicione um ouvinte ao evento de clique do botão "Confirmar"
-    document.getElementById('btnConfirmar').addEventListener('click', function () {
-        // Serialize os dados do formulário
-        var formData = $(form).serialize();
+        const data = {
+            num_func: id,
+            nome_docente: document.getElementById('inputEditarNome').value,
+            acn_docente: document.getElementById('inputEditarAcn').value
+        };
+        console.log(data);
 
-        // Envie uma requisição AJAX para o controlador Laravel
-        $.ajax({
-            type: 'POST',
-            url: '{{ route('adicionar.docente') }}',
-            data: formData,
-            success: function (data) {
-                // Manipule a resposta do servidor, se necessário
-                console.log(data);
-
-                // Feche o modal, se desejar
-                $('#adicionarModal').modal('hide');
-
-                // Faça algo com a resposta do servidor, se necessário
-                // Redirecione ou atualize a página, etc.
+        fetch('/comissao/docente/' + id, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            error: function (error) {
-                // Manipule erros, se necessário
-                console.log(error);
-            }
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+                console.log('Dados enviados com sucesso:', data);
+                $('#editarModal').modal('hide');
+        })
+        .catch(error => {
+            console.error('Erro ao enviar dados:', error);
+        });
+        
+    }
+
+    document.getElementById('btnConfirmar').addEventListener('click', function () {
+        
+        const data = {
+            num_func: document.getElementById('inputAdicionarNFuncionario').value,
+            nome_docente: document.getElementById('inputAdicionarNome').value,
+            acn_docente: document.getElementById('inputAdicionarAcn').value
+        };
+        console.log(data);
+
+        fetch('{{ route('adicionar.docente') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => console.log(response))
+        .then(data => {
+            console.log('Dados enviados com sucesso:', data);
+            $('#adicionarModal').modal('hide');
+        })
+        .catch(error => {
+            console.error('Erro ao enviar dados:', error);
         });
     });
-});
 
+    $(document).ready(function () {
+        $('#inputPesquisar').on('keyup', function () {
+            var searchText = $(this).val().toLowerCase();
 
+            $('tbody tr').each(function () {
+                var numFunc = $(this).data('id').toString().toLowerCase();
+                var nomeDocente = $(this).find('td:eq(1)').text().toLowerCase();
+                var acnDocente = $(this).find('td:eq(2)').text().toLowerCase();
+
+                if (numFunc.includes(searchText) || nomeDocente.includes(searchText) || acnDocente.includes(searchText)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
 </script>
 
 

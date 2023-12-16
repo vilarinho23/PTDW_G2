@@ -4,57 +4,66 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Docente;
+use Illuminate\Support\Facades\Log;
+
 
 class GestorDocenteController extends Controller
 {
-    public function listarDocentes(){
-        $docentes = Docente::all();
+    public function listarDocentes()
+    {
+        $docentes = Docente::orderBy('num_func', 'asc')->get();
+        
         return view('gestorDocentes', compact('docentes'));
     }
 
-    public function pesquisarDocente($id){
-        $docente = Docente::find($id); 
-        return response()->json($docente); 
+    public function pesquisarDocente($id)
+    {
+        $docente = Docente::find($id);
+        return response()->json($docente);
     }
 
     public function adicionarDocente(Request $request)
     {
-        // Valide os dados do formulário conforme necessário
-        $request->validate([
-            'inputAdicionarNFuncionario' => 'required',
-            'inputAdicionarNome' => 'required',
-            'inputAdicionarAcn' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'num_func' => 'required',
+                'nome_docente' => 'required',
+                'acn_docente' => 'required',
+            ]);
 
-        $novoDocente = Docente::create([
-            'num_func' => $request->input('inputAdicionarNFuncionario'),
-            'nome_docente' => $request->input('inputAdicionarNome'),
-            'acn_docente' => $request->input('inputAdicionarAcn'),
-        ]);
+            Log::info($request);
 
-        // Faça algo com o novo docente, se necessário
+            $novoDocente = new Docente([
+                'num_func' => $request->input('num_func'),
+                'nome_docente' => $request->input('nome_docente'),
+                'acn_docente' => $request->input('acn_docente'),
 
-        return redirect()->route('adicionar.docente')->with('success', 'Docente adicionado com sucesso!');
+            ]);
+
+
+            $novoDocente->save();
+            Log::info('Response Data: ' . json_encode(['message' => 'Docente adicionado com sucesso']));
+
+            return response()->json(['message' => 'Docente adicionado com sucesso'], 201);
+        } catch (\Exception $e) {
+            Log::error('Exception: ' . $e->getMessage());
+        }
     }
+
 
     public function editarDocente(Request $request, $id)
     {
-        $request->validate([
-            'inputEditarNFuncionario' => 'required',
-            'inputEditarNome' => 'required',
-            'inputEditarAcn' => 'required',
-        ]);
-
-        $docente = Docente::find($id);
+        $docente = Docente::findOrFail($id);
 
         $docente->update([
-            'num_func' => $request->input('inputEditarNFuncionario'),
-            'nome_docente' => $request->input('inputEditarNome'),
-            'acn_docente' => $request->input('inputEditarAcn'),
+            'num_func' => $request->input('num_func'),
+            'nome_docente' => $request->input('nome_docente'),
+            'acn_docente' => $request->input('acn_docente'),
+            
         ]);
 
-
-        return redirect()->route('editar.docente')->with('success', 'Docente editado com sucesso!');
+        Log::info($request);
+        Log::info('Response Data: ' . json_encode(['message' => 'Docente atualizado com sucesso']));
+        return response()->json(['message' => 'Docente atualizado com sucesso']);
     }
 }
-

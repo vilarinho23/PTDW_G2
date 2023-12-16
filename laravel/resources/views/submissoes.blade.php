@@ -44,7 +44,7 @@
                 </div>
             </div>
     
-            <div class="d-flex align-items-center me-2">
+            <div class="d-flex align-items-center me-2" id="dataContainer">
                 @if ($dataConclusao)
                     <p class="m-0"><strong>Data de Conclusão:</strong> {{ $dataConclusao }}</p>
                 @else
@@ -161,6 +161,17 @@
             }
         }
 
+        function initializeModal() {
+            $('#modalTerminar').on('hidden.bs.modal', function () {
+                var modalMessage = document.getElementById('modalMessageDiv');
+                var modalDateInput = document.getElementById("escolher-data");
+                modalDateInput.value = "";
+                if (modalMessage) {
+                    modalMessage.remove();
+                }
+            });
+        }
+
         searchInput.addEventListener('input', function() {
             renderTable();
         });
@@ -168,6 +179,7 @@
             var selectedValue = sortDropdown.value;
             sortTableByDate(selectedValue);
         });
+        initializeModal();
         sortTableByDate('desc');
     });
 
@@ -175,6 +187,11 @@
         var chosenDateStr = document.getElementById("escolher-data").value;
         var chosenDate = new Date(chosenDateStr);
         var currentDate = new Date();
+
+        var modalMessageDiv = document.getElementById("modalMessage");
+        if (modalMessageDiv) {
+            modalMessageDiv.remove();
+        }
 
         if (chosenDate > currentDate) {
             var formattedChosenDate = `${chosenDate.getDate()}/${chosenDate.getMonth() + 1}/${chosenDate.getFullYear()}`;
@@ -191,16 +208,44 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Server response:', data);
+                var modalMessageDiv = document.getElementById("modalMessageDiv");
+                if (!modalMessageDiv) {
+                    var modalMessageDiv = document.createElement('div');
+                    modalMessageDiv.id = "modalMessageDiv";
+                    modalMessageDiv.classList.add('text-center', 'text-success');
+                    modalMessageDiv.innerText = 'Data atualizada com sucesso!';
+                    var modalContent = document.getElementById("date-picker-example");
+                    modalContent.appendChild(modalMessageDiv);
+                }else{
+                    modalMessageDiv.classList.remove('text-danger');
+                    modalMessageDiv.classList.add('text-success');
+                    modalMessageDiv.innerText = 'Data atualizada com sucesso!';
+                }
+
+                setTimeout(function () {
+                    $('#modalTerminar').modal('hide');
+                }, 3000);
+
+                var dataConclusaoElement = document.getElementById('dataContainer');
+                if (dataConclusaoElement) {
+                    dataConclusaoElement.innerHTML = '<p class="m-0"><strong>Data de Conclusão:</strong> ' + data.newDate + '</p>';
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
             });
-            var modal = new bootstrap.Modal(document.getElementById('modalTerminar'));
-            modal.hide();
         } else {
-            console.log('Chosen date must be in the future');
+            var modalMessageDiv = document.getElementById("modalMessageDiv");
+            if (!modalMessageDiv) {
+                var modalMessageDiv = document.createElement('div');
+                modalMessageDiv.id = "modalMessageDiv";
+                modalMessageDiv.classList.add('text-center', 'text-danger');
+                modalMessageDiv.innerText = 'A data deve ser futura!';
+                var modalContent = document.getElementById("date-picker-example");
+                modalContent.appendChild(modalMessageDiv);
+            }
         }
     }
+
 </script>
 @endsection

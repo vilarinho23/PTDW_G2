@@ -46,6 +46,6 @@ class SubmissoesController extends Controller
         $data = $request->json()->all();
 
         KeyValue::set('data_conclusao', $data['chosenDate']);
-        return response()->json(['status' => 'success'], 200);
+        return response()->json(['status' => 'success', 'newDate' => $data['chosenDate']], 200);
     }
 }

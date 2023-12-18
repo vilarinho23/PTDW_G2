@@ -22,6 +22,8 @@ class DocenteFactory extends Factory
             'acn_docente' => $this->faker->word(),
             'data_submissao' => $this->faker->dateTime(),
             'observacoes' => $this->faker->text(),
+            'email_docente' => $this->faker->unique()->safeEmail(),
+            'telef_docente' => $this->faker->numerify('#########'),
         ];
     }
 }

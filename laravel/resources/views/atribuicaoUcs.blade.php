@@ -39,46 +39,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Paulo Rui Santos</td>
-                            <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td>999999</td>
-                            <td>Tecnologias Informáticas</td>
-                            <td>Pedro Santos Rodrigues</td>
-                            <td>Matemática Complementar</td>
-                            <td>Tecnologias da informação</td>
-                            <td>25</td>
-                            <td>23</td>
-                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal" data-bs-target="#editarModal"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Paulo Rui Santos</td>
-                            <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td>999999</td>
-                            <td>Tecnologias Informáticas</td>
-                            <td>Pedro Santos Rodrigues</td>
-                            <td>Matemática Complementar</td>
-                            <td>Tecnologias da informação</td>
-                            <td>25</td>
-                            <td>23</td>
-                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Paulo Rui Santos</td>
-                            <td>Tecnologias Aplicadas ao Trabalho</td>
-                            <td>999999</td>
-                            <td>Tecnologias Informáticas</td>
-                            <td>Pedro Santos Rodrigues</td>
-                            <td>Matemática Complementar</td>
-                            <td>Tecnologias da informação</td>
-                            <td>25</td>
-                            <td>23</td>
-                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
-                        </tr>
-                    </tbody>
+    @foreach ($dados as $item)
+        <tr>
+            <th scope="row">{{ $loop->index + 1 }}</th>
+            <td>{{ $item->docente->nome_docente }}</td>
+            <td>{{ $item->docente->acn_docente }}</td>
+            <td>{{ $item->cod_uc }}</td>
+            <td>{{ $item->unidadeCurricular->acn_uc }}</td>
+            <!--<td>{{ $item->unidadeCurricular->docente->nome_docente }}</td>-->
+            <td>{{ $item->unidadeCurricular->nome_uc }}</td>
+            <!--<td>{{ $item->unidadeCurricular->curso->nome_curso }}</td>-->
+            <td>{{ $item->unidadeCurricular->horas_uc }}</td>
+            <td>{{ $item->perc_horas }}</td>
+            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal" data-bs-target="#editarModal"></td>
+        </tr>
+    @endforeach
+</tbody>
                 </table>
             </div>
         </div>

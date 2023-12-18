@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
 use App\Http\Controllers\RestricaoController;
+use App\Http\Controllers\DocenteUcController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,9 +47,11 @@ Route::prefix('/comissao')->group(function () {
         return view('gestorUcs');
     })->name('gestorUcs');
 
-    Route::get('/atribuicaoucs', function () {
+    Route::get('/atribuicaoucs', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');;
+
+    /*Route::get('/atribuicaoucs', function () {
         return view('atribuicaoUcs');
-    })->name('atribuicaoUcs');
+    })->name('atribuicaoUcs');*/
 });
 
 Route::prefix('/testar')->group(function () {

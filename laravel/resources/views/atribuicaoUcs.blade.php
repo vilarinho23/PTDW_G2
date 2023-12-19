@@ -32,29 +32,27 @@
                             <th>ACN UC</th>
                             <th>Doc. Responsável</th>
                             <th>Nome UC</th>
-                            <th>Curso</th>
                             <th>Horas</th>
                             <th>%</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-    @foreach ($dados as $item)
-        <tr>
-            <th scope="row">{{ $loop->index + 1 }}</th>
-            <td>{{ $item->docente->nome_docente }}</td>
-            <td>{{ $item->docente->acn_docente }}</td>
-            <td>{{ $item->cod_uc }}</td>
-            <td>{{ $item->unidadeCurricular->acn_uc }}</td>
-            <!--<td>{{ $item->unidadeCurricular->docente->nome_docente }}</td>-->
-            <td>{{ $item->unidadeCurricular->nome_uc }}</td>
-            <!--<td>{{ $item->unidadeCurricular->curso->nome_curso }}</td>-->
-            <td>{{ $item->unidadeCurricular->horas_uc }}</td>
-            <td>{{ $item->perc_horas }}</td>
-            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal" data-bs-target="#editarModal"></td>
-        </tr>
-    @endforeach
-</tbody>
+                        @foreach ($dados as $item)
+                            <tr>
+                                <th scope="row">{{ $loop->index + 1 }}</th>
+                                <td>{{ $item->docente->nome_docente }}</td>
+                                <td>{{ $item->docente->acn_docente }}</td>
+                                <td>{{ $item->cod_uc }}</td>
+                                <td>{{ $item->unidadeCurricular->acn_uc }}</td>
+                                <td>{{ $item->unidadeCurricular->nomeResponsavel() }}</td>
+                                <td>{{ $item->unidadeCurricular->nome_uc }}</td>
+                                <td>{{ $item->unidadeCurricular->horas_uc }}</td>
+                                <td>{{ $item->perc_horas }}</td>
+                                <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal" data-bs-target="#editarModal"></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>

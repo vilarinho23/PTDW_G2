@@ -5,8 +5,9 @@ namespace App\Exports\Sheets;
 use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class RestricoesPorDocenteSheet implements FromArray, WithTitle
+class RestricoesPorDocenteSheet implements FromArray, WithTitle, WithHeadings
 {
     private $docentes;
     public function __construct(Collection $docentes)
@@ -14,20 +15,34 @@ class RestricoesPorDocenteSheet implements FromArray, WithTitle
         $this->docentes = $docentes;
     }
 
+    /**
+     * Title: https://docs.laravel-excel.com/3.1/exports/multiple-sheets.html#sheet-classes
+     * @return string
+     */
     public function title(): string
     {
         return 'porDocente';
     }
 
 
-    public function array(): array
+    /**
+     * Headings: https://docs.laravel-excel.com/3.1/exports/mapping.html#adding-a-heading-row
+     * @return array
+     */
+    public function headings(): array
     {
         // n.º Func | nome docente | cód   | ACN | R | nome UC         | curso | lab | restrições    | software | email         | telefone  | h | % | subT
         // 7892     | Exemplo nome | 11000 | I   | X | Exemplo nome UC | TI    | x   | Apenas manhãs | Software | exemplo@ua.pt | 555555555 | 4 | 1 | 4
-        $atrib = [
-            // Header row
-            ['n.º Func', 'nome docente', 'cód', 'ACN', 'R', 'nome UC', 'curso', 'lab', 'restrições', 'software', 'email', 'telefone', 'h', '%', 'subT']
-        ];
+        return ['n.º Func', 'nome docente', 'cód', 'ACN', 'R', 'nome UC', 'curso', 'lab', 'restrições', 'software', 'email', 'telefone', 'h', '%', 'subT'];
+    }
+
+    /**
+     * Array: https://docs.laravel-excel.com/3.1/exports/collection.html#using-arrays
+     * @return array
+     */
+    public function array(): array
+    {
+        $content = [];
 
         // For each docente
         foreach ($this->docentes as $docente)
@@ -70,7 +85,7 @@ class RestricoesPorDocenteSheet implements FromArray, WithTitle
 
 
                 // Add to array (export data)
-                $atrib[] = [
+                $content[] = [
                     $numFunc, $nomeDocente,
                     $codUC, $acnUC,
                     $resp, $nomeUC,
@@ -83,6 +98,6 @@ class RestricoesPorDocenteSheet implements FromArray, WithTitle
             }
         }
 
-        return $atrib;
+        return $content;
     }
 }

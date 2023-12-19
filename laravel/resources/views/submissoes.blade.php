@@ -8,22 +8,22 @@
 
 @section('content')
 <div class="container-sm">
-    <div class="d-flex justify-content-center mt-5 gap-5 p-4 text-center w-75 mx-auto" >
-        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 " style=" background-color:#D9D9D9">
+    <div class="d-flex pt-5 pb-3 text-center w-75 mx-auto" >
+        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2" style=" background-color:#D9D9D9">
             <p class="m-0"><strong>Formulários Submetidos</strong></p>
-            <p class="m-0">{{ $nrSubmissoes }}</p>
+            <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
         </div>
-        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 " style=" background-color:#D9D9D9">
+        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-5" style=" background-color:#D9D9D9">
             <p class="m-0"><strong>Formulários Pendentes</strong></p>
-            <p class="m-0">{{ $nrPorSubmeter }}</p>
+            <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
         </div>
-        <div class="d-flex flex-column align-items-center gap-3 ps-5">
+        <div class="d-flex flex-column align-items-center gap-3 me-2 ms-auto">
             <div class="h-50">
                 <button type="button" class="button-style" style="width: 200px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Término</button>
 
             </div>
             <div class="h-50">
-                <button type="button" class="button-style" style="width: 200px;height: 40px">Transferir Subsmissões</button>
+                <button type="button" class="button-style" style="width: 200px;height: 40px">Transferir Submissões</button>
 
             </div>
         </div>
@@ -52,25 +52,28 @@
                 @endif
             </div>
         </div>
-    
-        <table class="table table-striped mt-2">
-            <thead>
-                <tr>
-                    <th class="text-center">Nº</th>
-                    <th class="text-start">Nome Docente</th>
-                    <th class="text-center">Data</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(collect($submissoes)->sortBy('data_submissao', SORT_REGULAR, false) as $item)
+        <div class="tableFixHead mt-2">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td class="col-3">{{ $item['num_func'] }}</td>
-                        <td class="text-start">{{ $item['nome_docente'] }}</td>
-                        <td class="aligned-td">{{ \Carbon\Carbon::parse($item['data_submissao'])->format('d-m-Y') }}</td>
+                        <th class="text-center col-3">Nº</th>
+                        <th class="text-start">Nome Docente</th>
+                        <th class="text-center aligned-td">Data</th>
+                        <th class="text-center"></th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach(collect($submissoes)->sortBy('data_submissao', SORT_REGULAR, false) as $item)
+                        <tr class="hover listrow">
+                            <td class="col-3">{{ $item['num_func'] }}</td>
+                            <td class="text-start">{{ $item['nome_docente'] }}</td>
+                            <td class="aligned-td">{{ \Carbon\Carbon::parse($item['data_submissao'])->format('d-m-Y') }}</td>
+                            <td><img src="{{ asset('images/arrow.svg') }}" alt="Ver Mais"></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
@@ -99,18 +102,27 @@
 </div>
 
 <script>
+    var lista = [];
     document.addEventListener('DOMContentLoaded', function() {
         var searchInput = document.getElementById('searchInput');
         var tableRows = document.querySelectorAll('.table tbody tr');
         var sortDropdown = document.getElementById('sortDropdown');
+
+        function getlistNumbers(){
+            var docentes = @json($submissoes);
+            for (var docente in docentes) {
+                lista.push(docentes[docente]["num_func"]);
+            }
+            console.log(lista);
+        }
 
         function sortTableByDate(order) {
             var tbody = document.querySelector('.table tbody');
             var rows = Array.from(tbody.querySelectorAll('tr'));
 
             rows.sort(function(a, b) {
-                var dateA = parseDate(a.querySelector('td:last-child').textContent);
-                var dateB = parseDate(b.querySelector('td:last-child').textContent);
+                var dateA = parseDate(a.querySelector('td:nth-last-child(2)').textContent);
+                var dateB = parseDate(b.querySelector('td:nth-last-child(2)').textContent);
 
                 if (order === 'asc') {
                     return dateA - dateB;
@@ -179,6 +191,8 @@
             var selectedValue = sortDropdown.value;
             sortTableByDate(selectedValue);
         });
+
+        getlistNumbers();
         initializeModal();
         sortTableByDate('desc');
     });

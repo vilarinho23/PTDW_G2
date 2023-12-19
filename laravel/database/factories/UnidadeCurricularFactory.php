@@ -26,9 +26,9 @@ class UnidadeCurricularFactory extends Factory
             'acn_uc' => $this->faker->word(),
             'semestre_uc' => $this->faker->numberBetween(1, 2),
             'num_func_resp' => Docente::factory(),
-            'sala_avaliacoes' => $this->faker->randomElement(SalaAvaliacoes::cases()),
-            'utilizacao_laboratorios' => $this->faker->randomElement(UtilizacaoLaboratorios::cases()),
-            'software_necessario' => $this->faker->text(100)
+            'sala_avaliacoes' => $this->faker->optional()->randomElement(SalaAvaliacoes::cases()),
+            'utilizacao_laboratorios' => $this->faker->optional()->randomElement(UtilizacaoLaboratorios::cases()),
+            'software_necessario' => $this->faker->optional()->text(100)
         ];
     }
 }

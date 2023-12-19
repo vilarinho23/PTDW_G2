@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RestricoesExport;
 use App\Imports\DSDImport;
 use App\Models\Curso;
 use App\Models\Docente;
@@ -66,5 +67,19 @@ class TesteController extends Controller
             'message' => "Importação do ficheiro $filename concluída",
             'errors' => $import->getErrors()
         ]);
+    }
+
+    public function testarExport()
+    {
+        $filename = 'Output_restricoes.xlsx';
+
+        $export = new RestricoesExport;
+        $download = Excel::download($export, $filename);
+
+        // Set last export downloader and timestamp
+        KeyValue::set('last_export:dowloader', 'TesteController@testarExport');
+        KeyValue::set('last_export:timestamp', Carbon::now()->format('d/m/Y H:i:s'));
+
+        return $download;
     }
 }

@@ -39,7 +39,7 @@
                     <tbody>
                         @foreach ($docentes as $docente)
                         <tr data-id={{$docente->num_func}} data-url={{ route("docente.show",$docente->num_func) }}>
-                            <td scope="row">{{ $docente->num_func }}</td>
+                            <td class="fw-bold" scope="row">{{ $docente->num_func }}</td>
                             <td>{{ $docente->nome_docente }}</td>
                             <td>{{ $docente->acn_docente }}</td>
                             <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>

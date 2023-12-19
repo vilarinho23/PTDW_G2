@@ -47,6 +47,7 @@ class GestorDocenteController extends Controller
             return response()->json(['message' => 'Docente adicionado com sucesso'], 201);
         } catch (\Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 

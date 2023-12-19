@@ -53,6 +53,8 @@ Route::prefix('/comissao')->group(function () {
 
 Route::prefix('/testar')->group(function () {
     Route::get('/models', [TesteController::class, 'testarModels']);
+
     Route::get('/import', [TesteController::class, 'testarImport']);
     Route::get('/export', [TesteController::class, 'testarExport']);
+    Route::get('/export/{docente}', [TesteController::class, 'testarExportDocente']);
 });

@@ -82,4 +82,20 @@ class TesteController extends Controller
 
         return $download;
     }
+
+    public function testarExportDocente(Docente $docente)
+    {
+        $docente->load('restricoes', 'respUnidadesCurriculares', 'unidadesCurriculares');
+        $filename = "Output_restricoes_docente{$docente->num_func}.xlsx";
+
+        $collection = collect([$docente]);
+        $export = new RestricoesExport($collection);
+        $download = Excel::download($export, $filename);
+
+        // Set last export downloader and timestamp
+        KeyValue::set('last_export:dowloader', "TesteController@testarExportDocente{$docente->num_func}");
+        KeyValue::set('last_export:timestamp', Carbon::now()->format('d/m/Y H:i:s'));
+
+        return $download;
+    }
 }

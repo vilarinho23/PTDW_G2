@@ -8,96 +8,72 @@
 
 @section('content')
 <div class="container-sm">
-    <div class="d-flex justify-content-center mt-5 gap-5 p-4 text-center w-75 mx-auto" >
-        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 " style=" background-color:#D9D9D9">
+    <div class="d-flex pt-5 pb-3 text-center w-75 mx-auto" >
+        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2" style=" background-color:#D9D9D9">
             <p class="m-0"><strong>Formulários Submetidos</strong></p>
-            <p class="m-0">numero</p>
+            <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
         </div>
-        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 " style=" background-color:#D9D9D9">
+        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-5" style=" background-color:#D9D9D9">
             <p class="m-0"><strong>Formulários Pendentes</strong></p>
-            <p class="m-0">numero</p>
+            <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
         </div>
-        <div class="d-flex flex-column align-items-center gap-3 ps-5">
+        <div class="d-flex flex-column align-items-center gap-3 me-2 ms-auto">
             <div class="h-50">
                 <button type="button" class="button-style" style="width: 200px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Término</button>
 
             </div>
             <div class="h-50">
-                <button type="button" class="button-style" style="width: 200px;height: 40px">Transferir Subsmissões</button>
+                <button type="button" class="button-style" style="width: 200px;height: 40px">Transferir Submissões</button>
 
             </div>
         </div>
     </div>
 
-    <div class="w-75 mx-auto">
+    <div class="w-75 mx-auto" id="tableContainer">
         <div class="d-flex justify-content-between gap-2 mt-3">
-            <div class="d-flex align-items-center gap-2">
-                <div class="input-group rounded">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
+            <div class="d-flex gap-4">
+                <div class="input-group w-50">
+                    <input type="search" class="form-control rounded" placeholder="Número" aria-label="Search" id="searchInput">
                 </div>
-                <div>
-                    <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
+                <div class="d-flex align-items-center w-50">
+                    <label for="sortDropdown" class="me-2">Ordem:</label>
+                    <select class="form-select" id="sortDropdown">
+                        <option value="desc">Mais Recente</option>
+                        <option value="asc">Mais Antigo</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="d-flex align-items-center me-5">
-                <p class="m-0"> <strong>Data de Conclusão:</strong> 22/22/2222</p>
+            <div class="d-flex align-items-center me-2" id="dataContainer">
+                @if ($dataConclusao)
+                    <p class="m-0"><strong>Data de Conclusão:</strong> {{ $dataConclusao }}</p>
+                @else
+                    <p class="m-0"><strong>Data de Conclusão:</strong> Sem Data Definida</p>
+                @endif
             </div>
         </div>
-
-        <table class="table table-striped mt-5">
-
-            <tbody>
-                <tr>
-                    <td class="w-50">999999 - NOME DOCENTE</td>
-                    <td class="w-50">19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>23-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>23-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-                <tr>
-                    <td>999999 - NOME DOCENTE</td>
-                    <td>19-01-2023</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="tableFixHead mt-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center col-3">Nº</th>
+                        <th class="text-start">Nome Docente</th>
+                        <th class="text-center aligned-td">Data</th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($submissoes->sortBy('data_submissao', SORT_REGULAR, false) as $item)
+                        <tr class="hover listrow">
+                            <td class="col-3">{{ $item->num_func }}</td>
+                            <td class="text-start">{{ $item->nome_docente }}</td>
+                            <td class="aligned-td">{{ $item->data_submissao->format('d-m-Y') }}</td>
+                            <td><img src="{{ asset('images/arrow.svg') }}" alt="Ver Mais"></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
@@ -108,16 +84,182 @@
             <div class="modal-header border-0">
                 <h5 class="modal-title mx-auto" id="modalTerminarLabel">Definir Data de Término</h5>
             </div>
-            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker gap-3">
-                <label for="escolher-data" class="d-flex justify-content-center align-items-center mb-3 ml-2">Data:
-                    <input id="escolher-data" type="date" name="escolher-data" class="ms-3">
-                </label>
-            </div>
-            <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
-            </div>
+            <form id="updateForm">
+                @csrf
+                <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker gap-3">
+                    <label for="escolher-data" class="d-flex justify-content-center align-items-center mb-3 ml-2">
+                        Data:
+                        <input id="escolher-data" type="date" name="escolher-data" class="ms-3">
+                    </label>
+                </div>
+                <div class="modal-footer d-flex justify-content-center border-0">
+                    <button type="button" onclick="updateData()" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
+                    <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<script>
+    var lista = [];
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchInput = document.getElementById('searchInput');
+        var tableRows = document.querySelectorAll('.table tbody tr');
+        var sortDropdown = document.getElementById('sortDropdown');
+
+        function getlistNumbers(){
+            var docentes = @json($submissoes);
+            for (var docente in docentes) {
+                lista.push(docentes[docente]["num_func"]);
+            }
+            console.log(lista);
+        }
+
+        function sortTableByDate(order) {
+            var tbody = document.querySelector('.table tbody');
+            var rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.sort(function(a, b) {
+                var dateA = parseDate(a.querySelector('td:nth-last-child(2)').textContent);
+                var dateB = parseDate(b.querySelector('td:nth-last-child(2)').textContent);
+
+                if (order === 'asc') {
+                    return dateA - dateB;
+                } else {
+                    return dateB - dateA;
+                }
+            });
+            rows.forEach(function(row) {
+                tbody.appendChild(row);
+            });
+        }
+
+        function parseDate(dateString) {
+            var parts = dateString.split('-');
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+
+        function renderTable() {
+            var searchText = searchInput.value.toLowerCase();
+            var matchingRows = 0;
+
+            tableRows.forEach(function(row) {
+                var numFunc = row.querySelector('td:first-child').textContent.toLowerCase();
+
+                if (numFunc.includes(searchText)) {
+                    row.style.display = 'table-row';
+                    matchingRows++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            var noResultsMessage = document.getElementById('noResultsMessage');
+            if (matchingRows === 0) {
+                if (!noResultsMessage) {
+                    noResultsMessage = document.createElement('p');
+                    noResultsMessage.id = 'noResultsMessage';
+                    noResultsMessage.classList.add('text-center', 'mt-5');
+                    noResultsMessage.textContent = 'Sem resultados.';
+                    document.getElementById('tableContainer').appendChild(noResultsMessage);
+                }
+
+                noResultsMessage.style.display = 'block';
+            } else {
+                if (noResultsMessage) {
+                    noResultsMessage.style.display = 'none';
+                }
+            }
+        }
+
+        function initializeModal() {
+            $('#modalTerminar').on('hidden.bs.modal', function () {
+                var modalMessage = document.getElementById('modalMessageDiv');
+                var modalDateInput = document.getElementById("escolher-data");
+                modalDateInput.value = "";
+                if (modalMessage) {
+                    modalMessage.remove();
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', function() {
+            renderTable();
+        });
+        sortDropdown.addEventListener('change', function() {
+            var selectedValue = sortDropdown.value;
+            sortTableByDate(selectedValue);
+        });
+
+        getlistNumbers();
+        initializeModal();
+        sortTableByDate('desc');
+    });
+
+    function updateData() {
+        var chosenDateStr = document.getElementById("escolher-data").value;
+        var chosenDate = new Date(chosenDateStr);
+        var currentDate = new Date();
+
+        var modalMessageDiv = document.getElementById("modalMessage");
+        if (modalMessageDiv) {
+            modalMessageDiv.remove();
+        }
+
+        if (chosenDate > currentDate) {
+            var formattedChosenDate = `${chosenDate.getDate()}/${chosenDate.getMonth() + 1}/${chosenDate.getFullYear()}`;
+
+            fetch('{{ route ('submeter.data')}}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({
+                    chosenDate: formattedChosenDate,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                var modalMessageDiv = document.getElementById("modalMessageDiv");
+                if (!modalMessageDiv) {
+                    var modalMessageDiv = document.createElement('div');
+                    modalMessageDiv.id = "modalMessageDiv";
+                    modalMessageDiv.classList.add('text-center', 'text-success');
+                    modalMessageDiv.innerText = 'Data atualizada com sucesso!';
+                    var modalContent = document.getElementById("date-picker-example");
+                    modalContent.appendChild(modalMessageDiv);
+                }else{
+                    modalMessageDiv.classList.remove('text-danger');
+                    modalMessageDiv.classList.add('text-success');
+                    modalMessageDiv.innerText = 'Data atualizada com sucesso!';
+                }
+
+                setTimeout(function () {
+                    $('#modalTerminar').modal('hide');
+                }, 3000);
+
+                var dataConclusaoElement = document.getElementById('dataContainer');
+                if (dataConclusaoElement) {
+                    dataConclusaoElement.innerHTML = '<p class="m-0"><strong>Data de Conclusão:</strong> ' + data.newDate + '</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            var modalMessageDiv = document.getElementById("modalMessageDiv");
+            if (!modalMessageDiv) {
+                var modalMessageDiv = document.createElement('div');
+                modalMessageDiv.id = "modalMessageDiv";
+                modalMessageDiv.classList.add('text-center', 'text-danger');
+                modalMessageDiv.innerText = 'A data deve ser futura!';
+                var modalContent = document.getElementById("date-picker-example");
+                modalContent.appendChild(modalMessageDiv);
+            }
+        }
+    }
+
+</script>
 @endsection

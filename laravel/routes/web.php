@@ -47,7 +47,7 @@ Route::prefix('/comissao')->group(function () {
         return view('gestorUcs');
     })->name('gestorUcs');
 
-    Route::get('/atribuicaoucs', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');;
+    Route::get('/atribuicaoucs', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');
 
     /*Route::get('/atribuicaoucs', function () {
         return view('atribuicaoUcs');

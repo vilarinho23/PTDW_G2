@@ -10,6 +10,10 @@ class DocenteUcController extends Controller
     public function index()
     {
         $dados = DocenteUC::all();
-        return view('atribuicaoUcs', ['dados' => $dados]);
+
+        $funcionarios = DocenteUC::select('num_func')->distinct()->get();
+        $ucs = DocenteUC::select('cod_uc')->distinct()->get();
+
+        return view('atribuicaoUcs', ['dados' => $dados], compact('funcionarios', 'ucs'));
     }
 }

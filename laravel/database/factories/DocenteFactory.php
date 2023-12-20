@@ -20,10 +20,10 @@ class DocenteFactory extends Factory
             'num_func' => $this->faker->unique()->numberBetween(1, 999999),
             'nome_docente' => $this->faker->unique()->name(),
             'acn_docente' => $this->faker->word(),
-            'data_submissao' => $this->faker->dateTime(),
-            'observacoes' => $this->faker->text(),
-            'email_docente' => $this->faker->unique()->safeEmail(),
-            'telef_docente' => $this->faker->numerify('#########'),
+            'data_submissao' => $this->faker->optional()->dateTime(),
+            'observacoes' => $this->faker->optional()->text(),
+            'email_docente' => $this->faker->optional()->safeEmail(),
+            'telef_docente' => $this->faker->optional()->numerify('#########'),
         ];
     }
 }

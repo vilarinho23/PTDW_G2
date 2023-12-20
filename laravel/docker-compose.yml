@@ -22,24 +22,11 @@ services:
         networks:
             - sail
         depends_on:
-            - postgres
             - redis
             - meilisearch
             - mailpit
             - selenium
             - pgsql
-    postgres:
-        image: postgres
-        ports:
-            - '${FORWARD_DB_PORT:-5432}:5432'
-        environment:
-            POSTGRES_USER: '${DB_USERNAME}'
-            POSTGRES_PASSWORD: '${DB_PASSWORD}'
-            POSTGRES_DATA: /var/lib/postgresql/data
-        volumes:
-            - 'sail-pgsql:/var/lib/postgresql/data'
-        networks:
-            - sail
     redis:
         image: 'redis:alpine'
         ports:

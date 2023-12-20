@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
 use App\Http\Controllers\RestricaoController;
-
+use App\Http\Controllers\GestorUcController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,9 +42,12 @@ Route::prefix('/comissao')->group(function () {
         return view('gestorDocentes');
     })->name('gestorDocentes');
 
-    Route::get('/ucs', function () {
-        return view('gestorUcs');
-    })->name('gestorUcs');
+    Route::get('/ucs', [GestorUcController::class, 'getAllUnidadesCurriculares'])->name('gestorUcs');
+    Route::post('/uc', [GestorUcController::class, 'adicionarUnidadeCurricular'])->name('adicionarUnidadeCurricular');
+    //Route::get('/uc/{id}/edit', [GestorUcController::class, 'editUnidadeCurricular'])->name('editUnidadeCurricular');
+    //Route::put('/uc/{id}', [GestorUcController::class, 'updateUnidadeCurricular'])->name('updateUnidadeCurricular');
+
+
 
     Route::get('/atribuicaoucs', function () {
         return view('atribuicaoUcs');

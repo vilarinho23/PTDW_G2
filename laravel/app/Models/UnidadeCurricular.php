@@ -145,14 +145,4 @@ class UnidadeCurricular extends Model
             'num_func'
         )->withTimestamps()->withPivot('perc_horas');
     }
-
-    public function nomeResponsavel()
-    {
-        // Verifica se há um docente responsável associado
-        if ($this->responsavel) {
-            return $this->responsavel->nome_docente;
-        }
-
-        return null;
-    }
 }

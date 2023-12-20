@@ -1,4 +1,4 @@
-@extends('partials._document')
+@extends('partials._document') 
 @section('head')
 @include('partials._head', ["titulo" => "Atribuição de UC's"])
 @endsection
@@ -47,7 +47,7 @@
                             <td>{{ $item->docente->acn_docente }}</td>
                             <td>{{ $item->cod_uc }}</td>
                             <td>{{ $item->unidadeCurricular->acn_uc }}</td>
-                            <td>{{ $item->unidadeCurricular->nomeResponsavel() }}</td>
+                            <td>{{ $item->unidadeCurricular->responsavel->nome_docente }}</td>
                             <td>{{ $item->unidadeCurricular->nome_uc }}</td>
                             <td>{{ $item->unidadeCurricular->horas_uc }}</td>
                             <td>{{ $item->perc_horas }}</td>

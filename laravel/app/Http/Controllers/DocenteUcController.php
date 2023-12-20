@@ -1,9 +1,11 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DocenteUC;
+use App\Models\Docente;
+use App\Models\UnidadeCurricular;
 
 class DocenteUcController extends Controller
 {
@@ -11,8 +13,8 @@ class DocenteUcController extends Controller
     {
         $dados = DocenteUC::all();
 
-        $funcionarios = DocenteUC::select('num_func')->distinct()->get();
-        $ucs = DocenteUC::select('cod_uc')->distinct()->get();
+        $funcionarios = Docente::select('num_func')->distinct()->get();
+        $ucs = UnidadeCurricular::select('cod_uc')->distinct()->get();
 
         return view('atribuicaoUcs', ['dados' => $dados], compact('funcionarios', 'ucs'));
     }

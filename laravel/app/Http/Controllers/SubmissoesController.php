@@ -4,23 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Docente;
 use App\Models\KeyValue;
-use DateTime;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class SubmissoesController extends Controller
 {
     private function getAll(){
-        $data = Docente::all()->toArray();
+        $data = Docente::all();
         return $data;
     }
 
     private function getSubmissoes(){
         $docentes = $this->getAll();
 
-        $data = array_filter($docentes, function ($item) {
-            return isset($item['data_submissao']) && !empty($item['data_submissao']);
+        $data = $docentes->filter(function ($item) {
+            return isset($item->data_submissao) && !empty($item->data_submissao);
         });
 
         return $data;

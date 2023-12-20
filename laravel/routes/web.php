@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
 use App\Http\Controllers\RestricaoController;
+use App\Http\Controllers\SubmissoesController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestorDocenteController;
-use App\Http\Controllers\SubmissoesController;
 
 /*
 |--------------------------------------------------------------------------

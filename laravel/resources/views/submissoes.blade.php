@@ -43,7 +43,7 @@
                     </select>
                 </div>
             </div>
-    
+
             <div class="d-flex align-items-center me-2" id="dataContainer">
                 @if ($dataConclusao)
                     <p class="m-0"><strong>Data de Conclusão:</strong> {{ $dataConclusao }}</p>
@@ -63,11 +63,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(collect($submissoes)->sortBy('data_submissao', SORT_REGULAR, false) as $item)
+                    @foreach($submissoes->sortBy('data_submissao', SORT_REGULAR, false) as $item)
                         <tr class="hover listrow">
-                            <td class="col-3">{{ $item['num_func'] }}</td>
-                            <td class="text-start">{{ $item['nome_docente'] }}</td>
-                            <td class="aligned-td">{{ \Carbon\Carbon::parse($item['data_submissao'])->format('d-m-Y') }}</td>
+                            <td class="col-3">{{ $item->num_func }}</td>
+                            <td class="text-start">{{ $item->nome_docente }}</td>
+                            <td class="aligned-td">{{ $item->data_submissao->format('d-m-Y') }}</td>
                             <td><img src="{{ asset('images/arrow.svg') }}" alt="Ver Mais"></td>
                         </tr>
                     @endforeach

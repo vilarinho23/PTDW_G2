@@ -48,6 +48,8 @@ Route::prefix('/comissao')->group(function () {
     })->name('gestorUcs'); 
 
     Route::get('/atribuicaoucs', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');
+    Route::post('/atribuicaoucs', [DocenteUcController::class, 'store'])->name('atribuicaoUcs.store');
+
 
     /*Route::get('/atribuicaoucs', function () {
         return view('atribuicaoUcs');

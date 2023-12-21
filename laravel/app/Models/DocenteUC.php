@@ -11,6 +11,8 @@ class DocenteUC extends Model
     protected $table = 'docente_uc';
 
     protected $fillable = ['num_func', 'cod_uc', 'perc_horas'];
+    protected $primaryKey = ['num_func', 'cod_uc'];
+
 
     
     public function docente()

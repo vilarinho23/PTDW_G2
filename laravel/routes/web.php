@@ -42,8 +42,8 @@ Route::prefix('/comissao')->group(function () {
 
     Route::get('/docentes', [GestorDocenteController::class,'listarDocentes'])->name('gestorDocentes');
     Route::post('/docentes', [GestorDocenteController::class, 'adicionarDocente'])->name('adicionar.docente');
-    Route::get('/docente/{id}', [GestorDocenteController::class, 'pesquisarDocente'])->name("docente.show");
-    Route::put('/docente/{id}',[GestorDocenteController::class,'editarDocente'])->name("editar.docente");
+    Route::get('/docentes/{id}', [GestorDocenteController::class, 'pesquisarDocente'])->name("docente.show");
+    Route::put('/docentes/{id}',[GestorDocenteController::class,'editarDocente'])->name("editar.docente");
 
     Route::get('/ucs', function () {
         return view('gestorUcs');

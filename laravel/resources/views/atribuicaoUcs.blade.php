@@ -153,25 +153,6 @@
                         <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
 
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                                <div><label for="dropdownEditarNFuncionario" class="col-form-label">Nº
-                                        funcionário</label></div>
-                                <div><button class="btn btn-secondary dropdown-toggle" type="button"
-                                        id="dropdownEditarNFuncionario" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">Dropdown button</button></div>
-                            </div>
-
-                            <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                                <div><label for="dropdownEditarCodUc" class="col-form-label">Código UC</label></div>
-                                <div><button class="btn btn-secondary dropdown-toggle" type="button"
-                                        id="dropdownEditarCodUc" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">Dropdown button</button></div>
-                            </div>
-
-                        </div>
-
-                        <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
-
-                            <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                 <div><label for="inputEditarNomeDocente" class="col-form-label">Nome Docente</label>
                                 </div>
                                 <div><input type="text" class="form-control" id="inputEditarNomeDocente" placeholder="">
@@ -197,9 +178,9 @@
             </div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
-                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Alterar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Eliminar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -251,8 +232,7 @@
             </div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Carregar<span
-                        class="ficheiro_ja_carregado">Novo</span></button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"><span class="ficheiro_ja_carregado">Carregar Novo</span></button>
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
             </div>

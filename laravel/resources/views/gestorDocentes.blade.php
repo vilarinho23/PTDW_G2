@@ -39,7 +39,7 @@
                     <tbody>
                         @foreach ($docentes as $docente)
                         <tr data-id={{$docente->num_func}} data-url={{ route("docente.show",$docente->num_func) }}>
-                            <td class="fw-bold" scope="row">{{ $docente->num_func }}</td>
+                            <td class="fw-bold">{{ $docente->num_func }}</td>
                             <td>{{ $docente->nome_docente }}</td>
                             <td>{{ $docente->acn_docente }}</td>
                             <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
@@ -117,7 +117,7 @@
             </div>
 
             <div class="modal-body">
-                <form method="PUT" action="/docente/{{$docente->num_func}}">
+                <form method="POST" action="{{ route('editar.docente', $docente->num_func) }}">
                     @csrf
                     <div class="container-fluid">
                         <div class="row g-3 align-items-center">
@@ -160,6 +160,9 @@
 
 
 <script>
+    const updateDocenteUrl = "{{ route('editar.docente', ':id') }}";
+    const insertDocenteUrl = "{{ route('adicionar.docente') }}";
+
     $(document).ready(function () {
         $('body').on('click', 'tr', function () {
             var userURL = $(this).data('url');
@@ -169,8 +172,10 @@
                 $('#inputEditarNome').val(data.nome_docente);
                 $('#inputEditarAcn').val(data.acn_docente);
 
-                $(".modal-body > form").attr("action", `/docente/${data.num_func}`);
-
+                $(".modal-body > form").attr(
+                    "action",
+                    updateDocenteUrl.replace(':id', data.num_func)
+                );
             });
         });
     });
@@ -185,7 +190,8 @@
         };
         console.log(data);
 
-        fetch('/comissao/docente/' + id, {
+        const url = updateDocenteUrl.replace(':id', id);
+        fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -201,11 +207,9 @@
         .catch(error => {
             console.error('Erro ao enviar dados:', error);
         });
-        
     }
 
     document.getElementById('btnConfirmar').addEventListener('click', function () {
-        
         const data = {
             num_func: document.getElementById('inputAdicionarNFuncionario').value,
             nome_docente: document.getElementById('inputAdicionarNome').value,
@@ -213,11 +217,11 @@
         };
         console.log(data);
 
-        fetch('{{ route('adicionar.docente') }}', {
+        fetch(insertDocenteUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
             body: JSON.stringify(data)
         })

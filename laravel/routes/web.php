@@ -40,14 +40,10 @@ Route::prefix('/comissao')->group(function () {
     Route::get('/submissoes', [SubmissoesController::class, 'submissoes'])->name('submissoes');
     Route::post('/submissoes', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
 
-    Route::get('/docentes', [GestorDocenteController::class,'listarDocentes']
-    )->name('gestorDocentes');
-
+    Route::get('/docentes', [GestorDocenteController::class,'listarDocentes'])->name('gestorDocentes');
+    Route::post('/docentes', [GestorDocenteController::class, 'adicionarDocente'])->name('adicionar.docente');
     Route::get('/docente/{id}', [GestorDocenteController::class, 'pesquisarDocente'])->name("docente.show");
-
     Route::put('/docente/{id}',[GestorDocenteController::class,'editarDocente'])->name("editar.docente");
-    
-    Route::post('/adicionar-docente', [GestorDocenteController::class, 'adicionarDocente'])->name('adicionar.docente');
 
     Route::get('/ucs', function () {
         return view('gestorUcs');

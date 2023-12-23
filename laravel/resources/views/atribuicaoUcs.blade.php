@@ -55,7 +55,9 @@
                             <td>{{ $item->unidadeCurricular->horas_uc }}</td>
                             <td>{{ $item->perc_horas }}</td>
                             <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
-                                    data-bs-target="#editarModal"></td>
+                                    data-bs-target="#editarModal" data-docente="{{ $item->docente->nome_docente }}"
+                                    data-nomeuc="{{ $item->unidadeCurricular->nome_uc }}"
+                                    data-perc="{{ $item->perc_horas }}"></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -98,12 +100,11 @@
 
                             <div class="w-50">
                                 <label for="dropdownAtribuirCodUc" class="col-form-label">Código UC</label>
-                                <select onchange="mostrarValorSelecionado(this, 2)" class="form-select" 
-                                    id="dropdownAtribuirCodUc" name="dropdownAtribuirCodUc"
-                                    aria-label="Código da UC">
+                                <select onchange="mostrarValorSelecionado(this, 2)" class="form-select"
+                                    id="dropdownAtribuirCodUc" name="dropdownAtribuirCodUc" aria-label="Código da UC">
                                     @foreach($ucs as $uc)
-                                    <option data-nome-uc="{{ $uc->nome_uc }}" 
-                                        value="{{ $uc->cod_uc }}">{{ $uc->cod_uc }}</option>
+                                    <option data-nome-uc="{{ $uc->nome_uc }}" value="{{ $uc->cod_uc }}">{{ $uc->cod_uc
+                                        }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -111,30 +112,30 @@
 
                         <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                                <div><label for="inputAtribuirNomeDocente" class="col-form-label">Nome Docente:</label></div>
-                                <div><label class="form-control" id="inputAtribuirNomeDocente" style="opacity: 0.0;">xxxxx</label></div>
+                                <div><label for="inputAtribuirNomeDocente" class="col-form-label">Nome Docente:</label>
+                                </div>
+                                <div><label class="form-control" id="inputAtribuirNomeDocente"
+                                        style="opacity: 0.0;">xxxxx</label></div>
                             </div>
 
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                 <div><label for="inputAtribuirNomeUc" class="col-form-label">Nome UC:</label></div>
-                                <div><label class="form-control" id="inputAtribuirNomeUc" style="opacity: 0.0;">xxxxx</label></div>
+                                <div><label class="form-control" id="inputAtribuirNomeUc"
+                                        style="opacity: 0.0;">xxxxx</label></div>
                             </div>
                         </div>
 
                         <script>
                             function mostrarValorSelecionado(selectElement, indice) {
-                                if (indice == 1) {  
+                                if (indice == 1) {
                                     var labelElement = document.getElementById("inputAtribuirNomeDocente");
                                     var selectedOption = selectElement.options[selectElement.selectedIndex];
-                                    var nomeDocente = selectedOption.getAttribute('data-nome-docente');
-                                    labelElement.innerHTML = nomeDocente;
+                                    labelElement.innerHTML = selectedOption.getAttribute('data-nome-docente');
                                     labelElement.style.opacity = "1";
-
-                                } else{
+                                } else {
                                     var labelElement = document.getElementById("inputAtribuirNomeUc");
                                     var selectedOption = selectElement.options[selectElement.selectedIndex];
-                                    var nomeUc = selectedOption.getAttribute('data-nome-uc');
-                                    labelElement.innerHTML = nomeUc;
+                                    labelElement.innerHTML = selectedOption.getAttribute('data-nome-uc');
                                     labelElement.style.opacity = "1";
                                 }
                             }
@@ -179,15 +180,14 @@
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                 <div><label for="inputEditarNomeDocente" class="col-form-label">Nome Docente</label>
                                 </div>
-                                <div><input type="text" class="form-control" id="inputEditarNomeDocente" placeholder="">
-                                </div>
+                                <div><span class="form-control" id="inputEditarNomeDocente"></span></div>
                             </div>
 
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                 <div><label for="inputEditarNomeUc" class="col-form-label">Nome UC</label></div>
-                                <div><input type="text" class="form-control" id="inputEditarNomeUc" placeholder="">
-                                </div>
+                                <div><span class="form-control" id="inputEditarNomeUc"></span></div>
                             </div>
+
 
                         </div>
 
@@ -211,6 +211,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
+
+        var editButtons = document.querySelectorAll('[data-bs-target="#editarModal"]');
+        editButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var nomeDocente = button.getAttribute('data-docente');
+                var nomeUc = button.getAttribute('data-nomeuc');
+                var percHoras = button.getAttribute('data-perc');
+
+                document.getElementById('inputEditarNomeDocente').innerHTML = nomeDocente;
+                document.getElementById('inputEditarNomeUc').innerHTML = nomeUc;
+                document.getElementById('inputEditarPerc').value = percHoras;
+
+                editarModal.show();
+            });
+        });
+    });
+</script>
 
 
 <div class="modal modal-lg" id="carregarModal" tabindex="-1" aria-labelledby="carregarModalLabel" aria-hidden="true">

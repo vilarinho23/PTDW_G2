@@ -86,41 +86,65 @@
                         <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
                             <div class="w-50">
                                 <label for="dropdownAtribuirNFuncionario" class="col-form-label">Nº funcionário</label>
-                                <select class="form-select" id="dropdownAtribuirNFuncionario" name="dropdownAtribuirNFuncionario" aria-label="Número do Funcionário">
+                                <select onchange="mostrarValorSelecionado(this, 1)" class="form-select"
+                                    id="dropdownAtribuirNFuncionario" name="dropdownAtribuirNFuncionario"
+                                    aria-label="Número do Funcionário">
                                     @foreach($funcionarios as $funcionario)
-                                    <option value="{{ $funcionario->num_func }}">{{ $funcionario->num_func }}</option>
+                                    <option data-nome-docente="{{ $funcionario->nome_docente }}"
+                                        value="{{ $funcionario->num_func }}">{{ $funcionario->num_func }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="w-50">
                                 <label for="dropdownAtribuirCodUc" class="col-form-label">Código UC</label>
-                                <select class="form-select" id="dropdownAtribuirCodUc" name="dropdownAtribuirCodUc" aria-label="Código da UC">
+                                <select onchange="mostrarValorSelecionado(this, 2)" class="form-select" 
+                                    id="dropdownAtribuirCodUc" name="dropdownAtribuirCodUc"
+                                    aria-label="Código da UC">
                                     @foreach($ucs as $uc)
-                                    <option value="{{ $uc->cod_uc }}">{{ $uc->cod_uc }}</option>
+                                    <option data-nome-uc="{{ $uc->nome_uc }}" 
+                                        value="{{ $uc->cod_uc }}">{{ $uc->cod_uc }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
-
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                                <div><label for="inputAtribuirNomeDocente" class="col-form-label">Nome Docente</label></div>
-                                <div><label class="form-control" id="inputAtribuirNomeDocente"></label></div>
+                                <div><label for="inputAtribuirNomeDocente" class="col-form-label">Nome Docente:</label></div>
+                                <div><label class="form-control" id="inputAtribuirNomeDocente" style="opacity: 0.0;">xxxxx</label></div>
                             </div>
 
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                                <div><label for="inputAtribuirNomeUc" class="col-form-label">Nome UC</label></div>
-                                <div><label class="form-control" id="inputAtribuirNomeUc"></label></div>
+                                <div><label for="inputAtribuirNomeUc" class="col-form-label">Nome UC:</label></div>
+                                <div><label class="form-control" id="inputAtribuirNomeUc" style="opacity: 0.0;">xxxxx</label></div>
                             </div>
-
                         </div>
+
+                        <script>
+                            function mostrarValorSelecionado(selectElement, indice) {
+                                if (indice == 1) {  
+                                    var labelElement = document.getElementById("inputAtribuirNomeDocente");
+                                    var selectedOption = selectElement.options[selectElement.selectedIndex];
+                                    var nomeDocente = selectedOption.getAttribute('data-nome-docente');
+                                    labelElement.innerHTML = nomeDocente;
+                                    labelElement.style.opacity = "1";
+
+                                } else{
+                                    var labelElement = document.getElementById("inputAtribuirNomeUc");
+                                    var selectedOption = selectElement.options[selectElement.selectedIndex];
+                                    var nomeUc = selectedOption.getAttribute('data-nome-uc');
+                                    labelElement.innerHTML = nomeUc;
+                                    labelElement.style.opacity = "1";
+                                }
+                            }
+                        </script>
 
 
                         <div class="d-flex justify-content-center align-items-center mt-5 gap-2">
                             <div><label for="inputAtribuirPerc" class="col-form-label">%</label></div>
-                            <div style="width: 45px"><input type="text" class="form-control" id="inputAtribuirPerc" name="inputAtribuirPerc" placeholder=""></div>
+                            <div style="width: 45px"><input type="text" class="form-control" id="inputAtribuirPerc"
+                                    name="inputAtribuirPerc" placeholder=""></div>
                         </div>
 
                         <div class="modal-footer d-flex justify-content-center border-0">
@@ -179,8 +203,10 @@
 
             <div class="modal-footer d-flex justify-content-center border-0">
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Alterar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Eliminar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                    data-bs-dismiss="modal">Eliminar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                    data-bs-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -232,7 +258,8 @@
             </div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"><span class="ficheiro_ja_carregado">Carregar Novo</span></button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"><span
+                        class="ficheiro_ja_carregado">Carregar Novo</span></button>
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
             </div>

@@ -13,8 +13,8 @@ class DocenteUcController extends Controller
     {
         $dados = DocenteUC::all();
 
-        $funcionarios = Docente::select('num_func')->distinct()->get();
-        $ucs = UnidadeCurricular::select('cod_uc')->distinct()->get();
+        $funcionarios = Docente::select('num_func', 'nome_docente')->distinct()->get();
+        $ucs = UnidadeCurricular::select('cod_uc', 'nome_uc')->distinct()->get();
 
         return view('atribuicaoUcs', ['dados' => $dados], compact('funcionarios', 'ucs'));
     }

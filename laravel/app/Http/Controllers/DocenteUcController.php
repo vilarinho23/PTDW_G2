@@ -36,24 +36,17 @@ class DocenteUcController extends Controller
         return redirect()->route('atribuicaoUcs')->with('success', 'Registro criado com sucesso.');
     }
 
-    public function destroy($num_func, $cod_uc)
-    {
-        $atribuicao = DocenteUC::where('num_func', $num_func)->where('cod_uc', $cod_uc)->firstOrFail();
-        $atribuicao->delete();
-
-        return redirect()->route('atribuicaoUcs')->with('success', 'Registro deletado com sucesso.');
-    }
-
     public function update(Request $request, $num_func, $cod_uc)
     {
         $request->validate([
             'inputEditarPerc' => 'required|numeric',
         ]);
 
-        $atribuicao = DocenteUC::where('num_func', $num_func)->where('cod_uc', $cod_uc)->firstOrFail();
-        $atribuicao->perc_horas = $request->input('inputEditarPerc');
-        $atribuicao->save();
+        DocenteUC::updateOrInsert(
+            ['num_func' => $num_func, 'cod_uc' => $cod_uc],
+            ['perc_horas' => $request->input('inputEditarPerc')]
+        );
 
-        return redirect()->route('atribuicaoUcs')->with('success', 'Registro atualizado com sucesso.');
+        return redirect()->route('atribuicaoUcs')->with('success', 'Atribuição atualizada com sucesso.');
     }
 }

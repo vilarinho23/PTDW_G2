@@ -40,7 +40,7 @@
                             <td>{{ $item->unidadeCurricular->nome_uc }}</td><td>{{ $item->cod_uc }}</td>
                             <td>{{ $item->unidadeCurricular->acn_uc }}</td><td>{{ $item->unidadeCurricular->responsavel->nome_docente }}</td>
                             <td>{{ $item->unidadeCurricular->horas_uc }}</td><td>{{ $item->perc_horas }}</td>
-                            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarModal{{ $loop->index + 1 }}">Editar</button></td>
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="Editar" data-bs-toggle="modal" data-bs-target="#editarModal{{ $loop->index + 1 }}"></td>
 
                             <div class="modal modal-lg" id="editarModal{{ $loop->index + 1 }}" tabindex="-1" aria-labelledby="editarModalLabel{{ $loop->index + 1 }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
@@ -57,9 +57,13 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                                            </form>
+                                                    <form method="POST" action="{{ route('atribuicaoUcs.destroy', ['num_func' => $item->num_func, 'cod_uc' => $item->cod_uc]) }}">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Eliminar atribuição</button>
+                                                    </form>
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                                 </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -108,12 +112,12 @@
                         <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                 <div><label for="inputAtribuirNomeDocente" class="col-form-label">Nome Docente:</label> </div>
-                                <div><label class="form-control" id="inputAtribuirNomeDocente" style="opacity: 0.0;">xxxxx</label></div>
+                                <div><label class="form-control" id="inputAtribuirNomeDocente"></label></div>
                             </div>
 
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
                                 <div><label for="inputAtribuirNomeUc" class="col-form-label">Nome UC:</label></div>
-                                <div><label class="form-control" id="inputAtribuirNomeUc" style="opacity: 0.0;">xxxxx</label></div>
+                                <div><label class="form-control" id="inputAtribuirNomeUc"></label></div>
                             </div>
                         </div>
 
@@ -123,14 +127,21 @@
                                     var labelElement = document.getElementById("inputAtribuirNomeDocente");
                                     var selectedOption = selectElement.options[selectElement.selectedIndex];
                                     labelElement.innerHTML = selectedOption.getAttribute('data-nome-docente');
-                                    labelElement.style.opacity = "1";
                                 } else {
                                     var labelElement = document.getElementById("inputAtribuirNomeUc");
                                     var selectedOption = selectElement.options[selectElement.selectedIndex];
                                     labelElement.innerHTML = selectedOption.getAttribute('data-nome-uc');
-                                    labelElement.style.opacity = "1";
                                 }
                             }
+                            
+                            document.addEventListener("DOMContentLoaded", function () {
+                                var dropdownAtribuirNFuncionario = document.getElementById("dropdownAtribuirNFuncionario");
+                                var dropdownAtribuirCodUc = document.getElementById("dropdownAtribuirCodUc");
+
+                                mostrarValorSelecionado(dropdownAtribuirNFuncionario, 1);
+                                mostrarValorSelecionado(dropdownAtribuirCodUc, 2);
+                            });
+
                         </script>
 
 
@@ -150,7 +161,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal modal-lg" id="carregarModal" tabindex="-1" aria-labelledby="carregarModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

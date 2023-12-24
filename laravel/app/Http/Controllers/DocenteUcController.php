@@ -49,4 +49,10 @@ class DocenteUcController extends Controller
 
         return redirect()->route('atribuicaoUcs')->with('success', 'Atribuição atualizada com sucesso.');
     }
+
+    public function destroy($num_func, $cod_uc)
+    {
+        DocenteUC::where(['num_func' => $num_func, 'cod_uc' => $cod_uc])->delete();
+        return redirect()->route('atribuicaoUcs')->with('success', 'Atribuição excluída com sucesso.');
+    }
 }

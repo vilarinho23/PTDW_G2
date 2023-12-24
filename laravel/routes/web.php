@@ -50,7 +50,7 @@ Route::prefix('/comissao')->group(function () {
     Route::get('/atribuicaoucs', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');
     Route::post('/atribuicaoucs', [DocenteUcController::class, 'store'])->name('atribuicaoUcs.store');
     Route::put('/atribuicaoucs/{num_func}/{cod_uc}', [DocenteUcController::class, 'update'])->name('atribuicaoUcs.update');
-
+    Route::delete('/atribuicaoucs/{num_func}/{cod_uc}', [DocenteUcController::class, 'destroy'])->name('atribuicaoUcs.destroy');
 });
 
 Route::prefix('/testar')->group(function () {

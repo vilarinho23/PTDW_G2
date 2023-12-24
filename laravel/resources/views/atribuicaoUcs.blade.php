@@ -12,13 +12,16 @@
         <div class="d-flex justify-content-between">
 
             <div class="d-flex align-items-center gap-2">
-                <div class="input-group rounded"><input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"></div>
+                <div class="input-group rounded"><input type="search" class="form-control rounded" placeholder="Search"
+                        aria-label="Search"></div>
                 <div><img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search"></div>
             </div>
 
             <div class="d-flex gap-5">
-                <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal" data-bs-target="#atribuirUcModal">Atribuir UC</button>
-                <button type="button" class="button-style" style="width: 170px; height: 40px;" data-bs-toggle="modal" data-bs-target="#carregarModal">Carregar Ficheiro</button>
+                <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal"
+                    data-bs-target="#atribuirUcModal">Atribuir UC</button>
+                <button type="button" class="button-style" style="width: 170px; height: 40px;" data-bs-toggle="modal"
+                    data-bs-target="#carregarModal">Carregar Ficheiro</button>
             </div>
 
         </div>
@@ -27,20 +30,34 @@
                 <table class="table ">
                     <thead>
                         <tr>
-                            <th>Nº</th><th>Nome Docente</th><th>Número Docente</th><th>ACN Docente</th>
-                            <th>Nome UC</th><th>Cód. UC</th><th>ACN UC</th><th>Doc. Responsável</th>
-                            <th>Horas</th><th>%</th><th></th>
+                            <th>Nº</th>
+                            <th>Nome Docente</th>
+                            <th>Número Docente</th>
+                            <th>ACN Docente</th>
+                            <th>Nome UC</th>
+                            <th>Cód. UC</th>
+                            <th>ACN UC</th>
+                            <th>Doc. Responsável</th>
+                            <th>Horas</th>
+                            <th>%</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($dados as $item)
                         <tr>
                             <th scope="row">{{ $loop->index + 1 }}</th>
-                            <td>{{ $item->docente->nome_docente }}</td><td>{{ $item->docente->num_func }}</td><td>{{ $item->docente->acn_docente }}</td>
-                            <td>{{ $item->unidadeCurricular->nome_uc }}</td><td>{{ $item->cod_uc }}</td><td>{{ $item->unidadeCurricular->acn_uc }}</td>
-                            <td>{{ $item->unidadeCurricular->responsavel->nome_docente }}</td><td>{{ $item->unidadeCurricular->horas_uc }}</td><td>{{ $item->perc_horas }}</td>
-                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal" data-bs-target="#editarModal" 
-                                    data-nomeDocente="{{ $item->docente->nome_docente }}"
+                            <td>{{ $item->docente->nome_docente }}</td>
+                            <td>{{ $item->docente->num_func }}</td>
+                            <td>{{ $item->docente->acn_docente }}</td>
+                            <td>{{ $item->unidadeCurricular->nome_uc }}</td>
+                            <td>{{ $item->cod_uc }}</td>
+                            <td>{{ $item->unidadeCurricular->acn_uc }}</td>
+                            <td>{{ $item->unidadeCurricular->responsavel->nome_docente }}</td>
+                            <td>{{ $item->unidadeCurricular->horas_uc }}</td>
+                            <td>{{ $item->perc_horas }}</td>
+                            <td><img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
+                                    data-bs-target="#editarModal" data-nomeDocente="{{ $item->docente->nome_docente }}"
                                     data-numDocente="{{ $item->docente->num_func }}"
                                     data-nomeuc="{{ $item->unidadeCurricular->nome_uc }}"
                                     data-numuc="{{ $item->unidadeCurricular->cod_uc }}"
@@ -153,7 +170,9 @@
 <div class="modal modal-lg" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
         <div class="modal-content border-0">
-            <div class="modal-header border-0 p-4"><h5 class="modal-title mx-auto" id="editarModalLabel"></h5></div>
+            <div class="modal-header border-0 p-4">
+                <h5 class="modal-title mx-auto" id="editarModalLabel"></h5>
+            </div>
             <div class="modal-body">
                 <form method="POST" action="/">
                     @csrf
@@ -161,27 +180,33 @@
 
                         <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                                Número Docente:<label id="inputEditarNomeDocente" for="inputEditarNomeDocente" class="col-form-label"></label>
+                                Número Docente:<label id="inputEditarNomeDocente" for="inputEditarNomeDocente"
+                                    class="col-form-label"></label>
                             </div>
 
                             <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                                Código UC:<label id="inputEditarNomeUc" for="inputEditarNomeUc" class="col-form-label">Nome UC</label>
+                                Código UC:<label id="inputEditarNomeUc" for="inputEditarNomeUc"
+                                    class="col-form-label">Nome UC</label>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-center align-items-center mt-5 gap-2">
                             <div><label for="inputEditarPerc" class="col-form-label">%</label></div>
-                            <div style="width: 45px"><input type="text" class="form-control" id="inputEditarPerc" placeholder=""></div>
+                            <div style="width: 45px"><input type="text" class="form-control" id="inputEditarPerc"
+                                    placeholder=""></div>
+                        </div>
+
+                        <div class="modal-footer d-flex justify-content-center border-0">
+                            <button type="button" class="mx-2 button-style"
+                                style="width: 130px; height: 30px;">Alterar</button>
+                            <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                                data-bs-dismiss="modal">Eliminar</button>
+                            <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                                data-bs-dismiss="modal">Cancelar</button>
                         </div>
 
                     </div>
                 </form>
-            </div>
-
-            <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Alterar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Eliminar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -194,7 +219,7 @@
         var editButtons = document.querySelectorAll('[data-bs-target="#editarModal"]');
         editButtons.forEach(function (button) {
             button.addEventListener('click', function () {
-                var nomeDocente = button.getAttribute('data-nomeDocente');editarModalLabel
+                var nomeDocente = button.getAttribute('data-nomeDocente' );editarModalLabel
                 var numDocente = button.getAttribute('data-numDocente');
                 var nomeUc = button.getAttribute('data-nomeuc');
                 var numUc = button.getAttribute('data-numuc');

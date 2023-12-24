@@ -49,11 +49,6 @@ Route::prefix('/comissao')->group(function () {
 
     Route::get('/atribuicaoucs', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');
     Route::post('/atribuicaoucs', [DocenteUcController::class, 'store'])->name('atribuicaoUcs.store');
-
-
-    /*Route::get('/atribuicaoucs', function () {
-        return view('atribuicaoUcs');
-    })->name('atribuicaoUcs');*/
 });
 
 Route::prefix('/testar')->group(function () {

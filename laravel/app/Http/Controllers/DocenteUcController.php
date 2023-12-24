@@ -35,5 +35,4 @@ class DocenteUcController extends Controller
 
         return redirect()->route('atribuicaoUcs')->with('success', 'Registro criado com sucesso.');
     }
-
 }

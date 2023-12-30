@@ -11,14 +11,14 @@ class DocenteUcController extends Controller
 {
     public function index()
     {
-        $dados = DocenteUC::all();
+        $dados = DocenteUC::with(['docente', 'unidadeCurricular.cursos'])->get();
 
         $funcionarios = Docente::select('num_func', 'nome_docente')->distinct()->get();
         $ucs = UnidadeCurricular::select('cod_uc', 'nome_uc')->distinct()->get();
 
         return view('atribuicaoUcs', ['dados' => $dados], compact('funcionarios', 'ucs'));
     }
-
+    
     public function store(Request $request)
     {
         $request->validate([

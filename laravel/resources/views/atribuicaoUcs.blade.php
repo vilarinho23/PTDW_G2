@@ -50,7 +50,7 @@
                             <td>{{ $item->unidadeCurricular->acn_uc }}</td>
                             <td>{{ $item->unidadeCurricular->responsavel->nome_docente }}</td>
                             <td>{{ $item->unidadeCurricular->nome_uc }}</td>
-                            <td>{{ $item->unidadeCurricular->cursos->implode('nome_curso', ', ') }}</td>
+                            <td>{{ $item->unidadeCurricular->cursos->implode('acron_curso', ', ') }}</td>
                             <td>{{ $item->unidadeCurricular->horas_uc }}</td>
                             <td>{{ $item->perc_horas }}</td>
                             <td><img src="{{ asset('images/edit.svg') }}" alt="Editar" data-bs-toggle="modal" data-bs-target="#editarModal{{ $loop->index + 1 }}"></td>

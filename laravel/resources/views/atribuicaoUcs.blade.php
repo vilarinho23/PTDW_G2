@@ -13,7 +13,7 @@
         <div class="d-flex justify-content-between">
             <div class="d-flex align-items-center gap-2">
                 <div class="input-group rounded"><input type="search" class="form-control rounded" placeholder="Search" aria-label="Pesquisa"></div>
-                <div><img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search"></div>
+                <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
             </div>
 
             <div class="d-flex gap-5">
@@ -22,82 +22,84 @@
             </div>
         </div>
 
-        <div>
-            <div class="container mt-3 text-center">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nº</th>
-                            <th>Nome Docente</th>
-                            <th>ACN Docente</th>
-                            <th>Cód. UC</th>
-                            <th>ACN UC</th>
-                            <th>Doc. Responsável</th>
-                            <th>Nome UC</th>
-                            <th>Curso</th>
-                            <th>Horas</th>
-                            <th>%</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($dados as $item)
-                        <tr>
-                            <td>{{ $item->docente->num_func }}</td>
-                            <td>{{ $item->docente->nome_docente }}</td>
-                            <td>{{ $item->docente->acn_docente }}</td>
-                            <td>{{ $item->cod_uc }}</td>
-                            <td>{{ $item->unidadeCurricular->acn_uc }}</td>
-                            <td>{{ $item->unidadeCurricular->responsavel->nome_docente }}</td>
-                            <td>{{ $item->unidadeCurricular->nome_uc }}</td>
-                            <td>{{ $item->unidadeCurricular->cursos->implode('acron_curso', ', ') }}</td>
-                            <td>{{ $item->unidadeCurricular->horas_uc }}</td>
-                            <td>{{ $item->perc_horas }}</td>
-                            <td><img src="{{ asset('images/edit.svg') }}" alt="Editar" data-bs-toggle="modal" data-bs-target="#editarModal{{ $loop->index + 1 }}"></td>
+        <div class="container mt-3 text-center">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nº</th>
+                        <th>Nome Docente</th>
+                        <th>ACN Docente</th>
+                        <th>Cód. UC</th>
+                        <th>ACN UC</th>
+                        <th>Doc. Responsável</th>
+                        <th>Nome UC</th>
+                        <th>Curso</th>
+                        <th>Horas</th>
+                        <th>%</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($dados as $item)
+                    <tr>
+                        <td>{{ $item->docente->num_func }}</td>
+                        <td>{{ $item->docente->nome_docente }}</td>
+                        <td>{{ $item->docente->acn_docente }}</td>
+                        <td>{{ $item->cod_uc }}</td>
+                        <td>{{ $item->unidadeCurricular->acn_uc }}</td>
+                        <td>{{ $item->unidadeCurricular->responsavel->nome_docente }}</td>
+                        <td>{{ $item->unidadeCurricular->nome_uc }}</td>
+                        <td>{{ $item->unidadeCurricular->cursos->implode('acron_curso', ', ') }}</td>
+                        <td>{{ $item->unidadeCurricular->horas_uc }}</td>
+                        <td>{{ $item->perc_horas }}</td>
+                        <td><img src="{{ asset('images/edit.svg') }}" alt="Editar" data-bs-toggle="modal" data-bs-target="#editarModal{{ $loop->index + 1 }}"></td>
+                    </tr>
 
-                            <div class="modal modal-lg" id="editarModal{{ $loop->index + 1 }}" tabindex="-1" aria-labelledby="editarModalLabel{{ $loop->index + 1 }}" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
-                                    <div class="modal-content border-0">
-                                        <div class="modal-header border-0 p-4"><h5 class="modal-title mx-auto" id="editarModalLabel">Editar Atribuição da UC '{{ $item->unidadeCurricular->nome_uc }}' com o Docente {{ $item->docente->nome_docente }}</h5></div>
+                    <div class="modal modal-lg" id="editarModal{{ $loop->index + 1 }}" tabindex="-1"
+                        aria-labelledby="editarModalLabel{{ $loop->index + 1 }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
+                            <div class="modal-content border-0">
+                                <div class="modal-header border-0 p-4">
+                                    <h5 class="modal-title mx-auto" id="editarModalLabel">Editar Atribuição da UC '{{ $item->unidadeCurricular->nome_uc }}' com o Docente {{ $item->docente->nome_docente }}</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="{{ route('atribuicaoUcs.update', ['num_func' => $item->num_func, 'cod_uc' => $item->cod_uc]) }}">
+                                        @csrf @method('PUT')
                                         <div class="modal-body">
-                                            <form method="POST" action="{{ route('atribuicaoUcs.update', ['num_func' => $item->num_func, 'cod_uc' => $item->cod_uc]) }}">
-                                                @csrf @method('PUT')
-                                                <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <label for="inputEditarPerc" class="form-label">Digita a nova porcentagem de horas:</label>
-                                                        <input type="text" class="form-control" id="inputEditarPerc" name="inputEditarPerc" value="{{ $item->perc_horas }}">
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer"><button type="submit" class="btn btn-primary">Salvar alterações</button>
-                                            </form>
-                                            <form method="POST" action="{{ route('atribuicaoUcs.destroy', ['num_func' => $item->num_func, 'cod_uc' => $item->cod_uc]) }}">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Eliminar atribuição</button>
-                                            </form>
-                                            <button type="button" class="btn btn-secondary"data-bs-dismiss="modal">Cancelar</button>
+                                            <div class="mb-3">
+                                                <label for="inputEditarPerc" class="form-label">Digita a nova porcentagem de horas:</label>
+                                                <input type="text" class="form-control" id="inputEditarPerc" name="inputEditarPerc" value="{{ $item->perc_horas }}">
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div class="modal-footer"><button type="submit" class="btn btn-primary">Salvar alterações</button>
+                                    </form>
+                                    <form method="POST" action="{{ route('atribuicaoUcs.destroy', ['num_func' => $item->num_func, 'cod_uc' => $item->cod_uc]) }}">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Eliminar atribuição</button>
+                                    </form>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                                 </div>
                             </div>
-            </div>
-            </tr>
-            @endforeach
-            </tbody>
+                        </div>
+                    </div>
+                    @endforeach
+                </tbody>
             </table>
         </div>
     </div>
-</div>
-<div class="d-flex gap-3 ms-3">
-    <div><img src="{{ asset('images/info.svg') }}" alt="info"></div>
-    <p>INFORMAÇÃO DE AJUDA</p>
-</div>
+
+    <div class="d-flex gap-3 ms-3">
+        <img src="{{ asset('images/info.svg') }}" alt="info">
+        <p>INFORMAÇÃO DE AJUDA</p>
+    </div>
 </div>
 
-<div class="modal modal-lg" id="atribuirUcModal" tabindex="-1" aria-labelledby="atribuirUcModalLabel"
-    aria-hidden="true">
+<div class="modal modal-lg" id="atribuirUcModal" tabindex="-1" aria-labelledby="atribuirUcModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
         <div class="modal-content border-0">
-            <div class="modal-header border-0 p-4"><h5 class="modal-title mx-auto" id="atribuirUcModalLabel">Atribuir Unidade Curricular</h5></div>
+            <div class="modal-header border-0 p-4">
+                <h5 class="modal-title mx-auto" id="atribuirUcModalLabel">Atribuir Unidade Curricular</h5>
+            </div>
 
             <div class="modal-body">
                 <form method="POST" action="{{ route('atribuicaoUcs.store') }}">
@@ -156,7 +158,9 @@
 <div class="modal modal-lg" id="carregarModal" tabindex="-1" aria-labelledby="carregarModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
-            <div class="modal-header border-0"><h5 class="modal-title mx-auto" id="carregarModalLabel">Atribuir Unidade Curricular</h5></div>
+            <div class="modal-header border-0">
+                <h5 class="modal-title mx-auto" id="carregarModalLabel">Atribuir Unidade Curricular</h5>
+            </div>
 
             <div class="modal-body">
                 <form method="POST" action="/">

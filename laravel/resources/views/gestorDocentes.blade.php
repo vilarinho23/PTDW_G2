@@ -33,15 +33,19 @@
                             <th>Nº</th>
                             <th>Nome Docente</th>
                             <th>ACN Docente</th>
+                            <th>Contacto</th>
+                            <th>E-mail</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($docentes as $docente)
-                        <tr data-id={{$docente->num_func}} data-url={{ route("docente.show",$docente->num_func) }}>
+                        <tr class="listrow" data-id={{$docente->num_func}} data-url={{ route("docente.show",$docente->num_func) }}>
                             <td class="fw-bold" scope="row">{{ $docente->num_func }}</td>
                             <td>{{ $docente->nome_docente }}</td>
                             <td>{{ $docente->acn_docente }}</td>
+                            <td>{{ $docente->telef_docente }}</td>
+                            <td>{{ $docente->email_docente }}</td>
                             <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
                         </tr>
                         @endforeach
@@ -94,9 +98,27 @@
                                 <input type="text" class="form-control" id="inputAdicionarAcn" placeholder="">
                             </div>
                         </div>
+                        <div class="row mt-2 g-3 align-items-center">
+                            <div class="col-sm-2">
+                                <label for="inputAdicionarAcn" class="col-form-label">Contacto</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="inputAdicionarContacto" placeholder="">
+                            </div>
+                        </div>
+                        <div class="row mt-2 g-3 align-items-center">
+                            <div class="col-sm-2">
+                                <label for="inputAdicionarAcn" class="col-form-label">E-mail</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="inputAdicionarEmail" placeholder="">
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
+
+            <div class="d-flex justify-content-center" id="mensagemErroAdicionar" style="color: red;"></div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
                 <button type="button" id="btnConfirmar" class="mx-2 button-style"
@@ -144,9 +166,27 @@
                                 <input type="text" class="form-control" id="inputEditarAcn" >
                             </div>
                         </div>
+                        <div class="row mt-2 g-3 align-items-center">
+                            <div class="col-sm-2">
+                                <label for="inputEditarAcn" class="col-form-label">Contacto</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="inputEditarContacto" >
+                            </div>
+                        </div>
+                        <div class="row mt-2 g-3 align-items-center">
+                            <div class="col-sm-2">
+                                <label for="inputEditarAcn" class="col-form-label">E-mail</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="inputEditarEmail" >
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
+
+            <div class="d-flex justify-content-center" id="mensagemErroEditar" style="color: red;"></div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
                 <button type="button" class="mx-2 button-style" id="btnCfm"
@@ -168,6 +208,8 @@
                 $('#inputEditarNFuncionario').val(data.num_func);
                 $('#inputEditarNome').val(data.nome_docente);
                 $('#inputEditarAcn').val(data.acn_docente);
+                $('#inputEditarContacto').val(data.telef_docente);
+                $('#inputEditarEmail').val(data.email_docente);
 
                 $(".modal-body > form").attr("action", `/docente/${data.num_func}`);
 
@@ -181,9 +223,27 @@
         const data = {
             num_func: id,
             nome_docente: document.getElementById('inputEditarNome').value,
-            acn_docente: document.getElementById('inputEditarAcn').value
+            acn_docente: document.getElementById('inputEditarAcn').value,
+            telef_docente: document.getElementById('inputEditarContacto').value,
+            email_docente: document.getElementById('inputEditarEmail').value
         };
-        console.log(data);
+        let divMensagensErro = document.getElementById('mensagemErroEditar');
+        let mensagensErro = '';
+        if(!data.num_func || !data.nome_docente || !data.acn_docente || !data.telef_docente || !data.email_docente){
+            mensagensErro += 'Campo obrigatório em falta';
+        }else if (!/^\d+$/.test(data.num_func)){
+            mensagensErro += 'Campo de nº de funcionário aceita apenas números';
+        }else if (!/^\d+$/.test(data.telef_docente)){
+            mensagensErro += 'Campo de contacto aceita apenas números';
+        }else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data.email_docente)){
+            mensagensErro += 'Campo de e-mail introduzido incorretamente';
+        }
+
+        if(mensagensErro){
+            divMensagensErro.innerText = mensagensErro;
+            console.log(mensagensErro)
+            return;
+        }
 
         fetch('/comissao/docente/' + id, {
             method: 'PUT',
@@ -209,9 +269,28 @@
         const data = {
             num_func: document.getElementById('inputAdicionarNFuncionario').value,
             nome_docente: document.getElementById('inputAdicionarNome').value,
-            acn_docente: document.getElementById('inputAdicionarAcn').value
+            acn_docente: document.getElementById('inputAdicionarAcn').value,
+            telef_docente: document.getElementById('inputAdicionarContacto').value,
+            email_docente: document.getElementById('inputAdicionarEmail').value
         };
-        console.log(data);
+        
+        let divMensagensErro = document.getElementById('mensagemErroAdicionar');
+        let mensagensErro = '';
+        if(!data.num_func || !data.nome_docente || !data.acn_docente || !data.telef_docente || !data.email_docente){
+            mensagensErro += 'Campo obrigatório em falta';
+        }else if (!/^\d+$/.test(data.num_func)){
+            mensagensErro += 'Campo de nº de funcionário aceita apenas números';
+        }else if (!/^\d+$/.test(data.telef_docente)){
+            mensagensErro += 'Campo de contacto aceita apenas números';
+        }else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data.email_docente)){
+            mensagensErro += 'Campo de e-mail introduzido incorretamente';
+        }
+
+        if(mensagensErro){
+            divMensagensErro.innerText = mensagensErro;
+            console.log(mensagensErro)
+            return;
+        }
 
         fetch('{{ route('adicionar.docente') }}', {
             method: 'POST',

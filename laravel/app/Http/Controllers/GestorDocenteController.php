@@ -29,6 +29,8 @@ class GestorDocenteController extends Controller
                 'num_func' => 'required',
                 'nome_docente' => 'required',
                 'acn_docente' => 'required',
+                'telef_docente' => 'required',
+                'email_docente' => 'required',
             ]);
 
             Log::info($request);
@@ -37,6 +39,8 @@ class GestorDocenteController extends Controller
                 'num_func' => $request->input('num_func'),
                 'nome_docente' => $request->input('nome_docente'),
                 'acn_docente' => $request->input('acn_docente'),
+                'telef_docente' => $request->input('telef_docente'),
+                'email_docente' => $request->input('email_docente'),
 
             ]);
 
@@ -60,6 +64,8 @@ class GestorDocenteController extends Controller
             'num_func' => $request->input('num_func'),
             'nome_docente' => $request->input('nome_docente'),
             'acn_docente' => $request->input('acn_docente'),
+            'telef_docente' => $request->input('telef_docente'),
+            'email_docente' => $request->input('email_docente'),
             
         ]);
 

@@ -10,6 +10,7 @@ use App\Models\KeyValue;
 use App\Models\Laboratorio;
 use App\Models\RestricaoHorario;
 use App\Models\UnidadeCurricular;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,6 +25,7 @@ class TesteController extends Controller
         $docentes = Docente::with('restricoes', 'respUnidadesCurriculares', 'unidadesCurriculares')->get();
         $restricoes = RestricaoHorario::with('docente')->get();
         $ucs = UnidadeCurricular::with('cursos', 'laboratorios', 'responsavel', 'docentes')->get();
+        $users = User::with('docente')->get();
         $kvs = KeyValue::all();
 
         // Retornar JSON
@@ -33,6 +35,7 @@ class TesteController extends Controller
             'docentes' => $docentes,
             'restricoes' => $restricoes,
             'ucs' => $ucs,
+            'users' => $users,
             'kvs' => $kvs
         ]);
     }

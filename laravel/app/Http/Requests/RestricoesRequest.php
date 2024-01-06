@@ -17,11 +17,7 @@ class RestricoesRequest extends FormRequest
 {
     private function getDocente(): Docente|null
     {
-        // TODO Obter docente atual
-        $docenteNrFunc = 2;
-        $docente = Docente::find($docenteNrFunc);
-
-        return $docente;
+        return auth()->user()?->docente;
     }
 
     private function getDataConclusao(): Carbon|null

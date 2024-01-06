@@ -17,7 +17,8 @@
 <script>
     const docenteUrl = "{{ route('docente') }}";
     const comissaoUrl = "{{ route('comissao') }}";
-    const logOutUrl = "{{ route('home') }}";
+    const logOutUrl = "{{ route('logout') }}";
+
     const preencherUrl = "{{ route('restricoes') }}";
 </script>
 <script src="{{ asset('js/main.js') }}" defer></script>

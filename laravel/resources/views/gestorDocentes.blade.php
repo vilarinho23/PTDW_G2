@@ -246,22 +246,6 @@
             email_docente: document.getElementById('inputEditarEmail').value
         };
         let divMensagensErro = document.getElementById('mensagemErroEditar');
-        let mensagensErro = '';
-        if(!data.num_func || !data.nome_docente || !data.acn_docente || !data.telef_docente || !data.email_docente){
-            mensagensErro += 'Campo obrigatório em falta';
-        }else if (!/^\d+$/.test(data.num_func)){
-            mensagensErro += 'Campo de nº de funcionário aceita apenas números';
-        }else if (!/^\d+$/.test(data.telef_docente)){
-            mensagensErro += 'Campo de contacto aceita apenas números';
-        }else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data.email_docente)){
-            mensagensErro += 'Campo de e-mail introduzido incorretamente';
-        }
-
-        if(mensagensErro){
-            divMensagensErro.innerText = mensagensErro;
-            console.log(mensagensErro)
-            return;
-        }
 
         fetch('/comissao/docente/' + id, {
             method: 'PUT',
@@ -273,9 +257,13 @@
         })
         .then(response => response.json())
         .then(data => {
+            if (data.error) {
+            divMensagensErro.innerText = data.error;
+            } else {
                 console.log('Dados enviados com sucesso:', data);
                 $('#editarModal').modal('hide');
                 window.location.reload();
+            }
         })
         .catch(error => {
             console.error('Erro ao enviar dados:', error);
@@ -284,51 +272,39 @@
     }
 
     document.getElementById('btnConfirmarAdicionar').onclick = function() {
-        
-        const data = {
-            num_func: document.getElementById('inputAdicionarNFuncionario').value,
-            nome_docente: document.getElementById('inputAdicionarNome').value,
-            acn_docente: document.getElementById('inputAdicionarAcn').value,
-            telef_docente: document.getElementById('inputAdicionarContacto').value,
-            email_docente: document.getElementById('inputAdicionarEmail').value
-        };
-        
-        let divMensagensErro = document.getElementById('mensagemErroAdicionar');
-        let mensagensErro = '';
-        if(!data.num_func || !data.nome_docente || !data.acn_docente || !data.telef_docente || !data.email_docente){
-            mensagensErro += 'Campo obrigatório em falta';
-        }else if (!/^\d+$/.test(data.num_func)){
-            mensagensErro += 'Campo de nº de funcionário aceita apenas números';
-        }else if (!/^\d+$/.test(data.telef_docente)){
-            mensagensErro += 'Campo de contacto aceita apenas números';
-        }else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data.email_docente)){
-            mensagensErro += 'Campo de e-mail introduzido incorretamente';
-        }
+    const data = {
+        num_func: document.getElementById('inputAdicionarNFuncionario').value,
+        nome_docente: document.getElementById('inputAdicionarNome').value,
+        acn_docente: document.getElementById('inputAdicionarAcn').value,
+        telef_docente: document.getElementById('inputAdicionarContacto').value,
+        email_docente: document.getElementById('inputAdicionarEmail').value
+    };
 
-        if(mensagensErro){
-            divMensagensErro.innerText = mensagensErro;
-            console.log(mensagensErro)
-            return;
-        }
+    let divMensagensErro = document.getElementById('mensagemErroAdicionar');
 
-        fetch('{{ route('adicionar.docente') }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' 
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => console.log(response))
-        .then(data => {
+    fetch('{{ route('adicionar.docente') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            divMensagensErro.innerText = data.error;
+        } else {
             console.log('Dados enviados com sucesso:', data);
             $('#adicionarModal').modal('hide');
             window.location.reload();
-        })
-        .catch(error => {
-            console.error('Erro ao enviar dados:', error);
-        });
-    };
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao enviar dados:', error);
+    });
+};
+
 
     document.getElementById("btnEliminar").onclick = function() {
 

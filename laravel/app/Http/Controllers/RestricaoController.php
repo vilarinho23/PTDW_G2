@@ -15,13 +15,9 @@ use Carbon\Carbon;
 
 class RestricaoController extends Controller
 {
-    private function getDocente(): ?Docente
+    private function getDocente(): Docente
     {
-        // TODO Obter docente atual
-        $docenteNrFunc = 2;
-        $docente = Docente::find($docenteNrFunc);
-
-        return $docente;
+        return auth()->user()->docente;
     }
 
     private function getDadosDocente(Docente $docente): array
@@ -48,10 +44,8 @@ class RestricaoController extends Controller
         // Restrições, data de submissao e nome
         $restricoes = $docente->restricoes;
         $dataSubmissao = $docente->data_submissao;
-        $nomeDocente = $docente->nome_docente;
 
         return [
-            'nomeDocente' => $nomeDocente,
             'ucs' => $ucs,
             'restricoes' => $restricoes,
             'dataSubmissao' => $dataSubmissao
@@ -81,7 +75,6 @@ class RestricaoController extends Controller
     {
         // Obter docente
         $docente = $this->getDocente();
-        if ($docente == null) return redirect()->route('home');
 
         // Obter dados do docente
         $dados = $this->getDadosDocente($docente);
@@ -98,7 +91,6 @@ class RestricaoController extends Controller
     {
         // Obter docente
         $docente = $this->getDocente();
-        if ($docente == null) return redirect()->route('home');
 
         // Obter data de conclusao
         $dataConclusao = $this->getDataConclusao();
@@ -123,7 +115,6 @@ class RestricaoController extends Controller
     {
         // Obter docente
         $docente = $this->getDocente();
-        if ($docente == null) return redirect()->route('home');
 
         // Obter data de conclusao
         $dataConclusao = $this->getDataConclusao();

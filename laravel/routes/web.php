@@ -6,6 +6,7 @@ use App\Http\Controllers\RestricaoController;
 use App\Http\Controllers\SubmissoesController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestorDocenteController;
+use App\Http\Controllers\FakeIdpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,21 +19,27 @@ use App\Http\Controllers\GestorDocenteController;
 |
 */
 
+// Landing page
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/idp', function () {
-    return view('idp');
+// Fake Idp
+Route::prefix('idp')->group(function () {
+    Route::get('/', [FakeIdpController::class, 'idp'])->name('idp');
+    Route::post('/', [FakeIdpController::class, 'login'])->name('login');
+    Route::get('/logout', [FakeIdpController::class, 'logout'])->name('logout');
 });
 
-Route::prefix('/docente')->group(function () {
+// Docente
+Route::prefix('/docente')->middleware('auth_docente')->group(function () {
     Route::get('/', [RestricaoController::class, 'docente'])->name('docente');
     Route::get('/restricoes', [RestricaoController::class, 'restricoes'])->name('restricoes');
     Route::post('/restricoes', [RestricaoController::class, 'submeter'])->name('restricoesSubmeter');
 });
 
-Route::prefix('/comissao')->group(function () {
+// Comissão
+Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
     Route::get('/', function () {
         return redirect()->route('submissoes');
     })->name('comissao');
@@ -57,6 +64,7 @@ Route::prefix('/comissao')->group(function () {
     })->name('atribuicaoUcs');
 });
 
+// Testes
 Route::prefix('/testar')->group(function () {
     Route::get('/models', [TesteController::class, 'testarModels']);
 

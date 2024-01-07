@@ -73,4 +73,12 @@ class GestorDocenteController extends Controller
         Log::info('Response Data: ' . json_encode(['message' => 'Docente atualizado com sucesso']));
         return response()->json(['message' => 'Docente atualizado com sucesso']);
     }
+
+    public function eliminarDocente($id)
+    {
+        $docente = Docente::findOrFail($id);
+        $docente->delete();
+
+        return response()->json(['message' => 'Docente excluído com sucesso']);
+    }
 }

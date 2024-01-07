@@ -46,6 +46,8 @@ Route::prefix('/comissao')->group(function () {
     Route::get('/docente/{id}', [GestorDocenteController::class, 'pesquisarDocente'])->name("docente.show");
 
     Route::put('/docente/{id}',[GestorDocenteController::class,'editarDocente'])->name("editar.docente");
+
+    Route::delete('/docente/{id}',[GestorDocenteController::class,'eliminarDocente'])->name("eliminar.docente");
     
     Route::post('/adicionar-docente', [GestorDocenteController::class, 'adicionarDocente'])->name('adicionar.docente');
 

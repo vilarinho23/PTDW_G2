@@ -71,57 +71,55 @@
             </div>
 
             <div class="modal-body">
-                <form method="POST" action="{{ route('adicionar.docente') }}">
-                    @csrf
-                    <div class="container-fluid">
-                        <div class="row g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputAdicionarNFuncionario" class="col-form-label">Nº funcionário</label>
-                            </div>
-                            <div class="col-sm">
-                                <input type="text" class="form-control" id="inputAdicionarNFuncionario" placeholder="">
-                            </div>
+                @csrf
+                <div class="container-fluid">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarNFuncionario" class="col-form-label">Nº funcionário</label>
                         </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputAdicionarNome" class="col-form-label">Nome docente</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputAdicionarNome" placeholder="">
-                            </div>
-                        </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputAdicionarAcn" class="col-form-label">ACN docente</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputAdicionarAcn" placeholder="">
-                            </div>
-                        </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputAdicionarContacto" class="col-form-label">Contacto</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputAdicionarContacto" placeholder="">
-                            </div>
-                        </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputAdicionarEmail" class="col-form-label">E-mail</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputAdicionarEmail" placeholder="">
-                            </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" id="inputAdicionarNFuncionario" placeholder="">
                         </div>
                     </div>
-                </form>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarNome" class="col-form-label">Nome docente</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputAdicionarNome" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarAcn" class="col-form-label">ACN docente</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputAdicionarAcn" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarContacto" class="col-form-label">Contacto</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputAdicionarContacto" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarEmail" class="col-form-label">E-mail</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputAdicionarEmail" placeholder="">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="d-flex justify-content-center" id="mensagemErroAdicionar" style="color: red;"></div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" id="btnConfirmar" class="mx-2 button-style"
+                <button type="button" id="btnConfirmarAdicionar" class="mx-2 button-style"
                     style="width: 130px; height: 30px;">Confirmar</button>
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
@@ -139,57 +137,77 @@
             </div>
 
             <div class="modal-body">
-                <form method="PUT" action="/docente/{{$docente->num_func}}">
-                    @csrf
-                    <div class="container-fluid">
-                        <div class="row g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputEditarNFuncionario" class="col-form-label">Nº funcionário</label>
-                            </div>
-                            <div class="col-sm">
-                                <input type="text" class="form-control" id="inputEditarNFuncionario" name="num_func" >
-                            </div>
+                @csrf
+                <div class="container-fluid">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarNFuncionario" class="col-form-label">Nº funcionário</label>
                         </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputEditarNome" class="col-form-label">Nome docente</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputEditarNome" >
-                            </div>
-                        </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputEditarAcn" class="col-form-label">ACN docente</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputEditarAcn" >
-                            </div>
-                        </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputEditarContacto" class="col-form-label">Contacto</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputEditarContacto" >
-                            </div>
-                        </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputEditarEmail" class="col-form-label">E-mail</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputEditarEmail" >
-                            </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" id="inputEditarNFuncionario" name="num_func" >
                         </div>
                     </div>
-                </form>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarNome" class="col-form-label">Nome docente</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEditarNome" >
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarAcn" class="col-form-label">ACN docente</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEditarAcn" >
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarContacto" class="col-form-label">Contacto</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEditarContacto" >
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarEmail" class="col-form-label">E-mail</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEditarEmail" >
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="d-flex justify-content-center" id="mensagemErroEditar" style="color: red;"></div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" id="btnCfm"
+                <button type="button" class="mx-2 button-style" id="btnConfirmarEditar"
+                    style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="mx-2 button-style-red" id="btnEliminarModal"
+                style="width: 130px; height: 30px;" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-lg" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header border-0">
+                <h3 class="modal-title mx-auto" id="eliminarModalLabel">Comfirmar Eliminação</h3>
+            </div>
+
+            <div class="modal-body">
+                @csrf
+            <div class="modal-footer d-flex justify-content-center border-0">
+                <button type="button" class="mx-2 button-style" id="btnEliminar"
                     style="width: 130px; height: 30px;">Confirmar</button>
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
@@ -216,7 +234,7 @@
             });
         });
     });
-    document.getElementById("btnCfm").onclick = function() {
+    document.getElementById("btnConfirmarEditar").onclick = function() {
 
         const id = document.getElementById('inputEditarNFuncionario').value;
 
@@ -257,6 +275,7 @@
         .then(data => {
                 console.log('Dados enviados com sucesso:', data);
                 $('#editarModal').modal('hide');
+                window.location.reload();
         })
         .catch(error => {
             console.error('Erro ao enviar dados:', error);
@@ -264,7 +283,7 @@
         
     }
 
-    document.getElementById('btnConfirmar').addEventListener('click', function () {
+    document.getElementById('btnConfirmarAdicionar').onclick = function() {
         
         const data = {
             num_func: document.getElementById('inputAdicionarNFuncionario').value,
@@ -304,11 +323,38 @@
         .then(data => {
             console.log('Dados enviados com sucesso:', data);
             $('#adicionarModal').modal('hide');
+            window.location.reload();
         })
         .catch(error => {
             console.error('Erro ao enviar dados:', error);
         });
-    });
+    };
+
+    document.getElementById("btnEliminar").onclick = function() {
+
+        const id = document.getElementById('inputEditarNFuncionario').value;
+
+        fetch('/comissao/docente/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Docente excluído com sucesso');
+                $('#editarModal').modal('hide');
+                window.location.reload();
+            } else {
+                console.error('Erro ao excluir docente');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao excluir docente:', error);
+        });
+        
+    }
 
     $(document).ready(function () {
         $('#inputPesquisar').on('keyup', function () {

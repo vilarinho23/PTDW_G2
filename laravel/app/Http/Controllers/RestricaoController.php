@@ -106,7 +106,7 @@ class RestricaoController extends Controller
 
         // Obter dados do docente
         $dados = $this->getDadosDocente($docente);
-        if ($docente->unidadesCurriculares->isEmpty()) return redirect()->route('docente');
+        if ($dados['ucs']->isEmpty()) return redirect()->route('docente');
 
         // Retornar informações para a view
         $dados['dataConclusao'] = $dataConclusao;

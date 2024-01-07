@@ -47,14 +47,13 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
     Route::get('/submissoes', [SubmissoesController::class, 'submissoes'])->name('submissoes');
     Route::post('/submissoes', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
 
-    Route::get('/docentes', [GestorDocenteController::class,'listarDocentes']
-    )->name('gestorDocentes');
-
-    Route::get('/docente/{id}', [GestorDocenteController::class, 'pesquisarDocente'])->name("docente.show");
-
-    Route::put('/docente/{id}',[GestorDocenteController::class,'editarDocente'])->name("editar.docente");
-
-    Route::post('/adicionar-docente', [GestorDocenteController::class, 'adicionarDocente'])->name('adicionar.docente');
+    Route::prefix('/docentes')->group(function () {
+        Route::get('/', [GestorDocenteController::class, 'listarDocentes'])->name('gestorDocentes');
+        Route::post('/', [GestorDocenteController::class, 'adicionarDocente'])->name('adicionar.docente');
+        Route::get('/{id}', [GestorDocenteController::class, 'pesquisarDocente'])->name("docente.show");
+        Route::put('/{id}',[GestorDocenteController::class, 'editarDocente'])->name("editar.docente");
+        Route::delete('/{id}',[GestorDocenteController::class, 'eliminarDocente'])->name("eliminar.docente");
+    });
 
     Route::get('/ucs', function () {
         return view('gestorUcs');

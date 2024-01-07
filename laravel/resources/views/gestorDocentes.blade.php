@@ -100,7 +100,7 @@
                         </div>
                         <div class="row mt-2 g-3 align-items-center">
                             <div class="col-sm-2">
-                                <label for="inputAdicionarAcn" class="col-form-label">Contacto</label>
+                                <label for="inputAdicionarContacto" class="col-form-label">Contacto</label>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" id="inputAdicionarContacto" placeholder="">
@@ -108,7 +108,7 @@
                         </div>
                         <div class="row mt-2 g-3 align-items-center">
                             <div class="col-sm-2">
-                                <label for="inputAdicionarAcn" class="col-form-label">E-mail</label>
+                                <label for="inputAdicionarEmail" class="col-form-label">E-mail</label>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" id="inputAdicionarEmail" placeholder="">
@@ -168,7 +168,7 @@
                         </div>
                         <div class="row mt-2 g-3 align-items-center">
                             <div class="col-sm-2">
-                                <label for="inputEditarAcn" class="col-form-label">Contacto</label>
+                                <label for="inputEditarContacto" class="col-form-label">Contacto</label>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" id="inputEditarContacto" >
@@ -176,7 +176,7 @@
                         </div>
                         <div class="row mt-2 g-3 align-items-center">
                             <div class="col-sm-2">
-                                <label for="inputEditarAcn" class="col-form-label">E-mail</label>
+                                <label for="inputEditarEmail" class="col-form-label">E-mail</label>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" id="inputEditarEmail" >

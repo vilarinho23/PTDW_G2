@@ -2,6 +2,7 @@
 
 namespace App\Exports\Sheets;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -72,11 +73,6 @@ class RestricoesPorDocenteSheet implements FromArray, WithTitle, WithHeadings, S
                 $resp = $uc->num_func_resp == $numFunc ? 'X' : '';
                 $softwareUC = $uc->software_necessario ?? '';
 
-                // Cursos
-                $cursos = $uc->cursos->map(function ($curso) {
-                    return $curso->acron_curso;
-                })->join(',') ?? '';
-
                 // Labs
                 $labUC = $uc->utilizacao_laboratorios != null ? 'X' : '';
 
@@ -86,18 +82,26 @@ class RestricoesPorDocenteSheet implements FromArray, WithTitle, WithHeadings, S
 
 
                 // Add to array (export data)
-                $content[] = [
-                    $numFunc, $nomeDocente,
-                    $codUC, $acnUC,
-                    $resp, $nomeUC,
-                    $cursos, $labUC,
-                    $restricoes, $softwareUC,
-                    $emailDocente, $telefoneDocente,
-                    $horasUC, $perc,
-                    $subT
-                ];
+                foreach ($uc->cursos as $curso)
+                {
+                    $content[] = [
+                        $numFunc, $nomeDocente,
+                        $codUC, $acnUC,
+                        $resp, $nomeUC,
+                        $curso->acron_curso, $labUC,
+                        $restricoes, $softwareUC,
+                        $emailDocente, $telefoneDocente,
+                        $horasUC, $perc,
+                        $subT
+                    ];
+                }
             }
         }
+
+        // Sort by nomeDocente (column 1), nomeUC (column 5) and acronCurso (column 6)
+        $content = Arr::sort($content, function ($value) {
+            return [$value[1], $value[5], $value[6]];
+        });
 
         return $content;
     }

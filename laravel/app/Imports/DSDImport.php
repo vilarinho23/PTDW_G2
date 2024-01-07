@@ -31,11 +31,13 @@ class DSDImport implements ToCollection, WithHeadingRow
         });
 
         // For each UnidadeCurricular:
-        // delete all docentes (done by last step)
-        // delete all Laboratorio
+        // detach all docentes (done by last step)
+        // detach all Laboratorio
+        // detach all Curso
         // set sala_avaliacoes, utilizacao_laboratorios and software_necessario to null
         UnidadeCurricular::all()->each(function ($uc) {
             $uc->laboratorios()->detach();
+            $uc->cursos()->detach();
 
             $uc->sala_avaliacoes = null;
             $uc->utilizacao_laboratorios = null;
@@ -48,11 +50,11 @@ class DSDImport implements ToCollection, WithHeadingRow
     private static function getSemestreAtual()
     {
         // Comissão de Horários starts earlier
-        // 1º semestre: setembro-fevereiro (early: julho-outubro)
-        // 2º semestre: fevereiro-julho (early: novembro-junho)
+        // 1º semestre: setembro-fevereiro (early: maio-outubro)
+        // 2º semestre: fevereiro-julho (early: novembro-abril)
         $now = Carbon::now();
         $semestre = $now->isBetween(
-            Carbon::createFromDate($now->year, 7, 1),
+            Carbon::createFromDate($now->year, 5, 1),
             Carbon::createFromDate($now->year, 10, 31)
         ) ? 1 : 2;
 
@@ -102,14 +104,11 @@ class DSDImport implements ToCollection, WithHeadingRow
         $uc->horas_uc = $horas_uc;
         $uc->nome_uc = $nome_uc;
         $uc->acn_uc = $acn_uc;
+        $uc->semestre_uc = $semestre_uc;
 
-        // Check if is a new UC
-        if (!$uc->exists)
-        {
-            // Set semestre_uc and resp to Docente (cannot be null)
-            $uc->semestre_uc = $semestre_uc;
-            $uc->num_func_resp = $num_func_resp;
-        }
+        // Check if is a new UC and Set resp to Docente (cannot be null)
+        if (!$uc->exists) $uc->num_func_resp = $num_func_resp;
+
         $uc->save();
 
         // Attach Cursos to UnidadeCurricular

@@ -7,6 +7,7 @@ use App\Http\Controllers\SubmissoesController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestorDocenteController;
 use App\Http\Controllers\FakeIdpController;
+use App\Http\Controllers\ImportExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +45,13 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
         return redirect()->route('submissoes');
     })->name('comissao');
 
-    Route::get('/submissoes', [SubmissoesController::class, 'submissoes'])->name('submissoes');
-    Route::post('/submissoes', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
+    Route::prefix('/submissoes')->group(function () {
+        Route::get('/', [SubmissoesController::class, 'submissoes'])->name('submissoes');
+        Route::post('/', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
+
+        Route::get('/export', [ImportExportController::class, 'export'])->name('export.all');
+        Route::get('/export/{docente}', [ImportExportController::class, 'exportDocente'])->name('export.docente');
+    });
 
     Route::prefix('/docentes')->group(function () {
         Route::get('/', [GestorDocenteController::class, 'listarDocentes'])->name('gestorDocentes');
@@ -69,7 +75,5 @@ Route::prefix('/testar')->group(function () {
     Route::get('/models', [TesteController::class, 'testarModels']);
 
     Route::get('/import', [TesteController::class, 'testarImport']);
-    Route::get('/export', [TesteController::class, 'testarExport']);
-    Route::get('/export/{docente}', [TesteController::class, 'testarExportDocente']);
 });
 

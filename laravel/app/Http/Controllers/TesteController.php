@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\RestricoesExport;
-use App\Imports\DSDImport;
 use App\Models\Curso;
 use App\Models\Docente;
 use App\Models\KeyValue;
@@ -11,9 +9,9 @@ use App\Models\Laboratorio;
 use App\Models\RestricaoHorario;
 use App\Models\UnidadeCurricular;
 use App\Models\User;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\UploadedFile;
 
 class TesteController extends Controller
 {
@@ -43,62 +41,22 @@ class TesteController extends Controller
 
     public function testarImport()
     {
+        // Get file from storage
         $filename = 'Output_DSD.xlsx';
-        $haveFileDSD = Storage::exists($filename);
-        if (!$haveFileDSD)
-        {
-            return response()->json([
-                'message' => "Ficheiro $filename não encontrado"
-            ]);
-        }
+        $uploadedFile = new UploadedFile(
+            Storage::path($filename),
+            $filename,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            null,
+            true
+        );
 
-        $import = new DSDImport;
-        Excel::import($import, $filename);
+        // Put file on request object
+        $request = new Request();
+        $request->files->set('file', $uploadedFile);
 
-        // Set last import filename, uploader and timestamp
-        KeyValue::set('last_import:filename', $filename);
-        KeyValue::set('last_import:uploader', 'TesteController@testarImport');
-        KeyValue::set('last_import:timestamp', Carbon::now()->format('d/m/Y H:i:s'));
-
-        // Set last import errors (line numbers)
-        $errorLines = array_keys($import->getErrors());
-        $errorLines = $errorLines == [] ? null : implode(',', $errorLines);
-        KeyValue::set('last_import:line_errors', $errorLines);
-
-        // Return response
-        return response()->json([
-            'message' => "Importação do ficheiro $filename concluída",
-            'errors' => $import->getErrors()
-        ]);
-    }
-
-    public function testarExport()
-    {
-        $filename = 'Output_restricoes.xlsx';
-
-        $export = new RestricoesExport;
-        $download = Excel::download($export, $filename);
-
-        // Set last export downloader and timestamp
-        KeyValue::set('last_export:dowloader', 'TesteController@testarExport');
-        KeyValue::set('last_export:timestamp', Carbon::now()->format('d/m/Y H:i:s'));
-
-        return $download;
-    }
-
-    public function testarExportDocente(Docente $docente)
-    {
-        $docente->load('restricoes', 'respUnidadesCurriculares', 'unidadesCurriculares');
-        $filename = "Output_restricoes_docente{$docente->num_func}.xlsx";
-
-        $collection = collect([$docente]);
-        $export = new RestricoesExport($collection);
-        $download = Excel::download($export, $filename);
-
-        // Set last export downloader and timestamp
-        KeyValue::set('last_export:dowloader', "TesteController@testarExportDocente{$docente->num_func}");
-        KeyValue::set('last_export:timestamp', Carbon::now()->format('d/m/Y H:i:s'));
-
-        return $download;
+        // Import file
+        $controller = new ImportExportController();
+        return $controller->import($request);
     }
 }

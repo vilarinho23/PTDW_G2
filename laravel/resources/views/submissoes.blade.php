@@ -20,11 +20,9 @@
         <div class="d-flex flex-column align-items-center gap-3 me-2 ms-auto">
             <div class="h-50">
                 <button type="button" class="button-style" style="width: 200px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Término</button>
-
             </div>
             <div class="h-50">
-                <button type="button" class="button-style" style="width: 200px;height: 40px">Transferir Submissões</button>
-
+                <button id="transferirBtn" type="button" class="button-style" style="width: 200px;height: 40px">Transferir Submissões</button>
             </div>
         </div>
     </div>
@@ -261,5 +259,9 @@
         }
     }
 
+    $("#transferirBtn").click(() => {
+        const url = "{{ route('export.all') }}";
+        window.location.href = url;
+    });
 </script>
 @endsection

@@ -39,6 +39,7 @@ Route::prefix('/comissao')->group(function () {
 
     Route::get('/submissoes', [SubmissoesController::class, 'submissoes'])->name('submissoes');
     Route::post('/submissoes', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
+    Route::get('/submissoes/{id}', [SubmissoesController::class, 'restricoes'])->name('submissoes.restricoes');
 
     Route::get('/docentes', [GestorDocenteController::class,'listarDocentes']
     )->name('gestorDocentes');

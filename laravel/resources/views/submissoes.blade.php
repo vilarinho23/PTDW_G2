@@ -64,7 +64,7 @@
                 </thead>
                 <tbody>
                     @foreach($submissoes->sortBy('data_submissao', SORT_REGULAR, false) as $item)
-                        <tr class="hover listrow">
+                        <tr class="hover listrow" data-num-func="{{ $item->num_func }}">
                             <td class="col-3">{{ $item->num_func }}</td>
                             <td class="text-start">{{ $item->nome_docente }}</td>
                             <td class="aligned-td">{{ $item->data_submissao->format('d-m-Y') }}</td>
@@ -108,12 +108,20 @@
         var tableRows = document.querySelectorAll('.table tbody tr');
         var sortDropdown = document.getElementById('sortDropdown');
 
+        $('.listrow').click(function () {
+            var numFuncValue = $(this).data('num-func');
+            console.log(numFuncValue);
+
+            const url = "{{ route('submissoes.restricoes', '') }}/" + numFuncValue;
+
+            window.location.href = url;
+        });
+
         function getlistNumbers(){
             var docentes = @json($submissoes);
             for (var docente in docentes) {
                 lista.push(docentes[docente]["num_func"]);
             }
-            console.log(lista);
         }
 
         function sortTableByDate(order) {

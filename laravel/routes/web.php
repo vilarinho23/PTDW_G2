@@ -48,6 +48,7 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
     Route::prefix('/submissoes')->group(function () {
         Route::get('/', [SubmissoesController::class, 'submissoes'])->name('submissoes');
         Route::post('/', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
+        Route::get('/{id}', [SubmissoesController::class, 'restricoes'])->name('submissoes.restricoes');
 
         Route::get('/export', [ImportExportController::class, 'export'])->name('export.all');
         Route::get('/export/{docente}', [ImportExportController::class, 'exportDocente'])->name('export.docente');

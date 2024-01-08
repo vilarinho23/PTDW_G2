@@ -78,7 +78,7 @@ class ImportExportController extends Controller
         $timestamp = $this->getCurrentTimestamp();
 
         // Set last export downloader and timestamp
-        KeyValue::set('last_export:dowloader', $downloader);
+        KeyValue::set('last_export:downloader', $downloader);
         KeyValue::set('last_export:timestamp', $timestamp);
 
         return $download;
@@ -100,7 +100,7 @@ class ImportExportController extends Controller
         $timestamp = $this->getCurrentTimestamp();
 
         // Set last export downloader and timestamp
-        KeyValue::set('last_export:dowloader', $downloader);
+        KeyValue::set('last_export:downloader', $downloader);
         KeyValue::set('last_export:timestamp', $timestamp);
 
         return $download;

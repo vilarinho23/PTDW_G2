@@ -1,6 +1,6 @@
 @extends('partials._document')
 @section('head')
-@include('partials._head', ["titulo" => "Submissões"])
+@include('partials._head', ["titulo" => "Submissão de $nomeDocente ($numFunc)"])
 @endsection
 @section('header')
 @include('partials._headerComissao')
@@ -10,13 +10,6 @@
 <div class="d-flex align-items-center justify-content-center">
     <div class="p-5" style="min-height: 80vh;">
         <div class="text-center fs-4 fw-bold mb-4">{{ $numFunc }} - {{ $nomeDocente }}</div>
-        {{-- Erros --}}
-        @foreach ($errors->all() as $error)
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Erro!</strong> {{$error}}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endforeach
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             {{-- Tab para cada UC --}}
@@ -96,20 +89,14 @@
                         <div class="d-flex gap-4 mt-5">
                             <p><strong>Software Necessário:</strong></p>
                             {{-- software_necessario --}}
-                            @php
-                                $fieldName = "${id}_software_necessario";
-                            @endphp
-
                             <div class="input-group input-group-md">
-                                <textarea class="form-control" name="{{$fieldName}}" rows="3" disabled readonly>{{
-                                    old($fieldName, $uc->software_necessario) ?? ''
-                                }}</textarea>
+                                <textarea class="form-control" rows="3" disabled readonly>{{$uc->software_necessario ?? ''}}</textarea>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end position-absolute" style="bottom: 30px; right: 30px;">
                         <button type="button" class="button-style botao-seguinte" style="width: 130px; height: 30px;">Seguinte</button>
-                    </div>  
+                    </div>
                 </div>
             @endforeach
 
@@ -129,10 +116,7 @@
                         </thead>
                         <tbody>
                             @php
-                                $fieldName = 'impedimentos';
-
-                                $impSelected = old($fieldName) ?? [];
-                                if (old("_token") == null) $impSelected = $restricoes->map(function ($restricao) {
+                                $impSelected = $restricoes->map(function ($restricao) {
                                     return ($restricao->dia_semana->value) . '_' . ($restricao->parte_dia->value);
                                 })->toArray();
                             @endphp
@@ -144,9 +128,8 @@
                                         @php
                                             $dia = $dia->value;
                                             $checked = in_array($dia . '_' . $parteDia, $impSelected) ? 'checked' : '';
-                                            $disabled = $dia == 'sabado' && $parteDia == 'noite' ? 'disabled' : '';
                                         @endphp
-                                        <td><input class="form-check-input impedimento-check" type="checkbox" name="{{$fieldName}}[]" value="{{$dia}}_{{$parteDia}}" aria-label="..." {{$checked}} disabled style="opacity: 1"></td>
+                                        <td><input class="form-check-input impedimento-check" type="checkbox" value="{{$dia}}_{{$parteDia}}" aria-label="..." {{$checked}} disabled style="opacity: 1"></td>
                                     @endforeach
                                 </tr>
                             @endforeach
@@ -155,21 +138,7 @@
                 </div>
                 <div class="d-flex justify-content-end position-absolute" style="bottom: 30px; right: 30px">
                     <button type="button" onclick="window.location.href = '{{ route('submissoes') }}'" class="button-style botao-fechar" style="width: 130px; height: 30px;">Fechar</button>
-                </div>  
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="submeterModal" tabindex="-1" aria-labelledby="submeterModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0">
-            <div class="modal-header border-0">
-                <h5 class="modal-title mx-auto" id="submeterModalLabel">Submeter informações?</h5>
-            </div>
-            <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" id="botao-submeter">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>

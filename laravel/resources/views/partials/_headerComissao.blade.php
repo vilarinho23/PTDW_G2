@@ -6,10 +6,4 @@
     <a class="m-0 p-0 text-decoration-none {{ Request::is('comissao/ucs*') ? 'fw-bold' : '' }}" style="color: black; font-family: 'Inter', sans-serif;" href="{{ route("gestorUcs") }}">Gestor de UC's</a>
     <a class="m-0 p-0 text-decoration-none {{ Request::is('comissao/atribuicaoucs*') ? 'fw-bold' : '' }}" style="color: black; font-family: 'Inter', sans-serif;" href="{{ route("atribuicaoUcs") }}">Atribuição UC's</a>
 </div>
-<div class="position-absolute end-0 d-flex align-items-center">
-    <p class="m-0 p-0 me-3" style="color: black; font-family: 'Inter', sans-serif;">
-        {{ $nomeComissao ?? "nomeComissao" }}
-    </p>
-    <img class="m-0 p-0 me-4" src="{{ asset('images/logout.svg') }}" alt="Image_logout" id="image_logout" data-bs-toggle="modal" data-bs-target="#logOutModal">
-</div>
 @endsection

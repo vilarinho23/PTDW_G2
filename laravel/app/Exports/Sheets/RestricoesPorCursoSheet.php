@@ -2,6 +2,7 @@
 
 namespace App\Exports\Sheets;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -63,26 +64,29 @@ class RestricoesPorCursoSheet implements FromArray, WithTitle, WithHeadings, Sho
                 $acnUC = $uc->acn_uc;
                 $resp = $uc->num_func_resp == $numFunc ? 'X' : '';
 
-                // Cursos
-                $cursos = $uc->cursos->map(function ($curso) {
-                    return $curso->acron_curso;
-                })->join(',') ?? '';
-
                 // Docente-UC properties
                 $perc = $uc->pivot->perc_horas / 100;
                 $subT = $perc * $horasUC;
 
 
                 // Add to array (export data)
-                $content[] = [
-                    $numFunc, $nomeDocente,
-                    $codUC, $acnUC,
-                    $resp, $nomeUC,
-                    $cursos, $horasUC,
-                    $perc, $subT
-                ];
+                foreach ($uc->cursos as $curso)
+                {
+                    $content[] = [
+                        $numFunc, $nomeDocente,
+                        $codUC, $acnUC,
+                        $resp, $nomeUC,
+                        $curso->acron_curso, $horasUC,
+                        $perc, $subT
+                    ];
+                }
             }
         }
+
+        // Sort by acronCurso (column 6), nomeUC (column 5) and nomeDocente (column 1)
+        $content = Arr::sort($content, function ($value) {
+            return [$value[6], $value[5], $value[1]];
+        });
 
         return $content;
     }

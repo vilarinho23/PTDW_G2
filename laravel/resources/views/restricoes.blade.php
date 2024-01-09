@@ -119,15 +119,24 @@
                                             <p><strong>Laboratórios Possíveis: </strong></p>
                                             <div class="d-flex flex-column" style="max-height: 100px; overflow-y: auto;">
                                                 {{-- laboratorios --}}
-                                                @php $laboratoriosUc = $uc->laboratorios->pluck('designacao_lab'); @endphp
-                                                @php $fieldName = "${id}_laboratorios"; @endphp
+                                                @php
+                                                    $fieldName = "${id}_laboratorios";
+
+                                                    $oldLabs = old($fieldName) ?? [];
+                                                    $laboratoriosUc = $uc->laboratorios->pluck('designacao_lab');
+
+                                                    $labSelected = old("_token") ? $oldLabs : $laboratoriosUc->toArray();
+                                                @endphp
                                                 <ul class="list-unstyled mb-0">
                                                     @foreach ($laboratorios as $lab)
-                                                        @php $checked = in_array($lab->designacao_lab, $laboratoriosUc->toArray()) ? 'checked' : ''; @endphp
+                                                        @php
+                                                            $checked = in_array($lab->designacao_lab, $labSelected) ? 'checked' : '';
+                                                            $labId = $fieldName . "_" . $loop->index;
+                                                        @endphp
                                                         <li>
                                                             <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" type="checkbox" name="{{$fieldName}}[]" value="{{$lab->designacao_lab}}" {{$checked}}>
-                                                                <label class="form-check-label" for="{{$fieldName}}_{{$lab->designacao_lab}}">{{$lab->designacao_lab}}</label>
+                                                                <input class="form-check-input" type="checkbox" id="{{$labId}}" name="{{$fieldName}}[]" value="{{$lab->designacao_lab}}" {{$checked}}>
+                                                                <label class="form-check-label" for="{{$labId}}">{{$lab->designacao_lab}}</label>
                                                             </div>
                                                         </li>
                                                     @endforeach
@@ -172,7 +181,7 @@
 
                                 <div class="input-group input-group-md">
                                     <textarea class="form-control" name="{{$fieldName}}" rows="3" {{$disabled}}>{{
-                                        old($fieldName, $uc->software_necessario) ?? ''
+                                        old($fieldName, $uc->software_necessario ?? '') ?? ''
                                     }}</textarea>
                                 </div>
                             </div>
@@ -200,24 +209,30 @@
                             <tbody>
                                 @php
                                     $fieldName = 'impedimentos';
+                                    $blocosSemAulas = ["sabado_noite"];
 
-                                    $impSelected = old($fieldName) ?? [];
-                                    if (old("_token") == null) $impSelected = $restricoes->map(function ($restricao) {
+                                    $impOld = old($fieldName) ?? [];
+                                    $impedimentos = $restricoes->map(function ($restricao) {
                                         return ($restricao->dia_semana->value) . '_' . ($restricao->parte_dia->value);
-                                    })->toArray();
+                                    });
+
+                                    $impSelected = old("_token") ? $impOld : $impedimentos->toArray();
                                 @endphp
                                 @foreach ($partesDia as $parteDia)
                                     <tr>
                                         <th scope="col">{{$parteDia->value}}</th>
                                         @foreach ($diasSemana as $dia)
                                             @php
-                                                $checked = in_array($dia->value . '_' . $parteDia->value, $impSelected) ? 'checked' : '';
+                                                $impValue = $dia->value . '_' . $parteDia->value;
+
+                                                $checked = in_array($impValue, $impSelected) ? 'checked' : '';
+                                                $semAulas = in_array($impValue, $blocosSemAulas);
                                             @endphp
-                                
-                                            @if (!($dia->value == 'sabado' && $parteDia->value == 'noite'))
-                                                <td><input class="form-check-input impedimento-check" type="checkbox" name="{{$fieldName}}[]" value="{{$dia->value}}_{{$parteDia->value}}" aria-label="..." {{$checked}}></td>
-                                            @else
+
+                                            @if ($semAulas)
                                                 <td></td>
+                                            @else
+                                                <td><input class="form-check-input impedimento-check" type="checkbox" name="{{$fieldName}}[]" value="{{$dia->value}}_{{$parteDia->value}}" aria-label="..." {{$checked}}></td>
                                             @endif
                                         @endforeach
                                     </tr>

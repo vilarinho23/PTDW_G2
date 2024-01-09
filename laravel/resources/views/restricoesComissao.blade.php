@@ -116,20 +116,26 @@
                         </thead>
                         <tbody>
                             @php
-                                $impSelected = $restricoes->map(function ($restricao) {
-                                    return ($restricao->dia_semana->value) . '_' . ($restricao->parte_dia->value);
-                                })->toArray();
-                            @endphp
+                                    $fieldName = 'impedimentos';
+
+                                    $impSelected = old($fieldName) ?? [];
+                                    if (old("_token") == null) $impSelected = $restricoes->map(function ($restricao) {
+                                        return ($restricao->dia_semana->value) . '_' . ($restricao->parte_dia->value);
+                                    })->toArray();
+                                @endphp
                             @foreach ($partesDia as $parteDia)
-                                @php $parteDia = $parteDia->value; @endphp
                                 <tr>
-                                    <th scope="col">{{$parteDia}}</th>
+                                    <th scope="col">{{$parteDia->value}}</th>
                                     @foreach ($diasSemana as $dia)
                                         @php
-                                            $dia = $dia->value;
-                                            $checked = in_array($dia . '_' . $parteDia, $impSelected) ? 'checked' : '';
+                                            $checked = in_array($dia->value . '_' . $parteDia->value, $impSelected) ? 'checked' : '';
                                         @endphp
-                                        <td><input class="form-check-input impedimento-check" type="checkbox" value="{{$dia}}_{{$parteDia}}" aria-label="..." {{$checked}} disabled style="opacity: 1"></td>
+                            
+                                        @if (!($dia->value == 'sabado' && $parteDia->value == 'noite'))
+                                            <td><input class="form-check-input impedimento-check" type="checkbox" name="{{$fieldName}}[]" value="{{$dia->value}}_{{$parteDia->value}}" aria-label="..." {{$checked}} disabled style="opacity: 1"></td>
+                                        @else
+                                            <td></td>
+                                        @endif
                                     @endforeach
                                 </tr>
                             @endforeach

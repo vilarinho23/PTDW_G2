@@ -40,3 +40,19 @@ botaoSubmeter?.addEventListener('click', () => {
     const form = document.getElementById("form-restricoes");
     form.submit();
 })
+
+const checkboxes = $('.impedimento-check');
+checkboxes.change(function () {
+    const maxChecked = 15;
+    var checkedCount = checkboxes.filter(':checked').length;
+
+    if (checkedCount > maxChecked) {
+        // Uncheck the last clicked checkbox
+        $(this).prop('checked', false);
+        alert('You can only select up to ' + maxChecked + ' checkboxes.');
+    }
+
+    // Disable remaining checkboxes if the maximum limit is reached
+    checkboxes.filter(':not(:checked)').prop('disabled', checkedCount >= maxChecked);
+});
+

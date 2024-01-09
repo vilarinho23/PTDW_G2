@@ -180,8 +180,9 @@
                                 @endphp
 
                                 <div class="input-group input-group-md">
+                                    @php $softwareNecessario = old("_token") ? old($fieldName) : $uc->software_necessario; @endphp
                                     <textarea class="form-control" name="{{$fieldName}}" rows="3" {{$disabled}}>{{
-                                        old($fieldName, $uc->software_necessario ?? '') ?? ''
+                                        $softwareNecessario ?? ''
                                     }}</textarea>
                                 </div>
                             </div>

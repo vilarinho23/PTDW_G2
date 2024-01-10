@@ -50,9 +50,10 @@ Route::prefix('/comissao')->group(function () {
     Route::post('/adicionar-docente', [GestorDocenteController::class, 'adicionarDocente'])->name('adicionar.docente');
 
     Route::get('/ucs', [GestorUcController::class, 'getAllUnidadesCurriculares'])->name('gestorUcs');
-    Route::post('/uc', [GestorUcController::class, 'adicionarUnidadeCurricular'])->name('adicionarUnidadeCurricular');
-    //Route::get('/uc/{id}/edit', [GestorUcController::class, 'editUnidadeCurricular'])->name('editUnidadeCurricular');
-    //Route::put('/uc/{id}', [GestorUcController::class, 'updateUnidadeCurricular'])->name('updateUnidadeCurricular');
+    Route::post('/uc', [GestorUcController::class, 'adicionarUnidadeCurricular'])->name('adicionar.unidadeCurricular');
+    Route::put('/uc/{cod_uc}', [GestorUcController::class, 'updateUnidadeCurricular'])->name('update.unidadeCurricular');
+    Route::get('/uc/{id}', [GestorUcController::class, 'pesquisarUnidadeCurricular'])->name("unidadeCurricular.show");
+    Route::delete('/uc/{id}',[GestorUcController::class, 'eliminarUnidadeCurricular'])->name("eliminar.unidadeCurricular");
 
 
 

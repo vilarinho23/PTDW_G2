@@ -82,6 +82,12 @@ class SubmissoesController extends Controller
         // Merge das UCs e das UCs que o docente é responsável (sem repetições)
         $ucs = $respUCs->merge($ucs);
 
+        // Adicionar campo isresponsavel para as UCs que o docente é responsável
+        foreach ($ucs as $uc) $uc->isresponsavel = $respUCs->contains($uc);
+
+        // Ordenar UCs por isresponsavel e cod_uc
+        $ucs->sortBy('isresponsavel')->sortBy('cod_uc');
+
         // Restrições, data de submissao e nome
         $restricoes = $docente->restricoes;
         $dataSubmissao = $docente->data_submissao;

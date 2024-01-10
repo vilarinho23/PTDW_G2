@@ -18,11 +18,8 @@ class DocenteUcController extends Controller
         $ucs = UnidadeCurricular::select('cod_uc', 'nome_uc')->distinct()->get();
 
         // Cria uma coleção com os dados necessários para a tabela
-        $dados = collect();
-        foreach ($ucsDocentesCursos as $ucDocenteCurso)
-        {
-            foreach ($ucDocenteCurso->docentes as $docente)
-            {
+        $dados = $ucsDocentesCursos->map(function ($ucDocenteCurso) {
+            return $ucDocenteCurso->docentes->map(function ($docente) use ($ucDocenteCurso) {
                 $pivot = $docente->pivot;
                 $item = new \stdClass();
 
@@ -32,9 +29,9 @@ class DocenteUcController extends Controller
                 $item->cod_uc = $pivot->cod_uc;
                 $item->perc_horas = $pivot->perc_horas;
 
-                $dados->push($item);
-            }
-        }
+                return $item;
+            });
+        })->flatten();
 
         return view('atribuicaoUcs', compact('funcionarios', 'ucs', 'dados'));
     }

@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
 use App\Http\Controllers\RestricaoController;
 use App\Http\Controllers\DocenteUcController;
+use App\Http\Controllers\SubmissoesController;
+use App\Http\Controllers\GestorDocenteController;
+use App\Http\Controllers\FakeIdpController;
+use App\Http\Controllers\ImportExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,43 +20,65 @@ use App\Http\Controllers\DocenteUcController;
 |
 */
 
+// Landing page
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/idp', function () {
-    return view('idp');
+// Fake Idp
+Route::prefix('idp')->group(function () {
+    Route::get('/', [FakeIdpController::class, 'idp'])->name('idp');
+    Route::post('/', [FakeIdpController::class, 'login'])->name('login');
+    Route::get('/logout', [FakeIdpController::class, 'logout'])->name('logout');
 });
 
-Route::prefix('/docente')->group(function () {
+// Docente
+Route::prefix('/docente')->middleware('auth_docente')->group(function () {
     Route::get('/', [RestricaoController::class, 'docente'])->name('docente');
     Route::get('/restricoes', [RestricaoController::class, 'restricoes'])->name('restricoes');
     Route::post('/restricoes', [RestricaoController::class, 'submeter'])->name('restricoesSubmeter');
 });
 
-Route::prefix('/comissao')->group(function () {
+// Comissão
+Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
     Route::get('/', function () {
         return redirect()->route('submissoes');
     })->name('comissao');
 
-    Route::get('/submissoes', function () {
-        return view('submissoes');
-    })->name('submissoes');
+    Route::prefix('/submissoes')->group(function () {
+        Route::get('/', [SubmissoesController::class, 'submissoes'])->name('submissoes');
+        Route::post('/', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
+        Route::get('/{id}', [SubmissoesController::class, 'restricoes'])->name('submissoes.restricoes');
 
-    Route::get('/docentes', function () {
-        return view('gestorDocentes');
-    })->name('gestorDocentes');
+        Route::get('/export', [ImportExportController::class, 'export'])->name('export.all');
+        Route::get('/export/{docente}', [ImportExportController::class, 'exportDocente'])->name('export.docente');
+    });
+
+    Route::prefix('/docentes')->group(function () {
+        Route::get('/', [GestorDocenteController::class, 'listarDocentes'])->name('gestorDocentes');
+        Route::post('/', [GestorDocenteController::class, 'adicionarDocente'])->name('adicionar.docente');
+        Route::get('/{id}', [GestorDocenteController::class, 'pesquisarDocente'])->name("docente.show");
+        Route::put('/{id}',[GestorDocenteController::class, 'editarDocente'])->name("editar.docente");
+        Route::delete('/{id}',[GestorDocenteController::class, 'eliminarDocente'])->name("eliminar.docente");
+    });
 
     Route::get('/ucs', function () {
         return view('gestorUcs');
     })->name('gestorUcs'); 
 
-    Route::get('/atribuicaoucs', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');
-    Route::post('/atribuicaoucs', [DocenteUcController::class, 'store'])->name('atribuicaoUcs.store');
-    Route::put('/atribuicaoucs/{num_func}/{cod_uc}', [DocenteUcController::class, 'update'])->name('atribuicaoUcs.update');
-    Route::delete('/atribuicaoucs/{num_func}/{cod_uc}', [DocenteUcController::class, 'destroy'])->name('atribuicaoUcs.destroy');
+    Route::prefix('/atribuicaoucs')->group(function () {
+        Route::get('/', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');
+        Route::post('/', [DocenteUcController::class, 'store'])->name('atribuicaoUcs.store');
+        Route::put('/{num_func}/{cod_uc}', [DocenteUcController::class, 'update'])->name('atribuicaoUcs.update');
+        Route::delete('/{num_func}/{cod_uc}', [DocenteUcController::class, 'destroy'])->name('atribuicaoUcs.destroy');
+    });
+    Route::post('/import', [ImportExportController::class, 'import'])->name('import');
 });
 
+// Testes
 Route::prefix('/testar')->group(function () {
     Route::get('/models', [TesteController::class, 'testarModels']);
+
+    Route::get('/import', [TesteController::class, 'testarImport']);
 });
+

@@ -21,9 +21,21 @@ class UCSeeder extends Seeder
         $docentes = Docente::all();
 
         // Criar cursos, laboratórios e docentes se não existirem
-        if ($cursos->isEmpty()) $this->call(CursoSeeder::class);
-        if ($laboratorios->isEmpty()) $this->call(LaboratorioSeeder::class);
-        if ($docentes->isEmpty()) $this->call(DocenteSeeder::class);
+        if ($cursos->isEmpty())
+        {
+            $this->call(CursoSeeder::class);
+            $cursos = Curso::all();
+        }
+        if ($laboratorios->isEmpty())
+        {
+            $this->call(LaboratorioSeeder::class);
+            $laboratorios = Laboratorio::all();
+        }
+        if ($docentes->isEmpty())
+        {
+            $this->call(DocenteSeeder::class);
+            $docentes = Docente::all();
+        }
 
 
         // Criar UCs se não existirem e associar a docentes (responsável)

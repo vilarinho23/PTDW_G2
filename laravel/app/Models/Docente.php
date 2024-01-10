@@ -59,7 +59,9 @@ class Docente extends Model
         'nome_docente',
         'acn_docente',
         'data_submissao',
-        'observacoes'
+        'observacoes',
+        'email_docente',
+        'telef_docente',
     ];
 
     /**

@@ -33,15 +33,19 @@
                             <th>Nº</th>
                             <th>Nome Docente</th>
                             <th>ACN Docente</th>
+                            <th>Contacto</th>
+                            <th>E-mail</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($docentes as $docente)
-                        <tr data-id={{$docente->num_func}} data-url={{ route("docente.show",$docente->num_func) }}>
-                            <td class="fw-bold" scope="row">{{ $docente->num_func }}</td>
+                        <tr class="listrow" data-id={{$docente->num_func}} data-url={{ route("docente.show", $docente->num_func) }}>
+                            <td class="fw-bold">{{ $docente->num_func }}</td>
                             <td>{{ $docente->nome_docente }}</td>
                             <td>{{ $docente->acn_docente }}</td>
+                            <td>{{ $docente->telef_docente }}</td>
+                            <td>{{ $docente->email_docente }}</td>
                             <td><img src="{{ asset('images/edit.svg') }}" alt="edit"></td>
                         </tr>
                         @endforeach
@@ -67,39 +71,54 @@
             </div>
 
             <div class="modal-body">
-                <form method="POST" action="{{ route('adicionar.docente') }}">
-                    @csrf
-                    <div class="container-fluid">
-                        <div class="row g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputAdicionarNFuncionario" class="col-form-label">Nº funcionário</label>
-                            </div>
-                            <div class="col-sm">
-                                <input type="text" class="form-control" id="inputAdicionarNFuncionario" placeholder="">
-                            </div>
+                <div class="container-fluid">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarNFuncionario" class="col-form-label">Nº funcionário</label>
                         </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputAdicionarNome" class="col-form-label">Nome docente</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputAdicionarNome" placeholder="">
-                            </div>
-                        </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputAdicionarAcn" class="col-form-label">ACN docente</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputAdicionarAcn" placeholder="">
-                            </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" id="inputAdicionarNFuncionario" placeholder="">
                         </div>
                     </div>
-                </form>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarNome" class="col-form-label">Nome docente</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputAdicionarNome" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarAcn" class="col-form-label">ACN docente</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputAdicionarAcn" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarContacto" class="col-form-label">Contacto</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputAdicionarContacto" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputAdicionarEmail" class="col-form-label">E-mail</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputAdicionarEmail" placeholder="">
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <div class="d-flex justify-content-center" id="mensagemErroAdicionar" style="color: red;"></div>
+
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" id="btnConfirmar" class="mx-2 button-style"
+                <button type="button" id="btnConfirmarAdicionar" class="mx-2 button-style"
                     style="width: 130px; height: 30px;">Confirmar</button>
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
@@ -117,39 +136,75 @@
             </div>
 
             <div class="modal-body">
-                <form method="PUT" action="/docente/{{$docente->num_func}}">
-                    @csrf
-                    <div class="container-fluid">
-                        <div class="row g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputEditarNFuncionario" class="col-form-label">Nº funcionário</label>
-                            </div>
-                            <div class="col-sm">
-                                <input type="text" class="form-control" id="inputEditarNFuncionario" name="num_func" >
-                            </div>
+                <div class="container-fluid">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarNFuncionario" class="col-form-label">Nº funcionário</label>
                         </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputEditarNome" class="col-form-label">Nome docente</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputEditarNome" >
-                            </div>
-                        </div>
-                        <div class="row mt-2 g-3 align-items-center">
-                            <div class="col-sm-2">
-                                <label for="inputEditarAcn" class="col-form-label">ACN docente</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputEditarAcn" >
-                            </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" id="inputEditarNFuncionario" name="num_func" >
                         </div>
                     </div>
-                </form>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarNome" class="col-form-label">Nome docente</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEditarNome" >
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarAcn" class="col-form-label">ACN docente</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEditarAcn" >
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarContacto" class="col-form-label">Contacto</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEditarContacto" >
+                        </div>
+                    </div>
+                    <div class="row mt-2 g-3 align-items-center">
+                        <div class="col-sm-2">
+                            <label for="inputEditarEmail" class="col-form-label">E-mail</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputEditarEmail" >
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <div class="d-flex justify-content-center" id="mensagemErroEditar" style="color: red;"></div>
+
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" id="btnCfm"
+                <button type="button" class="mx-2 button-style" id="btnConfirmarEditar"
+                    style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="mx-2 button-style-red" id="btnEliminarModal"
+                style="width: 130px; height: 30px;" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-lg" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header border-0">
+                <h3 class="modal-title mx-auto" id="eliminarModalLabel">Confirmar Eliminação</h3>
+            </div>
+
+            <div class="modal-body"></div>
+            <div class="modal-footer d-flex justify-content-center border-0">
+                <button type="button" class="mx-2 button-style" id="btnEliminar"
                     style="width: 130px; height: 30px;">Confirmar</button>
                 <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
@@ -160,6 +215,10 @@
 
 
 <script>
+    const updateDocenteUrl = "{{ route('editar.docente', ':id') }}";
+    const insertDocenteUrl = "{{ route('adicionar.docente') }}";
+    const deleteDocenteUrl = "{{ route('eliminar.docente', ':id') }}";
+
     $(document).ready(function () {
         $('body').on('click', 'tr', function () {
             var userURL = $(this).data('url');
@@ -168,24 +227,31 @@
                 $('#inputEditarNFuncionario').val(data.num_func);
                 $('#inputEditarNome').val(data.nome_docente);
                 $('#inputEditarAcn').val(data.acn_docente);
+                $('#inputEditarContacto').val(data.telef_docente);
+                $('#inputEditarEmail').val(data.email_docente);
 
-                $(".modal-body > form").attr("action", `/docente/${data.num_func}`);
-
+                $(".modal-body > form").attr(
+                    "action",
+                    updateDocenteUrl.replace(':id', data.num_func)
+                );
             });
         });
     });
-    document.getElementById("btnCfm").onclick = function() {
+    document.getElementById("btnConfirmarEditar").onclick = function() {
 
         const id = document.getElementById('inputEditarNFuncionario').value;
 
         const data = {
             num_func: id,
             nome_docente: document.getElementById('inputEditarNome').value,
-            acn_docente: document.getElementById('inputEditarAcn').value
+            acn_docente: document.getElementById('inputEditarAcn').value,
+            telef_docente: document.getElementById('inputEditarContacto').value,
+            email_docente: document.getElementById('inputEditarEmail').value
         };
-        console.log(data);
+        let divMensagensErro = document.getElementById('mensagemErroEditar');
 
-        fetch('/comissao/docente/' + id, {
+        const url = updateDocenteUrl.replace(':id', id);
+        fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -195,41 +261,80 @@
         })
         .then(response => response.json())
         .then(data => {
+            if (data.error) {
+            divMensagensErro.innerText = data.error;
+            } else {
                 console.log('Dados enviados com sucesso:', data);
                 $('#editarModal').modal('hide');
+                window.location.reload();
+            }
         })
         .catch(error => {
             console.error('Erro ao enviar dados:', error);
         });
-        
     }
 
-    document.getElementById('btnConfirmar').addEventListener('click', function () {
-        
+    document.getElementById('btnConfirmarAdicionar').onclick = function() {
         const data = {
             num_func: document.getElementById('inputAdicionarNFuncionario').value,
             nome_docente: document.getElementById('inputAdicionarNome').value,
-            acn_docente: document.getElementById('inputAdicionarAcn').value
+            acn_docente: document.getElementById('inputAdicionarAcn').value,
+            telef_docente: document.getElementById('inputAdicionarContacto').value,
+            email_docente: document.getElementById('inputAdicionarEmail').value
         };
-        console.log(data);
 
-        fetch('{{ route('adicionar.docente') }}', {
+        let divMensagensErro = document.getElementById('mensagemErroAdicionar');
+
+        fetch(insertDocenteUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
             body: JSON.stringify(data)
         })
-        .then(response => console.log(response))
+        .then(response => response.json())
         .then(data => {
-            console.log('Dados enviados com sucesso:', data);
-            $('#adicionarModal').modal('hide');
+            if (data.error) {
+                divMensagensErro.innerText = data.error;
+            } else {
+                console.log('Dados enviados com sucesso:', data);
+                $('#adicionarModal').modal('hide');
+                window.location.reload();
+            }
         })
         .catch(error => {
             console.error('Erro ao enviar dados:', error);
         });
-    });
+    };
+
+
+    document.getElementById("btnEliminar").onclick = function() {
+
+        const id = document.getElementById('inputEditarNFuncionario').value;
+
+        const url = deleteDocenteUrl.replace(':id', id);
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Docente excluído com sucesso');
+                $('#editarModal').modal('hide');
+                window.location.reload();
+            } else {
+                console.error('Erro ao excluir docente');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao excluir docente:', error);
+        });
+
+    }
 
     $(document).ready(function () {
         $('#inputPesquisar').on('keyup', function () {

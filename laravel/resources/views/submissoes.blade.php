@@ -20,11 +20,9 @@
         <div class="d-flex flex-column align-items-center gap-3 me-2 ms-auto">
             <div class="h-50">
                 <button type="button" class="button-style" style="width: 200px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Término</button>
-
             </div>
             <div class="h-50">
-                <button type="button" class="button-style" style="width: 200px;height: 40px">Transferir Submissões</button>
-
+                <button id="transferirBtn" type="button" class="button-style" style="width: 200px;height: 40px">Transferir Submissões</button>
             </div>
         </div>
     </div>
@@ -64,7 +62,7 @@
                 </thead>
                 <tbody>
                     @foreach($submissoes->sortBy('data_submissao', SORT_REGULAR, false) as $item)
-                        <tr class="hover listrow">
+                        <tr class="hover listrow" data-num-func="{{ $item->num_func }}">
                             <td class="col-3">{{ $item->num_func }}</td>
                             <td class="text-start">{{ $item->nome_docente }}</td>
                             <td class="aligned-td">{{ $item->data_submissao->format('d-m-Y') }}</td>
@@ -108,12 +106,20 @@
         var tableRows = document.querySelectorAll('.table tbody tr');
         var sortDropdown = document.getElementById('sortDropdown');
 
+        $('.listrow').click(function () {
+            var numFuncValue = $(this).data('num-func');
+            console.log(numFuncValue);
+
+            const url = "{{ route('submissoes.restricoes', '') }}/" + numFuncValue;
+
+            window.location.href = url;
+        });
+
         function getlistNumbers(){
             var docentes = @json($submissoes);
             for (var docente in docentes) {
                 lista.push(docentes[docente]["num_func"]);
             }
-            console.log(lista);
         }
 
         function sortTableByDate(order) {
@@ -261,5 +267,9 @@
         }
     }
 
+    $("#transferirBtn").click(() => {
+        const url = "{{ route('export.all') }}";
+        window.location.href = url;
+    });
 </script>
 @endsection

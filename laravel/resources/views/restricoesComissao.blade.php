@@ -116,25 +116,27 @@
                         </thead>
                         <tbody>
                             @php
-                                    $fieldName = 'impedimentos';
+                                $blocosSemAulas = ["sabado_noite"];
 
-                                    $impSelected = old($fieldName) ?? [];
-                                    if (old("_token") == null) $impSelected = $restricoes->map(function ($restricao) {
-                                        return ($restricao->dia_semana->value) . '_' . ($restricao->parte_dia->value);
-                                    })->toArray();
-                                @endphp
+                                $impSelected = $restricoes->map(function ($restricao) {
+                                    return ($restricao->dia_semana->value) . '_' . ($restricao->parte_dia->value);
+                                })->toArray();
+                            @endphp
                             @foreach ($partesDia as $parteDia)
                                 <tr>
                                     <th scope="col">{{$parteDia->value}}</th>
                                     @foreach ($diasSemana as $dia)
                                         @php
-                                            $checked = in_array($dia->value . '_' . $parteDia->value, $impSelected) ? 'checked' : '';
+                                            $impValue = $dia->value . '_' . $parteDia->value;
+
+                                            $checked = in_array($impValue, $impSelected) ? 'checked' : '';
+                                            $semAulas = in_array($impValue, $blocosSemAulas);
                                         @endphp
-                            
-                                        @if (!($dia->value == 'sabado' && $parteDia->value == 'noite'))
-                                            <td><input class="form-check-input impedimento-check" type="checkbox" name="{{$fieldName}}[]" value="{{$dia->value}}_{{$parteDia->value}}" aria-label="..." {{$checked}} disabled style="opacity: 1"></td>
-                                        @else
+
+                                        @if ($semAulas)
                                             <td></td>
+                                        @else
+                                            <td><input class="form-check-input impedimento-check" type="checkbox" aria-label="..." {{$checked}} disabled style="opacity: 1"></td>
                                         @endif
                                     @endforeach
                                 </tr>

@@ -1,9 +1,9 @@
 @extends('partials._document')
 @section('head')
-    @include('partials._head', ['titulo' => "Gestor de UC's"])
+@include('partials._head', ['titulo' => "Gestor de UC's"])
 @endsection
 @section('header')
-    @include('partials._headerComissao')
+@include('partials._headerComissao')
 @endsection
 
 @section('content')
@@ -12,11 +12,8 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-2">
                     <div class="input-group rounded">
-                        <input id="inputPesquisar" type="search" class="form-control rounded pesquisar-uc" placeholder="Search"
+                        <input id="inputPesquisar" type="search" class="form-control rounded pesquisar-uc searchInput" placeholder="Código UC"
                             aria-label="Search">
-                    </div>
-                    <div>
-                        <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
                     </div>
                 </div>
                 <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal"
@@ -24,8 +21,8 @@
             </div>
             <div>
 
-                <div class="container mt-3 text-center">
-                    <table class="table ">
+                <div class=" mt-3 text-center tableFixHead" id="ucTableContainer">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Cód. UC</th>
@@ -39,7 +36,7 @@
                         </thead>
                         <tbody>
                             @foreach ($unidadesCurriculares as $uc)
-                                <tr class="listrow" data-id={{ $uc->cod_uc }}
+                                <tr class="hover listrow" data-id={{ $uc->cod_uc }}
                                     data-url={{ route('unidadeCurricular.show', $uc->cod_uc) }}>
                                     <td class = "fw-bold">{{ $uc->cod_uc }}</td>
                                     <td>{{ $uc->acn_uc }}</td>
@@ -48,8 +45,7 @@
                                     <td>{{ $uc->cursos->implode('acron_curso', ', ') }}</td>
                                     <td>{{ $uc->horas_uc }}</td>
                                     <td>
-                                        <img src="{{ asset('images/edit.svg') }}" alt="edit" data-bs-toggle="modal"
-                                            data-bs-target="#editarModal" data-id="{{ $uc->id }}">
+                                        <img src="{{ asset('images/edit.svg') }}" alt="edit" data-id="{{ $uc->id }}">
                                     </td>
                                 </tr>
                             @endforeach
@@ -57,12 +53,6 @@
                     </table>
                 </div>
             </div>
-        </div>
-        <div class="d-flex gap-3 ms-3">
-            <div>
-                <img src="{{ asset('images/info.svg') }}" alt="info">
-            </div>
-            <p>INFORMAÇÃO DE AJUDA</p>
         </div>
     </div>
 
@@ -74,56 +64,69 @@
                     <h5 class="modal-title mx-auto" id="adicionarUcModalLabel">Adicionar Nova Unidade Curricular</h5>
                 </div>
                 <div class="modal-body">
-                    <form id="formAdicionarUc" method="POST" action="{{ route('adicionar.unidadeCurricular') }}">
+                    <form id="formAdicionarUc">
                         @csrf
                         <div class="container">
-                            <div class="d-flex justify-content-center gap-5 mb-5">
-                                <div class="d-flex gap-2 w-100 justify-content-end">
+                            <div class="d-flex justify-content-center mb-4 rowAdd" id="adicionarRowOne">
+                                <div class="d-flex gap-2 justify-content-center">
                                     <div>
-                                        <label for="selectAdicionarCurso" class="col-form-label">Curso: </label>
+                                        <label for="selectAdicionarCurso" class="col-form-label">Cursos: </label>
                                     </div>
-                                    <div>
-                                        <select class="form-control" id="selectAdicionarCurso" name="acron_uc">
-                                            <option value="">Selecione o curso</option>
+                                    <div class="gap-2" id="divAdicionarCurso">
+                                        <div class="inputsize mb-1" style="height: 100px; overflow: auto; width: 630px">
                                             @foreach ($cursos as $curso)
-                                                <option value="{{ $curso->acron_curso }}">{{ $curso->nome_curso }}
-                                                </option>
+                                                <div class="form-check">
+                                                    <input class="form-check-input curso-checkbox" type="checkbox" id="cursos_{{ $curso->acron_curso }}" name="cursos[]" value="{{ $curso->acron_curso }}">
+                                                    <label class="form-check-label" for="curso_{{ $curso->acron_curso }}">
+                                                        {{ $curso->nome_curso }}
+                                                    </label>
+                                                </div>
                                             @endforeach
-                                        </select>
-                                        <span id="mensagemErroCurso" class="text-danger"></span>
+                                        </div>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="adicionarRowTwo">
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputAdicionarNome" class="col-form-label">Nome UC: </label>
                                     </div>
-                                    <div>
+                                    <div class="inputsize" id="divAdicionarNome">
                                         <input type="text" class="form-control" id="inputAdicionarNome" name="nome_uc"
                                             placeholder="">
                                     </div>
                                 </div>
 
-                                <div class="d-flex gap-2 w-25 justify-content-end "></div>
-                            </div>
-
-                            <div class="d-flex justify-content-center gap-5 mb-5">
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputAdicionarCod" class="col-form-label">Cód. UC: </label>
                                     </div>
-                                    <div>
+                                    <div class="inputsize" id="divAdicionarCod">
                                         <input type="text" class="form-control" id="inputAdicionarCod" name="cod_uc"
                                             placeholder="">
                                     </div>
                                 </div>
 
+                                <div class="d-flex gap-2 w-25 justify-content-end "></div>
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="adicionarRowThree">
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputAdicionarAcn" class="col-form-label">ACN UC: </label>
                                     </div>
-                                    <div>
+                                    <div class="inputsize" id="divAdicionarAcn">
                                         <input type="text" class="form-control" id="inputAdicionarAcn" name="acn_uc"
+                                            placeholder="">
+                                    </div>
+                                </div>
+
+                                <div class="d-flex gap-2 w-100 justify-content-end">
+                                    <div>
+                                        <label for="inputAdicionarHoras" class="col-form-label">Horas: </label>
+                                    </div>
+                                    <div class="inputsize" id="divAdicionarHoras">
+                                        <input type="text" class="form-control" id="inputAdicionarHoras" name="horas_uc"
                                             placeholder="">
                                     </div>
                                 </div>
@@ -131,36 +134,22 @@
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
                             </div>
 
-                            <div class="d-flex justify-content-center gap-5 mb-5">
-                                <div class="d-flex gap-2 w-100 justify-content-end">
+                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="adicionarRowFour">
+                                <div class="d-flex gap-2">
                                     <div>
-                                        <label for="inputAdicionarHoras" class="col-form-label">Horas: </label>
-                                    </div>
-                                    <div>
-                                        <input type="text" class="form-control" id="inputAdicionarHoras" name="horas_uc"
-                                            placeholder="">
-                                    </div>
-                                </div>
-
-                                <div class="d-flex gap-2 w-100 justify-content-end">
-                                    <div>
-                                        <label for="selectAdicionarResponsavel" class="col-form-label">Doc.Responsável:
+                                        <label for="selectAdicionarResponsavel" class="col-form-label">Doc. Responsável:
                                         </label>
                                     </div>
-                                    <div>
-                                        <select class="form-control" id="selectAdicionarResponsavel"
-                                            name="num_func_responsavel">
-                                            <option value="">Selecione o Docente Responsável</option>
+                                    <div class="inputsize" id="divAdicionarResponsavel">
+                                        <select class="form-control" id="selectAdicionarResponsavel" name="num_func_responsavel">
+                                            <option value="">Selecione o Docente</option>
                                             @foreach ($docentesResponsaveis as $docente)
                                                 <option value="{{ $docente->num_func }}">{{ $docente->nome_docente }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <span id="mensagemErroResponsavel" class="text-danger"></span>
                                     </div>
                                 </div>
-
-                                <div class="d-flex gap-2 w-25 justify-content-end"></div>
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center border-0">
@@ -174,7 +163,6 @@
             </div>
         </div>
     </div>
-    </div>
 
 
     <div class="modal modal-lg" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
@@ -183,115 +171,105 @@
                 <div class="modal-header border-0 p-4">
                     <h5 class="modal-title mx-auto" id="editarModalLabel"> Editar Unidade Curricular</h5>
                 </div>
-
                 <div class="modal-body">
-                    <form id="formEditarUc" method="POST"
-                        action="{{ route('update.unidadeCurricular', ['cod_uc' => $uc->cod_uc]) }}">
-                        @csrf
-                        @method('PUT')
+                    <form id="formEditarUc">
                         <div class="container">
-                            <div class="d-flex justify-content-center gap-5 mb-5">
-                                <div class="d-flex gap-2 w-100 justify-content-end">
+                            <div class="d-flex justify-content-center">
+                                <div class="d-flex gap-2 justify-content-center mb-5 rowAdd" id="editarRowOne">
                                     <div>
-                                        <label for="selectEditarCurso" class="col-form-label">Curso: </label>
+                                        <label for="selectEditarCurso" class="col-form-label">Cursos: </label>
                                     </div>
-                                    <div>
-                                        <select class="form-control" id="selectEditarCurso" name="curso_uc">
-                                            <option value="">Selecione o curso</option>
+                                    <div class="gap-2" id="divEditarCurso">
+                                        <div class="inputsize mb-1" style="height: 100px; overflow: auto; width: 630px">
                                             @foreach ($cursos as $curso)
-                                                <option value="{{ $curso->acron_curso }}"
-                                                    @if ($curso->acron_curso === $uc->curso_uc) selected @endif>
-                                                    {{ $curso->nome_curso }}
-                                                </option>
+                                                <div class="form-check" >
+                                                    <input class="form-check-input curso-checkbox" type="checkbox" id="curso_{{ $curso->acron_curso }}" 
+                                                    name="cursos" value="{{ $curso->acron_curso }}">
+                                                    <label class="form-check-label" for="curso_{{ $curso->acron_curso }}">
+                                                        {{ $curso->nome_curso }}
+                                                    </label>
+                                                </div>
                                             @endforeach
-                                        </select>
-                                        <span id="mensagemErroCurso" class="text-danger"></span>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="d-flex gap-2 w-25 justify-content-end "></div>
-
                             </div>
-
-
-                            <div class="d-flex justify-content-center gap-5 mb-5">
+                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="editarRowTwo">
+                                <div class="d-flex gap-2 w-100 justify-content-end">
+                                    <div>
+                                        <label for="inputEditarNome" class="col-form-label">Nome UC: </label>
+                                    </div>
+                                    <div class="inputsize" id="divEditarNome">
+                                        <input type="text" class="form-control" id="inputEditarNome" name="nome_uc"
+                                            placeholder="">
+                                    </div>
+                                </div>
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputEditarCod" class="col-form-label">Cód. UC: </label>
                                     </div>
-                                    <div>
-                                        <input type="text" class="form-control" id="inputEditarCod" placeholder=""
-                                            value="{{ $uc->cod_uc }}">
-                                    </div>
-                                </div>
-
-                                <div class="d-flex gap-2 w-100 justify-content-end">
-                                    <div>
-                                        <label for="inputEditarAcn" class="col-form-label">ACN UC: </label>
-                                    </div>
-                                    <div>
-                                        <input type="text" class="form-control" id="inputEditarAcn" placeholder=""
-                                            value="{{ $uc->acn_uc }}">
+                                    <div class="inputsize" id="divEditarCod">
+                                        <input type="text" class="form-control" id="inputEditarCod" name="cod_uc"
+                                            placeholder="" disabled>
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
-
                             </div>
 
-                            <div class="d-flex justify-content-center  gap-5 mb-5">
+                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="editarRowThree">
+                                <div class="d-flex gap-2 w-100 justify-content-end">
+                                    <div>
+                                        <label for="inputEditarAcn" class="col-form-label">ACN UC: </label>
+                                    </div>
+                                    <div class="inputsize" id="divEditarAcn">
+                                        <input type="text" class="form-control" id="inputEditarAcn" name="acn_uc"
+                                            placeholder="">
+                                    </div>
+                                </div>
 
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputEditarHoras" class="col-form-label">Horas: </label>
                                     </div>
-                                    <div>
+                                    <div class="inputsize" id="divEditarHoras">
                                         <input type="text" class="form-control" id="inputEditarHoras" name="horas_uc"
-                                            value="{{ $uc->horas_uc }}">
+                                            placeholder="">
                                     </div>
                                 </div>
 
-                                <div class="d-flex gap-2 w-100 justify-content-end">
+                                <div class="d-flex gap-2 w-25 justify-content-end "></div>
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="editarRowFour">
+                                <div class="d-flex gap-2">
                                     <div>
                                         <label for="selectEditarResponsavel" class="col-form-label">Doc. Responsável:
                                         </label>
                                     </div>
-
-                                    <div>
-                                        <select class="form-control" id="selectEditarResponsavel"
-                                            name="num_func_responsavel">
-                                            <option value="">Selecione o Docente Responsável</option>
+                                    <div class="inputsize" id="divEditarResponsavel">
+                                        <select class="form-control" id="selectEditarResponsavel" name="num_func_responsavel">
+                                            <option value="">Selecione o Docente</option>
                                             @foreach ($docentesResponsaveis as $docente)
-                                                <option value="{{ $docente->num_func }}"
-                                                    @if ($docente->num_func === $uc->num_func_resp) selected @endif>
-                                                    {{ $docente->nome_docente }}
+                                                <option value="{{ $docente->num_func }}">{{ $docente->nome_docente }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <span id="mensagemErroResponsavel" class="text-danger"></span>
                                     </div>
                                 </div>
-
-                                <div class="d-flex gap-2 w-25 justify-content-end"></div>
-
                             </div>
-
-
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center border-0">
+                            <button type="button" id="btnEditarUc" class="mx-2 button-style"
+                                style="width: 130px; height: 30px;">Confirmar</button>
+                            <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="mx-2 button-style-red" id="btnEliminarModal"
+                                style="width: 130px; height: 30px;" data-bs-toggle="modal"
+                                data-bs-target="#eliminarModal">Eliminar</button>
                         </div>
                     </form>
-                </div>
-
-                <div class="d-flex justify-content-center" id="mensagemErroEditar" style="color: red;"></div>
-
-                <div class="modal-footer d-flex justify-content-center border-0">
-                    <button type="button" id="btnEditarUc" class="mx-2 button-style"
-                        style="width: 130px; height: 30px;">Confirmar</button>
-                    <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
-                        data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="mx-2 button-style-red" id="btnEliminarModal"
-                        style="width: 130px; height: 30px;" data-bs-toggle="modal"
-                        data-bs-target="#eliminarModal">Eliminar</button>
                 </div>
             </div>
         </div>
@@ -318,188 +296,65 @@
     </div>
 
     <script>
-        /*const updateUcUrl = "{{ route('update.unidadeCurricular', ':cod_uc') }}";
-                                                        const insertUcUrl = "{{ route('adicionar.unidadeCurricular') }}";
-
-                                                        $(document).ready(function() {
-                                                            $('body').on('click', 'tr', function() {
-                                                                var userURL = $(this).data('url');
-                                                                $.get(userURL, function(data) {
-                                                                    $('#editarModal').modal('show');
-                                                                    $('#selectEditarCurso').val(data.curso_uc);
-                                                                    $('#inputEditarCod').val(data.cod_uc);
-                                                                    $('#inputEditarAcn').val(data.acn_uc);
-                                                                    $('#inputEditarHoras').val(data.horas_uc);
-                                                                    $('#selectEditarResponsavel').val(data.num_func_resp);
-
-                                                                    $(".modal-body > form").attr(
-                                                                        "action",
-                                                                        updateUcUrl.replace(':cod_uc', data.cod_uc)
-                                                                    );
-                                                                });
-                                                            });
-                                                        });
-
-                                                        document.getElementById("btnEditarUc").onclick = function() {
-                                                            const data = {
-                                                                curso_uc: document.getElementById('selectEditarCurso').value,
-                                                                nome_uc: document.getElementById('inputEditarNome').value,
-                                                                cod_uc: document.getElementById('inputEditarCod').value,
-                                                                acn_uc: document.getElementById('inputEditarAcn').value,
-                                                                horas_uc: document.getElementById('inputEditarHoras').value,
-                                                                num_func_resp: document.getElementById('selectEditarResponsavel').value
-                                                            };
-
-                                                            let divMensagensErro = document.getElementById('mensagemErroEditar');
-
-                                                            const url = updateUcUrl.replace(':cod_uc', data.get('cod_uc'));
-                                                            fetch(url, {
-                                                                    method: 'PUT',
-                                                                    headers: {
-                                                                        'Content-Type': 'application/json',
-                                                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                                    },
-                                                                    body: JSON.stringify(data)
-                                                                })
-                                                                .then(response => response.json())
-                                                                .then(data => {
-                                                                    if (data && data.error) {
-                                                                        divMensagensErro.innerText = data.error;
-                                                                    } else {
-                                                                        console.log('Dados enviados com sucesso:', data);
-                                                                        $('#editarModal').modal('hide');
-                                                                        window.location.reload();
-                                                                    }
-                                                                })
-                                                                .catch(error => {
-                                                                    console.error('Erro ao enviar dados:', error);
-                                                                });
-                                                        }
-                                                        
-                                                        Código da Página de Gestor de Docentes adaptado à Gestor de UC's*/
-
         //Adicionar UC
         document.addEventListener('DOMContentLoaded', function() {
-            var formAdicionarUc = document.getElementById('formAdicionarUc');
-            var btnAdicionarUc = document.getElementById('btnAdicionarUc');
+            const btnAdicionarUc = document.getElementById('btnAdicionarUc');
+            const adicionarUcModal = document.getElementById('adicionarUcModal');
 
             btnAdicionarUc.addEventListener('click', function(event) {
-                document.getElementById('mensagemErroCurso').innerText = "";
-                document.getElementById('mensagemErroResponsavel').innerText = "";
-
-                var selectCurso = document.getElementById('selectAdicionarCurso');
-                if (selectCurso.value === "") {
-                    document.getElementById('mensagemErroCurso').innerText =
-                        "É obrigatório selecionar o curso!";
-                    event.preventDefault();
-                    return;
+                const selectCurso = document.querySelectorAll(".curso-checkbox");
+                let selectedOptions = [];
+                if (selectCurso.length > 0) {
+                    selectedOptions = Array.from(selectCurso).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
                 }
 
-                var selectResponsavel = document.getElementById('selectAdicionarResponsavel');
-                if (selectResponsavel.value === "") {
-                    document.getElementById('mensagemErroResponsavel').innerText =
-                        "É obrigatório selecionar o docente responsável!";
-                    event.preventDefault();
+
+                const selectNomeUC = document.getElementById('inputAdicionarNome').value;
+                const selectCodUC = document.getElementById('inputAdicionarCod').value;
+                const selectACNUC = document.getElementById('inputAdicionarAcn').value;
+                const selectHoras = document.getElementById('inputAdicionarHoras').value;
+                const selectResponsavel = document.getElementById('selectAdicionarResponsavel').value;
+
+                var spanCurso = document.getElementById('divAdicionarCurso');
+                var spanNomeUC = document.getElementById('divAdicionarNome');
+                var spanCodUC = document.getElementById('divAdicionarCod');
+                var spanACNUC = document.getElementById('divAdicionarAcn');
+                var spanHoras = document.getElementById('divAdicionarHoras');
+                var spanResponsavel = document.getElementById('divAdicionarResponsavel');
+
+                var adicionarRowOne = document.getElementById('adicionarRowOne');
+                var adicionarRowTwo = document.getElementById('adicionarRowTwo');
+                var adicionarRowThree = document.getElementById('adicionarRowThree');
+                var adicionarRowFour = document.getElementById('adicionarRowFour');
+
+                validarInputs(adicionarRowOne, spanCurso, 'spanAdicionarCurso', selectedOptions.length === 0);
+                validarInputs(adicionarRowTwo, spanNomeUC, 'spanAdicionarNome', selectNomeUC.trim() === "");
+                validarInputs(adicionarRowTwo, spanCodUC, 'spanAdicionarCod', selectCodUC.trim() === "");
+                validarInputs(adicionarRowThree, spanACNUC, 'spanAdicionarAcn', selectACNUC.trim() === "");
+                validarInputs(adicionarRowThree, spanHoras, 'spanAdicionarHoras', selectHoras.trim() === "");
+                validarInputs(adicionarRowFour, spanResponsavel, 'spanAdicionarResponsavel', selectResponsavel.trim() === "");
+
+                let hasError = selectedOptions.length === 0 || selectNomeUC.trim() === "" || selectCodUC.trim() === "" || 
+                   selectACNUC.trim() === "" || selectHoras.trim() === "" || selectResponsavel.trim() === "";
+
+                if (hasError) {
+                    console.log("Form has errors");
                     return;
                 }
 
                 const data = {
-                    curso_uc: selectCurso.value,
-                    nome_uc: document.getElementById('inputAdicionarNome').value,
-                    cod_uc: document.getElementById('inputAdicionarCod').value,
-                    acn_uc: document.getElementById('inputAdicionarAcn').value,
-                    horas_uc: document.getElementById('inputAdicionarHoras').value,
-                    num_func_resp: selectResponsavel.value
+                    curso_uc: selectedOptions,
+                    nome_uc: selectNomeUC,
+                    cod_uc: selectCodUC,
+                    acn_uc: selectACNUC,
+                    horas_uc: selectHoras,
+                    num_func_resp: selectResponsavel
                 };
 
-                fetch('/comissao/uc', {
-                        method: 'POST',
-                        body: JSON.stringify(data),
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        alert(data.message);
-                    })
-                    .catch(error => {
-                        console.error('Erro ao adicionar Unidade Curricular:', error);
-                        alert('Erro ao adicionar Unidade Curricular. Por favor, tente novamente.');
-                    });
-            });
-        });
-
-
-        //Editar UC
-        var formEditarUc = document.getElementById('formEditarUc');
-        var btnEditarUc = document.getElementById('btnEditarUc');
-
-        document.querySelector('tbody').addEventListener('click', function(event) {
-            var target = event.target;
-
-            if (target.tagName.toLowerCase() === 'tr') {
-                document.getElementById('mensagemErroCurso').innerText = "";
-                document.getElementById('mensagemErroResponsavel').innerText = "";
-
-                var idDaUC = target.dataset.id;
-
-                fetch(`/comissao/uc/${idDaUC}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('selectEditarCurso').value = data.curso_uc;
-                        document.getElementById('inputEditarCod').value = data.cod_uc;
-                        document.getElementById('inputEditarAcn').value = data.acn_uc;
-                        document.getElementById('inputEditarHoras').value = data.horas_uc;
-                        document.getElementById('selectEditarResponsavel').value = data
-                            .num_func_resp;
-
-                        var editarModal = new bootstrap.Modal(document.getElementById(
-                            'editarModal'));
-                        editarModal.show();
-                    })
-                    .catch(error => {
-                        console.error('Erro ao obter dados da Unidade Curricular:', error);
-                        alert(
-                            'Erro ao obter dados da Unidade Curricular. Por favor, tente novamente.'
-                        );
-                    });
-            }
-        });
-
-        btnEditarUc.addEventListener('click', function(event) {
-            document.getElementById('mensagemErroCurso').innerText = "";
-            document.getElementById('mensagemErroResponsavel').innerText = "";
-
-            var selectCurso = document.getElementById('selectEditarCurso');
-            if (selectCurso.value === "") {
-                document.getElementById('mensagemErroCurso').innerText =
-                    "É obrigatório selecionar o curso!";
-                event.preventDefault();
-                return;
-            }
-
-            var selectResponsavel = document.getElementById('selectEditarResponsavel');
-            if (selectResponsavel.value === "") {
-                document.getElementById('mensagemErroResponsavel').innerText =
-                    "É obrigatório selecionar o docente responsável!";
-                event.preventDefault();
-                return;
-            }
-
-            const data = {
-                curso_uc: selectCurso.value,
-                nome_uc: document.getElementById('inputEditarNome').value,
-                cod_uc: document.getElementById('inputEditarCod').value,
-                acn_uc: document.getElementById('inputEditarAcn').value,
-                horas_uc: document.getElementById('inputEditarHoras').value,
-                num_func_resp: selectResponsavel.value
-            };
-
-            fetch(`/comissao/uc/${data.cod_uc}`, {
-                    method: 'PUT',
+                console.log(data);
+                
+                fetch('{{ route ('adicionar.unidadeCurricular') }}', {
+                    method: 'POST',
                     body: JSON.stringify(data),
                     headers: {
                         'Content-Type': 'application/json',
@@ -510,15 +365,216 @@
                 .then(data => {
                     console.log(data);
                     alert(data.message);
-
-                    var editarModal = new bootstrap.Modal(document.getElementById('editarModal'));
-                    editarModal.hide();
+                    location.reload();
                 })
                 .catch(error => {
-                    console.error('Erro ao editar Unidade Curricular:', error);
-                    alert('Erro ao editar Unidade Curricular. Por favor, tente novamente.');
+                    console.error('Erro ao adicionar Unidade Curricular:', error);
+                    alert('Erro ao adicionar Unidade Curricular. Por favor, tente novamente.');
                 });
+            });
+
+
+            //Resetar Modal
+            adicionarUcModal.addEventListener('hidden.bs.modal', function () {
+                document.getElementById('inputAdicionarNome').value = '';
+                document.getElementById('inputAdicionarCod').value = '';
+                document.getElementById('inputAdicionarAcn').value = '';
+                document.getElementById('inputAdicionarHoras').value = '';
+                document.getElementById('selectAdicionarResponsavel').value = '';
+
+                var checkboxes = document.querySelectorAll('.curso-checkbox');
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                
+                var spans = document.querySelectorAll('.text-danger');
+                spans.forEach(function (span) {
+                    span.remove();
+                });
+
+                var rows = document.querySelectorAll('.rowAdd');
+                rows.forEach(function (row) {
+                    row.classList.remove('mb-4');
+                    row.classList.add('mb-5');
+                });
+            });
+
+            editarModal.addEventListener('hidden.bs.modal', function () {
+                document.getElementById('inputEditarNome').value = '';
+                document.getElementById('inputEditarCod').value = '';
+                document.getElementById('inputEditarAcn').value = '';
+                document.getElementById('inputEditarHoras').value = '';
+                document.getElementById('selectEditarResponsavel').value = '';
+
+                var checkboxes = document.querySelectorAll('.curso-checkbox');
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                
+                var spans = document.querySelectorAll('.text-danger');
+                spans.forEach(function (span) {
+                    span.remove();
+                });
+
+                var rows = document.querySelectorAll('.rowAdd');
+                rows.forEach(function (row) {
+                    row.classList.remove('mb-4');
+                    row.classList.add('mb-5');
+                });
+            });
         });
+
+        //Validar se input´s do modal têm valores
+        function validarInputs(row, element, spanId, isEmpty) {
+            var spanElement = document.getElementById(spanId);
+            if (isEmpty) {
+                if (!spanElement) {
+                    var span = document.createElement('span');
+                    span.textContent = "Tem de introduzir um valor!";
+                    span.id = spanId;
+                    span.classList = "text-danger";
+                    element.appendChild(span);
+                    row.classList.remove('mb-5');
+                    row.classList.add('mb-4');
+                }
+            } else {
+                if (spanElement) {
+                    spanElement.remove();
+
+                    var otherErrors = Array.from(row.children).some(function(child) {
+                        var childSpan = child.querySelector('span');
+                        return childSpan && childSpan.id && childSpan.id !== spanId;
+                    });
+
+                    if (!otherErrors) {
+                        row.classList.remove('mb-4');
+                        row.classList.add('mb-5');
+                    }
+                }
+            }
+        }
+
+
+
+
+        //Editar UC
+        const updateUCUrl = "{{ route('update.unidadeCurricular', ':id') }}";
+        const deleteUCUrl = "{{ route('eliminar.unidadeCurricular', ':id') }}";
+        var codUC = "";
+
+        $(document).ready(function () {
+            $('body').on('click', 'tr', function () {
+                var userURL = $(this).data('url');
+                $.get(userURL, function (data) {
+                    console.log(data);
+                    $('#editarModal').modal('show');
+                    $('#inputEditarNome').val(data.uc.nome_uc);
+                    $('#inputEditarCod').val(data.uc.cod_uc);
+                    $('#inputEditarAcn').val(data.uc.acn_uc);
+                    $('#inputEditarHoras').val(data.uc.horas_uc);
+                    $('#selectEditarResponsavel').val(data.uc.num_func_resp);
+                    data.cursos.forEach(curso => {
+                        $('#curso_' + curso.acron_curso).prop('checked', true);
+                    });
+                    codUC = data.uc.cod_uc;
+                });
+            });
+        });
+
+        document.getElementById("btnEditarUc").onclick = function() {
+            const selectCurso = document.querySelectorAll(".curso-checkbox");
+            let selectedOptions = [];
+            if (selectCurso.length > 0) {
+                selectedOptions = Array.from(selectCurso).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+            }
+
+
+            const selectNomeUC = document.getElementById('inputEditarNome').value;
+            const selectCodUC = document.getElementById('inputEditarCod').value;
+            const selectACNUC = document.getElementById('inputEditarAcn').value;
+            const selectHoras = document.getElementById('inputEditarHoras').value;
+            const selectResponsavel = document.getElementById('selectEditarResponsavel').value;
+
+            var spanCurso = document.getElementById('divEditarCurso');
+            var spanNomeUC = document.getElementById('divEditarNome');
+            var spanACNUC = document.getElementById('divEditarAcn');
+            var spanHoras = document.getElementById('divEditarHoras');
+            var spanResponsavel = document.getElementById('divEditarResponsavel');
+
+            var editarRowOne = document.getElementById('editarRowOne');
+            var editarRowTwo = document.getElementById('editarRowTwo');
+            var editarRowThree = document.getElementById('editarRowThree');
+            var editarRowFour = document.getElementById('editarRowFour');
+
+            validarInputs(editarRowOne, spanCurso, 'spanEditarCurso', selectedOptions.length === 0);
+            validarInputs(editarRowTwo, spanNomeUC, 'spanEditarNome', selectNomeUC.trim() === "");
+            validarInputs(editarRowThree, spanACNUC, 'spanEditarAcn', selectACNUC.trim() === "");
+            validarInputs(editarRowThree, spanHoras, 'spanEditarHoras', selectHoras.trim() === "");
+            validarInputs(editarRowFour, spanResponsavel, 'spanEditarResponsavel', selectResponsavel.trim() === "");
+
+            let hasError = selectedOptions.length === 0 || selectNomeUC.trim() === "" || selectCodUC.trim() === "" || 
+                selectACNUC.trim() === "" || selectHoras.trim() === "" || selectResponsavel.trim() === "";
+
+            if (hasError) {
+                console.log("Form has errors");
+                return;
+            }
+            const data = {
+                nome_uc: selectNomeUC,
+                curso_uc: selectedOptions,
+                cod_uc: selectCodUC,
+                acn_uc: selectACNUC,
+                horas_uc: selectHoras,
+                num_func_resp: selectResponsavel
+            };
+
+            console.log(data);
+            const url = updateUCUrl.replace(':id', selectCodUC);
+
+            fetch(url, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erro ao adicionar Unidade Curricular:', error);
+                alert('Erro ao adicionar Unidade Curricular. Por favor, tente novamente.');
+            });
+        }
+        
+        //Eliminar UC
+        document.getElementById("btnEliminar").onclick = function() {
+                console.log(codUC);
+                const url = deleteUCUrl.replace(':id', codUC);
+                console.log(url);
+
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    alert(data.message);
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Erro ao eliminar Unidade Curricular:', error);
+                    alert('Erro ao eliminar Unidade Curricular. Por favor, tente novamente.');
+                });
+        }
 
 
         //Pesquisar UC
@@ -544,32 +600,7 @@
                     }
                 });
             });
-
-
-            //Eliminar UC
-            const deleteUnidadeCurricularUrl = "{{ route('eliminar.unidadeCurricular', ':id') }}";
-
-            document.getElementById("btnEliminar").onclick = function() {
-                const id = document.getElementById('inputEditarCod').value;
-                const url = deleteUnidadeCurricularUrl.replace(':id', id);
-
-                fetch(url, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        alert(data.message);
-                    })
-                    .catch(error => {
-                        console.error('Erro ao eliminar Unidade Curricular:', error);
-                        alert('Erro ao eliminar Unidade Curricular. Por favor, tente novamente.');
-                    });
-            }
+            
         });
     </script>
 @endsection

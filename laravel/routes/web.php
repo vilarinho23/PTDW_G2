@@ -65,7 +65,7 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
     Route::prefix('/ucs')->group(function () {
       Route::get('/', [GestorUcController::class, 'getAllUnidadesCurriculares'])->name('gestorUcs');
       Route::post('/', [GestorUcController::class, 'adicionarUnidadeCurricular'])->name('adicionar.unidadeCurricular');
-      Route::put('/{cod_uc}', [GestorUcController::class, 'updateUnidadeCurricular'])->name('update.unidadeCurricular');
+      Route::put('/{id}', [GestorUcController::class, 'updateUnidadeCurricular'])->name('update.unidadeCurricular');
       Route::get('/{id}', [GestorUcController::class, 'pesquisarUnidadeCurricular'])->name("unidadeCurricular.show");
       Route::delete('/{id}',[GestorUcController::class, 'eliminarUnidadeCurricular'])->name("eliminar.unidadeCurricular");
     });

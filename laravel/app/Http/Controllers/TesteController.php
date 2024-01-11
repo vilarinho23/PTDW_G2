@@ -37,26 +37,4 @@ class TesteController extends Controller
             'kvs' => $kvs
         ]);
     }
-
-
-    public function testarImport()
-    {
-        // Get file from storage
-        $filename = 'Output_DSD.xlsx';
-        $uploadedFile = new UploadedFile(
-            Storage::path($filename),
-            $filename,
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            null,
-            true
-        );
-
-        // Put file on request object
-        $request = new Request();
-        $request->files->set('file', $uploadedFile);
-
-        // Import file
-        $controller = new ImportExportController();
-        return $controller->import($request);
-    }
 }

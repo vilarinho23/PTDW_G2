@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TesteController;
 use App\Http\Controllers\RestricaoController;
+use App\Http\Controllers\DocenteUcController;
 use App\Http\Controllers\SubmissoesController;
-use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestorDocenteController;
 use App\Http\Controllers\FakeIdpController;
 use App\Http\Controllers\ImportExportController;
@@ -65,15 +65,16 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
         return view('gestorUcs');
     })->name('gestorUcs');
 
-    Route::get('/atribuicaoucs', function () {
-        return view('atribuicaoUcs');
-    })->name('atribuicaoUcs');
+    Route::prefix('/atribuicaoucs')->group(function () {
+        Route::get('/', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');
+        Route::post('/', [DocenteUcController::class, 'store'])->name('atribuicaoUcs.store');
+        Route::put('/{num_func}/{cod_uc}', [DocenteUcController::class, 'update'])->name('atribuicaoUcs.update');
+        Route::delete('/{num_func}/{cod_uc}', [DocenteUcController::class, 'destroy'])->name('atribuicaoUcs.destroy');
+    });
+    Route::post('/import', [ImportExportController::class, 'import'])->name('import');
 });
 
 // Testes
 Route::prefix('/testar')->group(function () {
     Route::get('/models', [TesteController::class, 'testarModels']);
-
-    Route::get('/import', [TesteController::class, 'testarImport']);
 });
-

@@ -31,7 +31,7 @@
         <div class="d-flex justify-content-between gap-2 mt-3">
             <div class="d-flex gap-4">
                 <div class="input-group w-50">
-                    <input type="search" class="form-control rounded" placeholder="Número" aria-label="Search" id="searchInput">
+                    <input type="search" class="form-control rounded searchInput" placeholder="Número" aria-label="Search">
                 </div>
                 <div class="d-flex align-items-center w-50">
                     <label for="sortDropdown" class="me-2">Ordem:</label>

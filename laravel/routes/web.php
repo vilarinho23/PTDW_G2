@@ -6,6 +6,7 @@ use App\Http\Controllers\RestricaoController;
 use App\Http\Controllers\DocenteUcController;
 use App\Http\Controllers\SubmissoesController;
 use App\Http\Controllers\GestorDocenteController;
+use App\Http\Controllers\GestorUcController;
 use App\Http\Controllers\FakeIdpController;
 use App\Http\Controllers\ImportExportController;
 
@@ -61,9 +62,13 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
         Route::delete('/{id}',[GestorDocenteController::class, 'eliminarDocente'])->name("eliminar.docente");
     });
 
-    Route::get('/ucs', function () {
-        return view('gestorUcs');
-    })->name('gestorUcs');
+    Route::prefix('/ucs')->group(function () {
+      Route::get('/', [GestorUcController::class, 'getAllUnidadesCurriculares'])->name('gestorUcs');
+      Route::post('/', [GestorUcController::class, 'adicionarUnidadeCurricular'])->name('adicionar.unidadeCurricular');
+      Route::put('/{id}', [GestorUcController::class, 'updateUnidadeCurricular'])->name('update.unidadeCurricular');
+      Route::get('/{id}', [GestorUcController::class, 'pesquisarUnidadeCurricular'])->name("unidadeCurricular.show");
+      Route::delete('/{id}',[GestorUcController::class, 'eliminarUnidadeCurricular'])->name("eliminar.unidadeCurricular");
+    });
 
     Route::prefix('/atribuicaoucs')->group(function () {
         Route::get('/', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');

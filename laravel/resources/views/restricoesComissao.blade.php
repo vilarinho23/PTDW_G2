@@ -116,20 +116,28 @@
                         </thead>
                         <tbody>
                             @php
+                                $blocosSemAulas = ["sabado_noite"];
+
                                 $impSelected = $restricoes->map(function ($restricao) {
                                     return ($restricao->dia_semana->value) . '_' . ($restricao->parte_dia->value);
                                 })->toArray();
                             @endphp
                             @foreach ($partesDia as $parteDia)
-                                @php $parteDia = $parteDia->value; @endphp
                                 <tr>
-                                    <th scope="col">{{$parteDia}}</th>
+                                    <th scope="col">{{$parteDia->value}}</th>
                                     @foreach ($diasSemana as $dia)
                                         @php
-                                            $dia = $dia->value;
-                                            $checked = in_array($dia . '_' . $parteDia, $impSelected) ? 'checked' : '';
+                                            $impValue = $dia->value . '_' . $parteDia->value;
+
+                                            $checked = in_array($impValue, $impSelected) ? 'checked' : '';
+                                            $semAulas = in_array($impValue, $blocosSemAulas);
                                         @endphp
-                                        <td><input class="form-check-input impedimento-check" type="checkbox" value="{{$dia}}_{{$parteDia}}" aria-label="..." {{$checked}} disabled style="opacity: 1"></td>
+
+                                        @if ($semAulas)
+                                            <td></td>
+                                        @else
+                                            <td><input class="form-check-input impedimento-check" type="checkbox" aria-label="..." {{$checked}} disabled style="opacity: 1"></td>
+                                        @endif
                                     @endforeach
                                 </tr>
                             @endforeach

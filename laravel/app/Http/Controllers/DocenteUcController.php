@@ -4,21 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Docente;
+use App\Models\KeyValue;
 use App\Models\UnidadeCurricular;
 
 class DocenteUcController extends Controller
 {
-    public function index()
+    private function getAtribuicoes()
     {
         // Obtém todas as unidades curriculares que possuem docentes atribuídos
         $ucsDocentesCursos = UnidadeCurricular::has('docentes')->with(['docentes', 'cursos'])->get();
 
-        // Obtém todos os docentes e unidades curriculares (para os combos)
-        $funcionarios = Docente::select('num_func', 'nome_docente')->distinct()->get();
-        $ucs = UnidadeCurricular::select('cod_uc', 'nome_uc')->distinct()->get();
-
         // Cria uma coleção com os dados necessários para a tabela
-        $dados = $ucsDocentesCursos->map(function ($ucDocenteCurso) {
+        $atribuicoes = $ucsDocentesCursos->map(function ($ucDocenteCurso) {
             return $ucDocenteCurso->docentes->map(function ($docente) use ($ucDocenteCurso) {
                 $pivot = $docente->pivot;
                 $item = new \stdClass();
@@ -33,22 +30,57 @@ class DocenteUcController extends Controller
             });
         })->flatten();
 
-        return view('atribuicaoUcs', compact('funcionarios', 'ucs', 'dados'));
+        // Ordena a coleção por número do docente e código da uc
+        return $atribuicoes->sortBy(function ($item) {
+            return $item->num_func . "_" . $item->cod_uc;
+        });
+    }
+
+    private function getDadosImport()
+    {
+        $filename = KeyValue::val('last_import:filename');
+        if ($filename == null) return null;
+
+        $uploader = KeyValue::val('last_import:uploader');
+        $timestamp = KeyValue::val('last_import:timestamp');
+        $lineErrors = KeyValue::val('last_import:line_errors');
+
+        $importDados = new \stdClass();
+        $importDados->filename = $filename;
+        $importDados->uploader = $uploader;
+        $importDados->timestamp = $timestamp;
+        $importDados->lineErrors = $lineErrors;
+        return $importDados;
+    }
+
+    public function index()
+    {
+        // Obtém todos os docentes e unidades curriculares (para os combos)
+        $funcionarios = Docente::select('num_func', 'nome_docente')->get();
+        $ucs = UnidadeCurricular::select('cod_uc', 'nome_uc')->get();
+
+        // Cria uma coleção com os dados necessários para a tabela
+        $dados = $this->getAtribuicoes();
+
+        // Obtém os dados sobre o último ficheiro importado
+        $dadosImportacao = $this->getDadosImport();
+
+        return view('atribuicaoUcs', compact('funcionarios', 'ucs', 'dados', 'dadosImportacao'));
     }
 
     public function store(Request $request)
     {
         // Valida os dados do formulário
         $request->validate([
-            'dropdownAtribuirNFuncionario' => 'required',
-            'dropdownAtribuirCodUc' => 'required',
-            'inputAtribuirPerc' => 'required|numeric',
+            'num_func' => 'required|numeric',
+            'cod_uc' => 'required|numeric',
+            'perc_horas' => 'required|numeric',
         ]);
 
         // Obtém os dados do formulário
-        $num_func = $request->input('dropdownAtribuirNFuncionario');
-        $cod_uc = $request->input('dropdownAtribuirCodUc');
-        $perc_horas = $request->input('inputAtribuirPerc');
+        $num_func = $request->input('num_func');
+        $cod_uc = $request->input('cod_uc');
+        $perc_horas = $request->input('perc_horas');
 
         // Obtém o docente e a unidade curricular
         $docente = Docente::find($num_func);
@@ -66,11 +98,11 @@ class DocenteUcController extends Controller
     {
         // Valida os dados do formulário
         $request->validate([
-            'inputEditarPerc' => 'required|numeric',
+            'perc_horas' => 'required|numeric',
         ]);
 
         // Obtém os dados do formulário
-        $perc_horas = $request->input('inputEditarPerc');
+        $perc_horas = $request->input('perc_horas');
 
         // Obtém o docente e a unidade curricular
         $docente = Docente::find($num_func);

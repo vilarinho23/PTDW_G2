@@ -2,13 +2,12 @@
 
 namespace App\Imports;
 
+use App\AppUtilities;
 use App\Models\Docente;
 use App\Models\UnidadeCurricular;
-use Carbon\Carbon;
 use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -47,20 +46,6 @@ class DSDImport implements ToCollection, WithHeadingRow
         });
     }
 
-    private static function getSemestreAtual()
-    {
-        // Comissão de Horários starts earlier
-        // 1º semestre: setembro-fevereiro (early: maio-outubro)
-        // 2º semestre: fevereiro-julho (early: novembro-abril)
-        $now = Carbon::now();
-        $semestre = $now->isBetween(
-            Carbon::createFromDate($now->year, 5, 1),
-            Carbon::createFromDate($now->year, 10, 31)
-        ) ? 1 : 2;
-
-        return $semestre;
-    }
-
 
     private static function docente($row)
     {
@@ -90,7 +75,7 @@ class DSDImport implements ToCollection, WithHeadingRow
         $horas_uc = intval($row['Horas']);
         $nome_uc = $row['nome UC'];
         $acn_uc = $row['ACN UC'];
-        $semestre_uc = self::getSemestreAtual();
+        $semestre_uc = AppUtilities::getSemestreAtual();
         $num_func_resp = $docente->num_func;
         $cursos = explode(',', $row['curso']);
 

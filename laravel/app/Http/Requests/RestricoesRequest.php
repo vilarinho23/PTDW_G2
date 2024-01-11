@@ -2,45 +2,28 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Docente;
+use App\AppUtilities;
 use App\Models\Enums\DiaSemana;
 use App\Models\Enums\ParteDia;
 use App\Models\Enums\SalaAvaliacoes;
 use App\Models\Enums\UtilizacaoLaboratorios;
-use App\Models\KeyValue;
 use App\Models\Laboratorio;
-use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class RestricoesRequest extends FormRequest
 {
-    private function getDocente(): Docente|null
-    {
-        return auth()->user()?->docente;
-    }
-
-    private function getDataConclusao(): Carbon|null
-    {
-        // Obter data de conclusao
-        $dataConclusao = KeyValue::val('data_conclusao');
-        if ($dataConclusao == null) return null;
-
-        return Carbon::createFromFormat('d/m/Y', $dataConclusao);
-    }
-
-
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
         // O docente tem de estar autenticado para aceder a esta página
-        $docente = $this->getDocente();
+        $docente = AppUtilities::getDocente();
         if ($docente == null) return false;
 
         // A data de submissão tem de estar definida (não importa o valor)
-        $dataSubmissao = $this->getDataConclusao();
+        $dataSubmissao = AppUtilities::getDataConclusao();
         if ($dataSubmissao == null) return false;
 
         return true;
@@ -145,7 +128,7 @@ class RestricoesRequest extends FormRequest
         // Verificar se o docente é responsável por todas as UCs
         $validator->after(function ($validator) {
             $ucs = $this->input('ucs', []);
-            $docente = $this->getDocente();
+            $docente = AppUtilities::getDocente();
 
             $ucsSubmetidas = array_keys($ucs);
             $ucsDocente = $docente->respUnidadesCurriculares->pluck('cod_uc')->toArray();

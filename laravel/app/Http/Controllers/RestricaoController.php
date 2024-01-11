@@ -2,88 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\AppUtilities;
 use App\Http\Requests\RestricoesRequest;
-use App\Models\Docente;
 use App\Models\Enums\DiaSemana;
 use App\Models\Enums\ParteDia;
 use App\Models\Enums\SalaAvaliacoes;
 use App\Models\Enums\UtilizacaoLaboratorios;
-use App\Models\KeyValue;
 use App\Models\Laboratorio;
 use App\Models\UnidadeCurricular;
 use Carbon\Carbon;
 
 class RestricaoController extends Controller
 {
-    private function getDocente(): Docente
-    {
-        return auth()->user()->docente;
-    }
-
-    private function getDadosDocente(Docente $docente): array
-    {
-        $semestre = $this->getSemestre();
-
-        // Unidades Curriculares
-        $ucs = $docente->unidadesCurriculares;
-        $respUCs = $docente->respUnidadesCurriculares;
-
-        // Filtrar UCs por semestre (se definido)
-        if ($semestre != null)
-        {
-            $ucs = $ucs->where('semestre_uc', $semestre);
-            $respUCs = $respUCs->where('semestre_uc', $semestre);
-        }
-
-        // Merge das UCs e das UCs que o docente é responsável (sem repetições)
-        $ucs = $respUCs->merge($ucs);
-
-        // Adicionar campo isresponsavel para as UCs que o docente é responsável
-        foreach ($ucs as $uc) $uc->isresponsavel = $respUCs->contains($uc);
-
-        // Ordenar UCs por isresponsavel e cod_uc
-        $ucs->sortBy('isresponsavel')->sortBy('cod_uc');
-
-        // Restrições, data de submissao e nome
-        $restricoes = $docente->restricoes;
-        $dataSubmissao = $docente->data_submissao;
-
-        return [
-            'ucs' => $ucs,
-            'restricoes' => $restricoes,
-            'dataSubmissao' => $dataSubmissao
-        ];
-    }
-
-    private function getDataConclusao(): ?Carbon
-    {
-        // Obter data de conclusao
-        $dataConclusao = KeyValue::val('data_conclusao');
-        if ($dataConclusao == null) return null;
-
-        return Carbon::createFromFormat('d/m/Y', $dataConclusao);
-    }
-
-    private function getSemestre(): ?int
-    {
-        // Obter semestre
-        $semestre = KeyValue::val('semestre');
-        if ($semestre == null) return null;
-
-        return intval($semestre);
-    }
-
-
     public function docente()
     {
         // Obter docente
-        $docente = $this->getDocente();
+        $docente = AppUtilities::getDocente();
 
         // Obter dados do docente
-        $dados = $this->getDadosDocente($docente);
+        $dados = AppUtilities::getDadosDocente($docente);
 
         // Obter data de conclusao
-        $dados['dataConclusao'] = $this->getDataConclusao();
+        $dados['dataConclusao'] = AppUtilities::getDataConclusao();
 
         // Retornar informações para a view
         return view('docente', $dados);
@@ -93,14 +33,14 @@ class RestricaoController extends Controller
     public function restricoes()
     {
         // Obter docente
-        $docente = $this->getDocente();
+        $docente = AppUtilities::getDocente();
 
         // Obter data de conclusao
-        $dataConclusao = $this->getDataConclusao();
+        $dataConclusao = AppUtilities::getDataConclusao();
         if ($dataConclusao == null) return redirect()->route('docente');
 
         // Obter dados do docente
-        $dados = $this->getDadosDocente($docente);
+        $dados = AppUtilities::getDadosDocente($docente);
         if ($dados['ucs']->isEmpty()) return redirect()->route('docente');
 
         // Retornar informações para a view
@@ -117,10 +57,10 @@ class RestricaoController extends Controller
     public function submeter(RestricoesRequest $request)
     {
         // Obter docente
-        $docente = $this->getDocente();
+        $docente = AppUtilities::getDocente();
 
         // Obter data de conclusao
-        $dataConclusao = $this->getDataConclusao();
+        $dataConclusao = AppUtilities::getDataConclusao();
         if ($dataConclusao == null) return redirect()->route('docente');
 
         // Validar dados

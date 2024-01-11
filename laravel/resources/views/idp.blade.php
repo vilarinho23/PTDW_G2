@@ -4,14 +4,26 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>[FAKE] Serviço de Autenticação Web</title>
+<title>[GRUPO 2] Serviço de Autenticação Web</title>
 <link rel="stylesheet" type="text/css" href="//static.ua.pt/idp/main.min.css?20170731">
+
+<style>
+body
+{
+    background-image: none; background-color: #000;
+}
+.txt-red { color: #f00; }
+.txt-upper { text-transform: uppercase; }
+</style>
 @endsection
 
 @section('content')
 <div id="container">
     <div id="header">
-        <img src="https://static.ua.pt/idp/logo/ua.gif" alt="Universidade de Aveiro">
+        <h1 class="txt-red">Grupo 2 IDP</h1>
+        <p>Esta é uma página de autenticação "falsa", criada para autenticar os utilizadores no nosso sistema (GRDESTGA).</p>
+        <p class="txt-red txt-upper">Não introduza as suas credenciais reais (isto não é o IDP oficial da UA).</p>
+        {{--<img src="https://static.ua.pt/idp/logo/ua.gif" alt="Universidade de Aveiro">--}}
         {{--
         <div class="language">
             <a data-lang="pt" href="#">pt</a>
@@ -88,16 +100,20 @@
             --}}
         </form>
 
+        {{--
         <div class="help"><a target="_blank" href="http://www.ua.pt/stic/page/22826">Precisa de ajuda?</a></div>
         <div class="legal"><a href="#">Aviso legal</a></div>
         <div class="clear-both"></div>
+        --}}
     </div>
 
+    {{--
     <div id="footer"></div>
     <div class="funding">
         <a href="http://www.poci-compete2020.pt" target="_blank" class="compete">
             <img src="https://static.ua.pt/idp/logo/compete.gif" alt="Compete 2020">
         </a>
     </div>
+    --}}
 </div>
 @endsection

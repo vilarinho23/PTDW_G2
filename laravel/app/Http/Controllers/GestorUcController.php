@@ -41,7 +41,7 @@ class GestorUcController extends Controller
             return response()->json(['message' => 'Não foi possível adicionar a Unidade Curricular.'], 500);
         }
 
-        $existingUnidadeCurricular = UnidadeCurricular::where('cod_uc', $data['cod_uc'])->first();
+        $existingUnidadeCurricular = UnidadeCurricular::find($data['cod_uc']);
 
         if ($existingUnidadeCurricular) {
             Log::error("Unidade Curricular com o código já existe.");
@@ -60,7 +60,7 @@ class GestorUcController extends Controller
             );
 
             foreach ($data['curso_uc'] as $cursoAcron) {
-                $curso = Curso::where('acron_curso', $cursoAcron)->first();
+                $curso = Curso::find($cursoAcron);
 
                 if ($curso) {
                     $ucModel->cursos()->attach($curso->acron_curso);
@@ -81,7 +81,7 @@ class GestorUcController extends Controller
     public function updateUnidadeCurricular(Request $request, $id)
     {
         try {
-            $uc = UnidadeCurricular::where('cod_uc', $id)->first();
+            $uc = UnidadeCurricular::find($id);
 
             if (!$uc) {
                 Log::error("Unidade Curricular não encontrada.");
@@ -107,7 +107,7 @@ class GestorUcController extends Controller
             $uc->cursos()->detach();
 
             foreach ($request->input('curso_uc') as $cursoAcron) {
-                $curso = Curso::where('acron_curso', $cursoAcron)->first();
+                $curso = Curso::find($cursoAcron);
 
                 if ($curso) {
                     $uc->cursos()->attach($curso->acron_curso);

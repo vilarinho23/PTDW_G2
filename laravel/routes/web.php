@@ -64,7 +64,7 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
 
     Route::get('/ucs', function () {
         return view('gestorUcs');
-    })->name('gestorUcs'); 
+    })->name('gestorUcs');
 
     Route::prefix('/atribuicaoucs')->group(function () {
         Route::get('/', [DocenteUcController::class, 'index'])->name('atribuicaoUcs');
@@ -78,7 +78,4 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
 // Testes
 Route::prefix('/testar')->group(function () {
     Route::get('/models', [TesteController::class, 'testarModels']);
-
-    Route::get('/import', [TesteController::class, 'testarImport']);
 });
-

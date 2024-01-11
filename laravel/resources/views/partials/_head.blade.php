@@ -13,9 +13,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous" defer></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-{{-- TODO: remove (import no cliente) --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
-
 <script>
     const docenteUrl = "{{ route('docente') }}";
     const comissaoUrl = "{{ route('comissao') }}";

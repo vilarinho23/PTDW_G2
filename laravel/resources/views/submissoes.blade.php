@@ -26,8 +26,8 @@
             </div>
         </div>
     </div>
-
     <div class="w-75 mx-auto" id="tableContainer">
+        <h4>Restrições Submetidas</h4>
         <div class="d-flex justify-content-between gap-2 mt-3">
             <div class="d-flex gap-4">
                 <div class="input-group w-50">

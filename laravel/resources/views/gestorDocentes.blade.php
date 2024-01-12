@@ -10,12 +10,9 @@
 <div class="container">
     <div class="border-atribuicao mx-auto">
         <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2 ms-4">
                 <div class="input-group rounded">
-                    <input id="inputPesquisar" type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
-                </div>
-                <div>
-                    <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
+                    <input id="inputPesquisar" type="search" class="form-control rounded searchInput" placeholder="Número" aria-label="Search">
                 </div>
             </div>
 
@@ -26,7 +23,7 @@
         </div>
         <div>
 
-            <div class="container mt-3 text-center">
+            <div class="container mt-3 text-center tableFixHead">
                 <table class="table">
                     <thead>
                         <tr>
@@ -53,12 +50,6 @@
                 </table>
             </div>
         </div>
-    </div>
-    <div class="d-flex gap-3 ms-3">
-        <div>
-            <img src="{{ asset('images/info.svg') }}" alt="info">
-        </div>
-        <p>INFORMAÇÃO DE AJUDA</p>
     </div>
 </div>
 

@@ -10,7 +10,7 @@
     <div class="container">
         <div class="border-atribuicao mx-auto">
             <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2 ms-4">
                     <div class="input-group rounded">
                         <input id="inputPesquisar" type="search" class="form-control rounded pesquisar-uc searchInput" placeholder="Código UC"
                             aria-label="Search">

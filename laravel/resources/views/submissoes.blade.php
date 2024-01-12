@@ -10,19 +10,19 @@
 <div class="container-sm">
     <div class="d-flex pt-5 pb-3 text-center w-75 mx-auto" >
         <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2" style=" background-color:#D9D9D9">
-            <p class="m-0"><strong>Formulários Submetidos</strong></p>
+            <p class="m-0"><strong>Restrições Submetidas</strong></p>
             <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
         </div>
         <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-5" style=" background-color:#D9D9D9">
-            <p class="m-0"><strong>Formulários Pendentes</strong></p>
+            <p class="m-0"><strong>Restrições Pendentes</strong></p>
             <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
         </div>
         <div class="d-flex flex-column align-items-center gap-3 me-2 ms-auto">
             <div class="h-50">
-                <button type="button" class="button-style" style="width: 200px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Término</button>
+                <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Conclusão</button>
             </div>
             <div class="h-50">
-                <button id="transferirBtn" type="button" class="button-style" style="width: 200px;height: 40px">Transferir Submissões</button>
+                <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
             </div>
         </div>
     </div>

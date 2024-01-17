@@ -10,12 +10,9 @@
 <div class="container">
     <div class="border-atribuicao mx-auto">
         <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2 ms-4">
                 <div class="input-group rounded">
-                    <input id="inputPesquisar" type="search" class="form-control rounded" placeholder="Search" aria-label="Search">
-                </div>
-                <div>
-                    <img src="{{ asset('images/search-interface-symbol.svg') }}" alt="search">
+                    <input id="inputPesquisar" type="search" class="form-control rounded searchInput" placeholder="Número" aria-label="Search">
                 </div>
             </div>
 
@@ -26,7 +23,7 @@
         </div>
         <div>
 
-            <div class="container mt-3 text-center">
+            <div class="container mt-3 text-center tableFixHead">
                 <table class="table">
                     <thead>
                         <tr>
@@ -53,12 +50,6 @@
                 </table>
             </div>
         </div>
-    </div>
-    <div class="d-flex gap-3 ms-3">
-        <div>
-            <img src="{{ asset('images/info.svg') }}" alt="info">
-        </div>
-        <p>INFORMAÇÃO DE AJUDA</p>
     </div>
 </div>
 
@@ -120,7 +111,7 @@
             <div class="modal-footer d-flex justify-content-center border-0">
                 <button type="button" id="btnConfirmarAdicionar" class="mx-2 button-style"
                     style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                <button type="button" id="btnCancelarModalAdicionar" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
             </div>
         </div>
@@ -142,7 +133,7 @@
                             <label for="inputEditarNFuncionario" class="col-form-label">Nº funcionário</label>
                         </div>
                         <div class="col-sm">
-                            <input type="text" class="form-control" id="inputEditarNFuncionario" name="num_func" >
+                            <input type="text" class="form-control" id="inputEditarNFuncionario" name="num_func" disabled>
                         </div>
                     </div>
                     <div class="row mt-2 g-3 align-items-center">
@@ -185,7 +176,7 @@
             <div class="modal-footer d-flex justify-content-center border-0">
                 <button type="button" class="mx-2 button-style" id="btnConfirmarEditar"
                     style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                <button type="button" id="btnCancelarModalEditar" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="mx-2 button-style-red" id="btnEliminarModal"
                 style="width: 130px; height: 30px;" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
@@ -266,13 +257,25 @@
             } else {
                 console.log('Dados enviados com sucesso:', data);
                 $('#editarModal').modal('hide');
+                alert('Docente editado com sucesso!');
+                setTimeout(function() {
                 window.location.reload();
+                }, 2000);
             }
         })
         .catch(error => {
             console.error('Erro ao enviar dados:', error);
         });
     }
+
+    document.getElementById("btnCancelarModalEditar").onclick = function() {
+        document.getElementById('inputEditarNFuncionario').value = '';
+        document.getElementById('inputEditarNome').value = '';
+        document.getElementById('inputEditarAcn').value = '';
+        document.getElementById('inputEditarContacto').value = '';
+        document.getElementById('inputEditarEmail').value = '';
+        document.getElementById('mensagemErroEditar').innerText = '';
+    };
 
     document.getElementById('btnConfirmarAdicionar').onclick = function() {
         const data = {
@@ -300,12 +303,24 @@
             } else {
                 console.log('Dados enviados com sucesso:', data);
                 $('#adicionarModal').modal('hide');
+                alert('Docente adicionado com sucesso!');
+                setTimeout(function() {
                 window.location.reload();
+                }, 2000);
             }
         })
         .catch(error => {
             console.error('Erro ao enviar dados:', error);
         });
+    };
+
+    document.getElementById('btnCancelarModalAdicionar').onclick = function() {
+        document.getElementById('inputAdicionarNFuncionario').value = '';
+        document.getElementById('inputAdicionarNome').value = '';
+        document.getElementById('inputAdicionarAcn').value = '';
+        document.getElementById('inputAdicionarContacto').value = '';
+        document.getElementById('inputAdicionarEmail').value = '';
+        document.getElementById('mensagemErroAdicionar').innerText = '';
     };
 
 
@@ -325,7 +340,10 @@
             if (response.ok) {
                 console.log('Docente excluído com sucesso');
                 $('#editarModal').modal('hide');
+                alert('Docente excluído com sucesso!');
+                setTimeout(function() {
                 window.location.reload();
+                }, 2000);
             } else {
                 console.error('Erro ao excluir docente');
             }

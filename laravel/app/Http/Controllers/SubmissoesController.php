@@ -26,11 +26,30 @@ class SubmissoesController extends Controller
         return $data;
     }
 
+    private function getPendentes(){
+        $docentes = $this->getAll();
+
+        $filteredDocentes = $docentes->filter(function ($docente) {
+            $dadosDocente = AppUtilities::getDadosDocente($docente);
+
+            $areUCsNotEmptyOrNull = $dadosDocente['ucs']->isNotEmpty();
+            $isDataSubmissaoNotDefined = empty($dadosDocente['dataSubmissao']);
+ 
+            return $areUCsNotEmptyOrNull && $isDataSubmissaoNotDefined;
+        });
+
+        return $filteredDocentes;
+    }
+
     public function submissoes(){
+        $getSubmissoes = $this->getSubmissoes();
+        $getPendentes = $this->getPendentes();
+
         $data = [
-            'submissoes' => $this->getSubmissoes(),
-            'nrSubmissoes' => count($this->getSubmissoes()),
-            'nrPorSubmeter' => count($this->getAll()) - count($this->getSubmissoes()),
+            'pendentes' => $getPendentes,
+            'submissoes' => $getSubmissoes,
+            'nrSubmissoes' => count($getSubmissoes),
+            'nrPorSubmeter' => count($getPendentes),
             'dataConclusao' => AppUtilities::getDataConclusao(),
         ];
 

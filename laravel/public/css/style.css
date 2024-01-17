@@ -62,6 +62,10 @@ input.impedimento-check {
     margin: 0 auto;
 }
 
+.hover:hover {
+    cursor: pointer;
+}
+
 input.impedimento-check:checked.form-check-input:checked[type="checkbox"] {
     --bs-form-check-bg-image: var(--url-close);
     background-color: var(--bs-form-check-bg);
@@ -77,7 +81,7 @@ input.impedimento-check:checked.form-check-input:checked[type="checkbox"] {
 }
 
 .searchInput{
-    background: url(/images/search-interface-symbol.svg) no-repeat right center;
+    background: var(--url-search) no-repeat right center;
     background-position: calc(100% - 10px) center;
 }
 

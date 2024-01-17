@@ -210,7 +210,7 @@
                             <tbody>
                                 @php
                                     $fieldName = 'impedimentos';
-                                    $blocosSemAulas = ["sabado_noite"];
+                                    $blocosSemAulas = ["sábado_noite"];
 
                                     $impOld = old($fieldName) ?? [];
                                     $impedimentos = $restricoes->map(function ($restricao) {

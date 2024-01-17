@@ -60,6 +60,7 @@ class UnidadeCurricular extends Model
     protected $fillable = [
         'cod_uc',
         'nome_uc',
+        'acron_uc',
         'horas_uc',
         'acn_uc',
         'semestre_uc',

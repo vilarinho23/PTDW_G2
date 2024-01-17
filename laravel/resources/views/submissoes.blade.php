@@ -8,32 +8,38 @@
 
 @section('content')
 <div class="container-sm">
-    <div class="d-flex pt-5 pb-3 text-center w-75 mx-auto" >
-        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2" style=" background-color:#D9D9D9">
-            <p class="m-0"><strong>Formulários Submetidos</strong></p>
-            <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
-        </div>
-        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-5" style=" background-color:#D9D9D9">
-            <p class="m-0"><strong>Formulários Pendentes</strong></p>
-            <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
-        </div>
-        <div class="d-flex flex-column align-items-center gap-3 me-2 ms-auto">
-            <div class="h-50">
-                <button type="button" class="button-style" style="width: 200px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Término</button>
+    <div class="d-flex pt-5 pb-3 text-center justify-content-center w-75 mx-auto" >
+        <div class="d-flex align-items-center">
+            <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2 border border-dark border-2 hover" style="background-color:#D9D9D9" id="btnsubmetidas">
+                <p class="m-0 px-5"><strong>Submetidas</strong></p>
+                <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
             </div>
-            <div class="h-50">
-                <button id="transferirBtn" type="button" class="button-style" style="width: 200px;height: 40px">Transferir Submissões</button>
+        </div>
+        <div class="d-flex align-items-center">
+            <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-5 hover" style="background-color:#D9D9D9" id="btnpendente">
+                <p class="m-0 px-4"><strong>Não Submetidas</strong></p>
+                <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
             </div>
         </div>
     </div>
-
-    <div class="w-75 mx-auto" id="tableContainer">
+    <div class="d-flex align-items-center mx-auto justify-content-around mt-4 w-75">
+        <div class="h-50">
+            <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Conclusão</button>
+        </div>
+        <div class="h-50">
+            <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Eliminar Submissões</button>
+        </div>
+        <div class="h-50">
+            <button id="csrirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
+        </div>
+    </div>
+    <div class="w-75 mx-auto mt-5" id="tableContainer">
         <div class="d-flex justify-content-between gap-2 mt-3">
             <div class="d-flex gap-4">
                 <div class="input-group w-50">
-                    <input type="search" class="form-control rounded searchInput" placeholder="Número" aria-label="Search">
+                    <input type="search" class="form-control rounded searchInput" id="searchInput" placeholder="Número" aria-label="Search">
                 </div>
-                <div class="d-flex align-items-center w-50">
+                <div class="d-flex align-items-center w-50" id="ordemBtn">
                     <label for="sortDropdown" class="me-2">Ordem:</label>
                     <select class="form-select" id="sortDropdown">
                         <option value="desc">Mais Recente</option>
@@ -51,7 +57,7 @@
             </div>
         </div>
         <div class="tableFixHead mt-2">
-            <table class="table">
+            <table class="table"  id="tableSubmissoes">
                 <thead>
                     <tr>
                         <th class="text-center col-3">Nº</th>
@@ -71,6 +77,24 @@
                     @endforeach
                 </tbody>
             </table>
+            <table class="table" id="tablePendentes">
+                <thead>
+                    <tr>
+                        <th class="text-center col-3">Nº</th>
+                        <th class="text-start">Nome Docente</th>
+                        <th class="text-center"></th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($pendentes as $item)
+                        <tr class="hover listrow" data-num-func="{{ $item->num_func }}">
+                            <td class="col-3">{{ $item->num_func }}</td>
+                            <td class="text-start">{{ $item->nome_docente }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -80,7 +104,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-header border-0">
-                <h5 class="modal-title mx-auto" id="modalTerminarLabel">Definir Data de Término</h5>
+                <h5 class="modal-title mx-auto" id="modalTerminarLabel">Definir Data de Conclusão</h5>
             </div>
             <form id="updateForm">
                 @csrf
@@ -102,6 +126,7 @@
 <script>
     var lista = [];
     document.addEventListener('DOMContentLoaded', function() {
+        $("#tablePendentes").hide();
         var searchInput = document.getElementById('searchInput');
         var tableRows = document.querySelectorAll('.table tbody tr');
         var sortDropdown = document.getElementById('sortDropdown');
@@ -270,6 +295,23 @@
     $("#transferirBtn").click(() => {
         const url = "{{ route('export.all') }}";
         window.location.href = url;
+    });
+
+    $("#btnsubmetidas").click(() => {
+        $("#tableSubmissoes").show();
+        $("#tablePendentes").hide();
+        $("#ordemBtn").removeClass("invisible");
+        $("#btnsubmetidas").addClass("border border-dark border-2");
+        $("#btnpendente").removeClass("border border-dark border-2");
+    });
+
+
+    $("#btnpendente").click(() => {
+        $("#tableSubmissoes").hide();
+        $("#tablePendentes").show();
+        $("#ordemBtn").addClass("invisible");
+        $("#btnsubmetidas").removeClass("border border-dark border-2");
+        $("#btnpendente").addClass("border border-dark border-2");
     });
 </script>
 @endsection

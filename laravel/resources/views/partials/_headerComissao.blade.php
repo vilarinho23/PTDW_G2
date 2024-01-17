@@ -1,5 +1,6 @@
 @extends("partials._header")
 @section("navbar_content")
+<a href="{{ route("comissao") }}"><img class="m-0 p-0 me-4 ms-3" src="{{ asset('images/home.svg') }}" alt="Image_home" id="image_home" ></a>
 <div class="navbar-brand m-0 p-0 d-inline-flex gap-5 position-absolute top-50 start-50 translate-middle">
     <a class="m-0 p-0 text-decoration-none {{ Request::is('comissao/submissoes*') ? 'fw-bold' : '' }}" style="color: black; font-family: 'Inter', sans-serif;" href="{{ route("submissoes") }}">Submissões</a>
     <a class="m-0 p-0 text-decoration-none {{ Request::is('comissao/docentes*') ? 'fw-bold' : '' }}" style="color: black; font-family: 'Inter', sans-serif;" href="{{ route("gestorDocentes") }}">Docentes</a>

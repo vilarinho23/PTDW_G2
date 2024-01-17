@@ -75,7 +75,30 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
-                        <div class="w-50">
+                       
+                        <div class="w-100">
+                            <label for="dropdownAtribuirNomeDocente" class="col-form-label">Nome Docente:</label>
+                            <select class="form-select" id="dropdownAtribuirNomeDocente" aria-label="Nome do Funcionário">
+                                @foreach($funcionarios->sortBy('nome_docente') as $funcionario)
+                                    <option value="{{ $funcionario->num_func }}">{{ $funcionario->nome_docente }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    
+                        <div class="w-100">
+                            <label for="dropdownAtribuirNomeUc" class="col-form-label">Nome UC:</label>
+                            <select class="form-select " id="dropdownAtribuirNomeUc" aria-label="Nome da Unidade Curricular">
+                                @foreach($ucs->sortBy('nome_uc') as $uc)
+                                    <option value="{{ $uc->cod_uc }}">{{ $uc->nome_uc }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                    </div>
+
+                    <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
+
+                        <div class="w-100">
                             <label for="dropdownAtribuirNFuncionario" class="col-form-label">Nº funcionário</label>
                             <select class="form-select" id="dropdownAtribuirNFuncionario" name="dropdownAtribuirNFuncionario" aria-label="Número do Funcionário">
                                 @foreach($funcionarios->sortBy('num_func') as $funcionario)
@@ -84,7 +107,7 @@
                             </select>
                         </div>
 
-                        <div class="w-50">
+                        <div class="w-100">
                             <label for="dropdownAtribuirCodUc" class="col-form-label">Código UC</label>
                             <select class="form-select" id="dropdownAtribuirCodUc" name="dropdownAtribuirCodUc" aria-label="Código da UC">
                                 @foreach($ucs->sortBy('cod_uc') as $uc)
@@ -92,30 +115,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
-                        <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                            <div><label for="dropdownAtribuirNomeDocente" class="col-form-label">Nome Docente:</label></div>
-                            <div>
-                                <select class="form-select" id="dropdownAtribuirNomeDocente" aria-label="Nome do Funcionário">
-                                    @foreach($funcionarios->sortBy('nome_docente') as $funcionario)
-                                        <option value="{{ $funcionario->num_func }}">{{ $funcionario->nome_docente }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="d-flex gap-2 w-50 justify-content-center align-items-center">
-                            <div><label for="dropdownAtribuirNomeUc" class="col-form-label">Nome UC:</label></div>
-                            <div>
-                                <select class="form-select" id="dropdownAtribuirNomeUc" aria-label="Nome da Unidade Curricular">
-                                    @foreach($ucs->sortBy('nome_uc') as $uc)
-                                        <option value="{{ $uc->cod_uc }}">{{ $uc->nome_uc }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="d-flex justify-content-center align-items-center mt-5 gap-2">
@@ -123,9 +123,11 @@
                         <div style="width: 45px"><input type="text" class="form-control" id="inputAtribuirPerc" name="inputAtribuirPerc" placeholder=""></div>
                     </div>
 
+                    <div id="divMessagemErroAtribuir" class="d-flex justify-content-center" style="color: red"></div>
+
                     <div class="modal-footer d-flex justify-content-center border-0">
                         <button id="btnAtribuir" type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
-                        <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btnCancelarAtribuir" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
             </div>
@@ -180,24 +182,35 @@
 
 <div class="modal modal-lg" id="editarModal" tabindex="-1"
     aria-labelledby="editarModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0">
             <div class="modal-header border-0 p-4">
                 <h5 class="modal-title mx-auto" id="editarModalLabel">Editar Atribuição da UC '<span id="nomeUcEditarModal"></span>' com o Docente '<span id="nomeDocenteEditarModal"></span>'</h5>
             </div>
-            <div class="modal-body">
-                <div class="mb-3">
+            <div class="modal-body d-flex justify-content-center">
+                <div class="d-flex flex-column gap-3 justify-content-center">
                     <label for="inputEditarPerc" class="form-label">Digita a nova percentagem de horas:</label>
-                    <input type="text" class="form-control" id="inputEditarPerc" name="inputEditarPerc" value="">
+                    <div class="d-flex justify-content-center">
+                        <input type="text" class="form-control w-25" id="inputEditarPerc" name="inputEditarPerc" value="">
+                    </div>
+                    
+                    
                 </div>
+                
             </div>
 
-            <div class="modal-footer">
-                <button id="btnEditar" type="button" class="btn btn-primary">Salvar alterações</button>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar atribuição</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <div id="divMensagemErroEditar" class="d-flex justify-content-center" style="color: red;"></div>
+
+            <div class="modal-footer d-flex justify-content-center border-0">
+                <button type="button" class="mx-2 button-style" id="btnConfirmarEditar"
+                    style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" id="btnCancelarModalEditar" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="mx-2 button-style-red" id="btnEliminarModal"
+                style="width: 130px; height: 30px;" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
             </div>
         </div>
+        
     </div>
 </div>
 
@@ -304,10 +317,12 @@
         modal.modal('show');
     });
 
-    $("#btnEditar").click(function () {
+    $("#btnConfirmarEditar").click(function () {
         const numFunc = $("#editarModal").data('num-func');
         const codUc = $("#editarModal").data('cod-uc');
         const percHoras = $("#inputEditarPerc").val();
+
+        $("#divMensagemErroEditar").text('');
 
         const url = updateUrl.replace(':num_func', numFunc).replace(':cod_uc', codUc);
         const data = { perc_horas: percHoras };
@@ -320,13 +335,25 @@
             },
             body: JSON.stringify(data)
         })
+        .then(response=>response.json())
         .then(data => {
-            console.log(data);
-            window.location.reload();
+            if(data.error){
+                $("#divMensagemErroEditar").text(data.error);
+            }else{
+                console.log(data);
+                alert("Atribuição atualizada com sucesso");
+                window.location.reload();
+            }
+            
         })
         .catch(error => {
             console.error('Erro ao editar atribuição:', error);
         });
+    });
+
+    $("#btnCancelarModalEditar").click(function () {
+        $("#inputEditarPerc").val("");
+        $("#divMensagemErroEditar").text('');
     });
 
     $("#btnEliminar").click(function () {
@@ -344,6 +371,7 @@
         })
         .then(data => {
             console.log(data);
+            alert("Registo eliminado com sucesso");
             window.location.reload();
         })
         .catch(error => {
@@ -355,6 +383,8 @@
         const numFunc = $("#dropdownAtribuirNFuncionario").val();
         const codUc = $("#dropdownAtribuirCodUc").val();
         const percHoras = $("#inputAtribuirPerc").val();
+
+        $("#divMessagemErroAtribuir").text('');
 
         const data = {
             num_func: numFunc,
@@ -370,13 +400,25 @@
             },
             body: JSON.stringify(data)
         })
+        .then(response => response.json())
         .then(data => {
-            console.log(data);
-            window.location.reload();
+            if (data.error){
+                $("#divMessagemErroAtribuir").text(data.error);
+            }else{
+                console.log(data);
+                alert("Registo criado com sucesso");
+                window.location.reload();
+            }
+            
         })
         .catch(error => {
             console.error('Erro ao atribuir UC:', error);
         });
+    });
+
+    $("#btnCancelarAtribuir").click(function() {   
+        $("#inputAtribuirPerc").val("");
+        $("#divMessagemErroAtribuir").text('');
     });
     
     $('#btnEliminarTodas').click(function () {
@@ -387,6 +429,8 @@
             }
         })
         .then(() => {
+            console.log(data);
+            alert("Registos eliminados com sucesso");
             window.location.reload();
         })
         .catch(error => {

@@ -1,6 +1,6 @@
 @extends('partials._document')
 @section('head')
-@include('partials._head', ["titulo" => "Submissões"])
+@include('partials._head', ["titulo" => "Gestor de Submissões"])
 @endsection
 @section('header')
 @include('partials._headerComissao')
@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="container-sm">
-    <div class="d-flex pt-5 pb-3 text-center justify-content-center w-75 mx-auto" >
+    <div class="d-flex pt-5 pb-3 text-center justify-content-center w-75 mx-auto gap-5" >
         <div class="d-flex align-items-center">
             <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2 border border-dark border-2 hover" style="background-color:#D9D9D9" id="btnsubmetidas">
                 <p class="m-0 px-5"><strong>Submetidas</strong></p>
@@ -34,21 +34,19 @@
         </div>
     </div>
     <div class="w-75 mx-auto mt-5" id="tableContainer">
-        <div class="d-flex justify-content-between gap-2 mt-3">
-            <div class="d-flex gap-4">
-                <div class="input-group w-50">
-                    <input type="search" class="form-control rounded searchInput" id="searchInput" placeholder="Número" aria-label="Search">
-                </div>
-                <div class="d-flex align-items-center w-50" id="ordemBtn">
-                    <label for="sortDropdown" class="me-2">Ordem:</label>
-                    <select class="form-select" id="sortDropdown">
-                        <option value="desc">Mais Recente</option>
-                        <option value="asc">Mais Antigo</option>
-                    </select>
-                </div>
+        <div class="d-flex justify-content-between mt-3">
+            <div class="input-group w-25">
+                <input type="search" class="form-control rounded searchInput" id="searchInput" placeholder="Número/Nome Docente" aria-label="Search">
+            </div>
+            <div class="d-flex align-items-center w-25" id="ordemBtn">
+                <label for="sortDropdown" class="me-2">Ordem:</label>
+                <select class="form-select" id="sortDropdown">
+                    <option value="desc">Mais Recente</option>
+                    <option value="asc">Mais Antigo</option>
+                </select>
             </div>
 
-            <div class="d-flex align-items-center me-2" id="dataContainer">
+            <div class="d-flex align-items-center" id="dataContainer">
                 @if ($dataConclusao)
                     <p class="m-0"><strong>Data de Conclusão:</strong> {{ $dataConclusao }}</p>
                 @else
@@ -77,6 +75,11 @@
                     @endforeach
                 </tbody>
             </table>
+            @php
+                $block = count($submissoes) == 0 ? "d-block" : "d-none";
+            @endphp
+            <p id="noResultsMessageSubmissoes" class="text-center mt-5 {{ $block }}">Sem resultados.</p>
+            
             <table class="table" id="tablePendentes">
                 <thead>
                     <tr>
@@ -95,6 +98,10 @@
                     @endforeach
                 </tbody>
             </table>
+            @php
+                $block = count($pendentes) == 0 ? "d-block" : "d-none";
+            @endphp
+            <p id="noResultsMessagePendentes" class="text-center mt-5 {{ $block }}">Sem resultados.</p>
         </div>
     </div>
 
@@ -177,8 +184,9 @@
 
             tableRows.forEach(function(row) {
                 var numFunc = row.querySelector('td:first-child').textContent.toLowerCase();
+                var nomeDoc = row.querySelector('td:nth-child()').textContent.toLowerCase();
 
-                if (numFunc.includes(searchText)) {
+                if (numFunc.includes(searchText) || nomeDoc.includes(searchText)) {
                     row.style.display = 'table-row';
                     matchingRows++;
                 } else {
@@ -303,6 +311,8 @@
         $("#ordemBtn").removeClass("invisible");
         $("#btnsubmetidas").addClass("border border-dark border-2");
         $("#btnpendente").removeClass("border border-dark border-2");
+        $('#noResultsMessageSubmissoes').removeClass('d-none').addClass('d-block');
+        $('#noResultsMessagePendente').removeClass('d-block').addClass('d-none');
     });
 
 
@@ -312,6 +322,8 @@
         $("#ordemBtn").addClass("invisible");
         $("#btnsubmetidas").removeClass("border border-dark border-2");
         $("#btnpendente").addClass("border border-dark border-2");
+        $('#noResultsMessagePendente').removeClass('d-none').addClass('d-block');
+        $('#noResultsMessageSubmissoes').removeClass('d-block').addClass('d-none');
     });
 </script>
 @endsection

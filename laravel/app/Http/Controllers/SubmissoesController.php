@@ -6,6 +6,7 @@ use App\Models\Docente;
 use App\Models\Enums\DiaSemana;
 use App\Models\Enums\ParteDia;
 use App\Models\KeyValue;
+use App\Models\UnidadeCurricular;
 use Illuminate\Http\Request;
 
 class SubmissoesController extends Controller
@@ -32,7 +33,7 @@ class SubmissoesController extends Controller
 
             $areUCsNotEmptyOrNull = $dadosDocente['ucs']->isNotEmpty();
             $isDataSubmissaoNotDefined = empty($dadosDocente['dataSubmissao']);
- 
+
             return $areUCsNotEmptyOrNull && $isDataSubmissaoNotDefined;
         });
 
@@ -80,6 +81,33 @@ class SubmissoesController extends Controller
         $dados['partesDia'] = ParteDia::cases();
 
         return view('restricoesComissao', $dados);
+    }
+
+    public function limparSubmissoes()
+    {
+        // For each Docente:
+        // delete all RestricaoHorario
+        // set data_submissao and observacoes to null
+        Docente::all()->each(function ($docente) {
+            $docente->restricoes()->delete();
+            $docente->data_submissao = null;
+            $docente->observacoes = null;
+
+            $docente->save();
+        });
+
+        // For each UnidadeCurricular:
+        // detach all Laboratorio
+        // set sala_avaliacoes, utilizacao_laboratorios and software_necessario to null
+        UnidadeCurricular::all()->each(function ($uc) {
+            $uc->laboratorios()->detach();
+
+            $uc->sala_avaliacoes = null;
+            $uc->utilizacao_laboratorios = null;
+            $uc->software_necessario = null;
+
+            $uc->save();
+        });
     }
 
     private function getDadosDocente(Docente $docente): array

@@ -42,6 +42,12 @@ class GestorDocenteController extends Controller
                 'email_docente.email' => 'Por favor, insira um endereço de email válido.',
             ]);
 
+            $existingDocente = Docente::where('num_func',$request->input('num_func'))->first();
+
+            if ($existingDocente){
+                return response()->json(['error'=>'Já existe um docente com este número de funcionário'],400);
+            }
+
             Log::info($request);
 
             $novoDocente = new Docente([

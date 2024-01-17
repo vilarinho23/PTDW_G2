@@ -27,10 +27,10 @@
             <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Conclusão</button>
         </div>
         <div class="h-50">
-            <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Eliminar Submissões</button>
+            <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Submissões</button>
         </div>
         <div class="h-50">
-            <button id="csrirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
+            <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
         </div>
     </div>
     <div class="w-75 mx-auto mt-5" id="tableContainer">
@@ -82,13 +82,11 @@
                     <tr>
                         <th class="text-center col-3">Nº</th>
                         <th class="text-start">Nome Docente</th>
-                        <th class="text-center"></th>
-                        <th class="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($pendentes as $item)
-                        <tr class="hover listrow" data-num-func="{{ $item->num_func }}">
+                        <tr>
                             <td class="col-3">{{ $item->num_func }}</td>
                             <td class="text-start">{{ $item->nome_docente }}</td>
                         </tr>
@@ -106,25 +104,47 @@
             <div class="modal-header border-0">
                 <h5 class="modal-title mx-auto" id="modalTerminarLabel">Definir Data de Conclusão</h5>
             </div>
-            <form id="updateForm">
-                @csrf
-                <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker gap-3">
-                    <label for="escolher-data" class="d-flex justify-content-center align-items-center mb-3 ml-2">
-                        Data:
-                        <input id="escolher-data" type="date" name="escolher-data" class="ms-3">
-                    </label>
-                </div>
-                <div class="modal-footer d-flex justify-content-center border-0">
-                    <button type="button" onclick="updateData()" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
-                    <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
+            <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker gap-3">
+                <label for="escolher-data" class="d-flex justify-content-center align-items-center mb-3 ml-2">
+                    Data:
+                    <input id="escolher-data" type="date" name="escolher-data" class="ms-3">
+                </label>
+            </div>
+            <div class="modal-footer d-flex justify-content-center border-0">
+                <button type="button" onclick="updateData()" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
+            </div>
         </div>
     </div>
 </div>
 
+<div class="modal modal-lg" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header border-0">
+                <h3 class="modal-title mx-auto" id="modalEliminarLabel">Confirmar eliminação de todas as submissões</h3>
+            </div>
+
+            <div class="modal-body"></div>
+            <div class="modal-footer d-flex justify-content-center border-0">
+                <button type="button" class="mx-2 button-style" id="btnEliminarTodas" style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
-    var lista = [];
+    const exportUrl = "{{ route('export.all') }}";
+    const submissaoUrl = "{{ route('submissoes.restricoes', ':num_func') }}";
+    const setDataUrl = "{{ route ('submeter.data')}}";
+    const deleteUrl = "{{ route('submissoes.clear') }}"
+    const token = "{{ csrf_token() }}";
+
+    const docentes = @json($submissoes);
+    const lista = [];
+
     document.addEventListener('DOMContentLoaded', function() {
         $("#tablePendentes").hide();
         var searchInput = document.getElementById('searchInput');
@@ -135,13 +155,11 @@
             var numFuncValue = $(this).data('num-func');
             console.log(numFuncValue);
 
-            const url = "{{ route('submissoes.restricoes', '') }}/" + numFuncValue;
-
+            const url = submissaoUrl.replace(':num_func', numFuncValue);
             window.location.href = url;
         });
 
         function getlistNumbers(){
-            var docentes = @json($submissoes);
             for (var docente in docentes) {
                 lista.push(docentes[docente]["num_func"]);
             }
@@ -241,11 +259,11 @@
         if (chosenDate > currentDate) {
             var formattedChosenDate = `${chosenDate.getDate()}/${chosenDate.getMonth() + 1}/${chosenDate.getFullYear()}`;
 
-            fetch('{{ route ('submeter.data')}}', {
+            fetch(setDataUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': token,
                 },
                 body: JSON.stringify({
                     chosenDate: formattedChosenDate,
@@ -293,8 +311,19 @@
     }
 
     $("#transferirBtn").click(() => {
-        const url = "{{ route('export.all') }}";
-        window.location.href = url;
+        window.location.href = exportUrl;
+    });
+
+    $("#btnEliminarTodas").click(() => {
+        fetch(deleteUrl, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': token,
+            }
+        })
+        .then(() => {
+            window.location.reload();
+        })
     });
 
     $("#btnsubmetidas").click(() => {

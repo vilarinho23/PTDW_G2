@@ -8,45 +8,11 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class DSDImport implements ToCollection, WithHeadingRow
 {
-    private static function clearData()
-    {
-        // For each Docente:
-        // delete all RestricaoHorario
-        // detach all UnidadeCurricular
-        // set data_submissao and observacoes to null
-        Docente::all()->each(function ($docente) {
-            $docente->restricoes()->delete();
-            $docente->unidadesCurriculares()->detach();
-
-            $docente->data_submissao = null;
-            $docente->observacoes = null;
-
-            $docente->save();
-        });
-
-        // For each UnidadeCurricular:
-        // detach all docentes (done by last step)
-        // detach all Laboratorio
-        // detach all Curso
-        // set sala_avaliacoes, utilizacao_laboratorios and software_necessario to null
-        UnidadeCurricular::all()->each(function ($uc) {
-            $uc->laboratorios()->detach();
-            $uc->cursos()->detach();
-
-            $uc->sala_avaliacoes = null;
-            $uc->utilizacao_laboratorios = null;
-            $uc->software_necessario = null;
-
-            $uc->save();
-        });
-    }
-
     private static function getSemestreAtual()
     {
         // Comissão de Horários starts earlier
@@ -144,10 +110,7 @@ class DSDImport implements ToCollection, WithHeadingRow
      */
     public function collection(Collection $collection)
     {
-        // Clear data before importing
-        self::clearData();
-
-        $rowNr = 0;
+        $rowNr = 1;
         foreach ($collection as $row)
         {
             // n.º Func | nome           | ACN Doc | cód UC | ACN UC | Responsavel | nome UC   | curso | Horas | Perc
@@ -170,10 +133,9 @@ class DSDImport implements ToCollection, WithHeadingRow
             if ($isResponsavel) $docente->respUnidadesCurriculares()->save($uc);
 
             // Attach Docente to UnidadeCurricular
-            $docente->unidadesCurriculares()->attach(
-                $uc->cod_uc,
-                ['perc_horas' => $perc_horas]
-            );
+            $docente->unidadesCurriculares()->syncWithoutDetaching([
+                $uc->cod_uc => ['perc_horas' => $perc_horas]
+            ]);
         }
     }
 

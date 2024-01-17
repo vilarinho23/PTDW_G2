@@ -22,6 +22,7 @@ class UnidadeCurricularFactory extends Factory
         return [
             'cod_uc' => $this->faker->unique()->numberBetween(1, 999999),
             'nome_uc' => $this->faker->unique()->word(),
+            'acron_uc' => $this->faker->unique()->word(),
             'horas_uc' => $this->faker->numberBetween(1, 10),
             'acn_uc' => $this->faker->word(),
             'semestre_uc' => $this->faker->numberBetween(1, 2),

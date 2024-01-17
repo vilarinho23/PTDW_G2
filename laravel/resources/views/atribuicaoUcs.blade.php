@@ -16,8 +16,9 @@
             </div>
 
             <div class="d-flex gap-5">
-                <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal" data-bs-target="#atribuirUcModal">Atribuir UC</button>
                 <button type="button" class="button-style" style="width: 170px; height: 40px;" data-bs-toggle="modal" data-bs-target="#carregarModal">Carregar Ficheiro</button>
+                <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal" data-bs-target="#atribuirUcModal">Atribuir UC</button>
+                <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal" data-bs-target="#eliminarTodasModal">Eliminar Todas</button>
             </div>
         </div>
 
@@ -214,12 +215,31 @@
     </div>
 </div>
 
+<div class="modal modal-lg" id="eliminarTodasModal" tabindex="-1" aria-labelledby="eliminarTodasModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-header border-0">
+                <h3 class="modal-title mx-auto" id="eliminarTodasModalLabel">Confirmar eliminação de todas as atribuições</h3>
+            </div>
+
+            <div class="modal-body"></div>
+            <div class="modal-footer d-flex justify-content-center border-0">
+                <button type="button" class="mx-2 button-style" id="btnEliminarTodas"
+                    style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                    data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const token = "{{ csrf_token() }}";
     const importUrl = "{{ route('import') }}";
     const updateUrl = "{{ route('atribuicaoUcs.update', ['num_func' => ':num_func', 'cod_uc' => ':cod_uc']) }}";
     const insertUrl = "{{ route('atribuicaoUcs.store') }}";
     const deleteUrl = "{{ route('atribuicaoUcs.destroy', ['num_func' => ':num_func', 'cod_uc' => ':cod_uc']) }}";
+    const deleteAllUrl = "{{ route('atribuicaoUcs.clear') }}";
 
     @php
         $atribuicoes = $dados->values()->map(function ($atribuicao) {
@@ -369,6 +389,22 @@
         })
         .catch(error => {
             console.error('Erro ao atribuir UC:', error);
+        });
+    });
+
+
+    $('#btnEliminarTodas').click(function () {
+        fetch(deleteAllUrl, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        })
+        .then(() => {
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Erro ao eliminar todas as atribuições:', error);
         });
     });
 </script>

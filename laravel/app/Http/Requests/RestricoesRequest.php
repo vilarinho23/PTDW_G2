@@ -70,7 +70,7 @@ class RestricoesRequest extends FormRequest
 
     private function getImpedimentos()
     {
-        $impRegex = '/^(\w+)_(\w+)$/';
+        $impRegex = '/^([\wãáàâéêíóôõúç]+)_([\wãáàâéêíóôõúç]+)$/';
         $impedimentos = [];
 
         foreach ($this->input('impedimentos', []) as $imp)

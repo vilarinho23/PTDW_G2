@@ -62,6 +62,10 @@ input.impedimento-check {
     margin: 0 auto;
 }
 
+.hover:hover {
+    cursor: pointer;
+}
+
 input.impedimento-check:checked.form-check-input:checked[type="checkbox"] {
     --bs-form-check-bg-image: var(--url-close);
     background-color: var(--bs-form-check-bg);

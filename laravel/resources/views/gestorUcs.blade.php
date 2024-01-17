@@ -1,6 +1,6 @@
 @extends('partials._document')
 @section('head')
-@include('partials._head', ['titulo' => "Gestor de UC's"])
+@include('partials._head', ['titulo' => "Gestor de Unidades Curriculares"])
 @endsection
 @section('header')
 @include('partials._headerComissao')
@@ -12,7 +12,7 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-2 ms-4">
                     <div class="input-group rounded">
-                        <input id="inputPesquisar" type="search" class="form-control rounded pesquisar-uc searchInput" placeholder="Código UC"
+                        <input id="inputPesquisar" type="search" class="form-control rounded pesquisar-uc searchInput" placeholder="Código/Nome UC"
                             aria-label="Search">
                     </div>
                 </div>
@@ -51,6 +51,10 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @php
+                        $block = count($unidadesCurriculares) == 0 ? "d-block" : "d-none";
+                    @endphp
+                    <p id="noResultsMessage" class="text-center mt-5 {{ $block }}">Sem resultados.</p>
                 </div>
             </div>
         </div>
@@ -65,28 +69,28 @@
                 </div>
                 <div class="modal-body">
                     <form id="formAdicionarUc">
-                        @csrf
                         <div class="container">
                             <div class="d-flex justify-content-center mb-4 rowAdd" id="adicionarRowOne">
                                 <div class="d-flex gap-2 justify-content-center">
                                     <div>
-                                        <label for="selectAdicionarCurso" class="col-form-label">Cursos: </label>
+                                        <label class="col-form-label">Cursos: </label>
                                     </div>
                                     <div class="gap-2" id="divAdicionarCurso">
                                         <div class="inputsize mb-1" style="height: 100px; overflow: auto; width: 630px">
                                             @foreach ($cursos as $curso)
                                                 <div class="form-check">
                                                     <input class="form-check-input curso-checkbox" type="checkbox" id="cursos_{{ $curso->acron_curso }}" name="cursos[]" value="{{ $curso->acron_curso }}">
-                                                    <label class="form-check-label" for="curso_{{ $curso->acron_curso }}">
+                                                    <label class="form-check-label" for="cursos_{{ $curso->acron_curso }}">
                                                         {{ $curso->nome_curso }}
                                                     </label>
                                                 </div>
                                             @endforeach
                                         </div>
+                                        <span class="text-danger" id="spanAdicionarCurso">&nbsp;</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="adicionarRowTwo">
+                            <div class="d-flex justify-content-center gap-5 mb-4 rowAdd" id="adicionarRowTwo">
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputAdicionarNome" class="col-form-label">Nome UC: </label>
@@ -94,6 +98,7 @@
                                     <div class="inputsize" id="divAdicionarNome">
                                         <input type="text" class="form-control" id="inputAdicionarNome" name="nome_uc"
                                             placeholder="">
+                                        <span class="text-danger" id="spanAdicionarNome"></span>
                                     </div>
                                 </div>
 
@@ -104,13 +109,14 @@
                                     <div class="inputsize" id="divAdicionarCod">
                                         <input type="text" class="form-control" id="inputAdicionarCod" name="cod_uc"
                                             placeholder="">
+                                        <span class="text-danger" id="spanAdicionarCod">&nbsp;</span>
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
                             </div>
 
-                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="adicionarRowThree">
+                            <div class="d-flex justify-content-center gap-5 mb-4 rowAdd" id="adicionarRowThree">
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputAdicionarAcn" class="col-form-label">ACN UC: </label>
@@ -118,6 +124,7 @@
                                     <div class="inputsize" id="divAdicionarAcn">
                                         <input type="text" class="form-control" id="inputAdicionarAcn" name="acn_uc"
                                             placeholder="">
+                                        <span class="text-danger" id="spanAdicionarAcn">&nbsp;</span>
                                     </div>
                                 </div>
 
@@ -128,13 +135,14 @@
                                     <div class="inputsize" id="divAdicionarHoras">
                                         <input type="text" class="form-control" id="inputAdicionarHoras" name="horas_uc"
                                             placeholder="">
+                                        <span class="text-danger" id="spanAdicionarHoras">&nbsp;</span>
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
                             </div>
 
-                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="adicionarRowFour">
+                            <div class="d-flex justify-content-center gap-5 mb-4 rowAdd" id="adicionarRowFour">
                                 <div class="d-flex gap-2">
                                     <div>
                                         <label for="selectAdicionarResponsavel" class="col-form-label">Doc. Responsável:
@@ -148,6 +156,7 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                        <span class="text-danger" id="spanAdicionarResponsavel">&nbsp;</span>
                                     </div>
                                 </div>
                             </div>
@@ -175,9 +184,9 @@
                     <form id="formEditarUc">
                         <div class="container">
                             <div class="d-flex justify-content-center">
-                                <div class="d-flex gap-2 justify-content-center mb-5 rowAdd" id="editarRowOne">
+                                <div class="d-flex gap-2 justify-content-center mb-4 rowAdd" id="editarRowOne">
                                     <div>
-                                        <label for="selectEditarCurso" class="col-form-label">Cursos: </label>
+                                        <label class="col-form-label">Cursos: </label>
                                     </div>
                                     <div class="gap-2" id="divEditarCurso">
                                         <div class="inputsize mb-1" style="height: 100px; overflow: auto; width: 630px">
@@ -191,10 +200,11 @@
                                                 </div>
                                             @endforeach
                                         </div>
+                                        <span class="text-danger" id="spanEditarCurso">&nbsp;</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="editarRowTwo">
+                            <div class="d-flex justify-content-center gap-5 mb-4 rowAdd" id="editarRowTwo">
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputEditarNome" class="col-form-label">Nome UC: </label>
@@ -202,6 +212,7 @@
                                     <div class="inputsize" id="divEditarNome">
                                         <input type="text" class="form-control" id="inputEditarNome" name="nome_uc"
                                             placeholder="">
+                                        <span class="text-danger" id="spanEditarNome">&nbsp;</span>
                                     </div>
                                 </div>
 
@@ -212,13 +223,14 @@
                                     <div class="inputsize" id="divEditarCod">
                                         <input type="text" class="form-control" id="inputEditarCod" name="cod_uc"
                                             placeholder="" disabled>
+                                        <span class="text-danger" id="spanEditarCod">&nbsp;</span>
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
                             </div>
 
-                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="editarRowThree">
+                            <div class="d-flex justify-content-center gap-5 mb-4 rowAdd" id="editarRowThree">
                                 <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="inputEditarAcn" class="col-form-label">ACN UC: </label>
@@ -226,6 +238,7 @@
                                     <div class="inputsize" id="divEditarAcn">
                                         <input type="text" class="form-control" id="inputEditarAcn" name="acn_uc"
                                             placeholder="">
+                                        <span class="text-danger" id="spanEditarAcn">&nbsp;</span>
                                     </div>
                                 </div>
 
@@ -236,13 +249,14 @@
                                     <div class="inputsize" id="divEditarHoras">
                                         <input type="text" class="form-control" id="inputEditarHoras" name="horas_uc"
                                             placeholder="">
+                                        <span class="text-danger" id="spanEditarHoras">&nbsp;</span>
                                     </div>
                                 </div>
 
                                 <div class="d-flex gap-2 w-25 justify-content-end "></div>
                             </div>
 
-                            <div class="d-flex justify-content-center gap-5 mb-5 rowAdd" id="editarRowFour">
+                            <div class="d-flex justify-content-center gap-5 mb-4 rowAdd" id="editarRowFour">
                                 <div class="d-flex gap-2">
                                     <div>
                                         <label for="selectEditarResponsavel" class="col-form-label">Doc. Responsável:
@@ -256,6 +270,7 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                        <span class="text-danger" id="spanEditarResponsavel">&nbsp;</span>
                                     </div>
                                 </div>
                             </div>
@@ -296,6 +311,11 @@
     </div>
 
     <script>
+        const insertUCUrl = '{{ route ('adicionar.unidadeCurricular') }}';
+        const updateUCUrl = "{{ route('update.unidadeCurricular', ':id') }}";
+        const deleteUCUrl = "{{ route('eliminar.unidadeCurricular', ':id') }}";
+        const token = '{{ csrf_token() }}';
+
         //Adicionar UC
         document.addEventListener('DOMContentLoaded', function() {
             const btnAdicionarUc = document.getElementById('btnAdicionarUc');
@@ -315,32 +335,20 @@
                 const selectHoras = document.getElementById('inputAdicionarHoras').value;
                 const selectResponsavel = document.getElementById('selectAdicionarResponsavel').value;
 
-                var spanCurso = document.getElementById('divAdicionarCurso');
-                var spanNomeUC = document.getElementById('divAdicionarNome');
-                var spanCodUC = document.getElementById('divAdicionarCod');
-                var spanACNUC = document.getElementById('divAdicionarAcn');
-                var spanHoras = document.getElementById('divAdicionarHoras');
-                var spanResponsavel = document.getElementById('divAdicionarResponsavel');
+                var spanCurso = document.getElementById('spanAdicionarCurso');
+                var spanNomeUC = document.getElementById('spanAdicionarNome');
+                var spanCodUC = document.getElementById('spanAdicionarCod');
+                var spanACNUC = document.getElementById('spanAdicionarAcn');
+                var spanHoras = document.getElementById('spanAdicionarHoras');
+                var spanResponsavel = document.getElementById('spanAdicionarResponsavel');
 
-                var adicionarRowOne = document.getElementById('adicionarRowOne');
-                var adicionarRowTwo = document.getElementById('adicionarRowTwo');
-                var adicionarRowThree = document.getElementById('adicionarRowThree');
-                var adicionarRowFour = document.getElementById('adicionarRowFour');
-
-                validarInputs(adicionarRowOne, spanCurso, 'spanAdicionarCurso', selectedOptions.length === 0);
-                validarInputs(adicionarRowTwo, spanNomeUC, 'spanAdicionarNome', selectNomeUC.trim() === "");
-                validarInputs(adicionarRowTwo, spanCodUC, 'spanAdicionarCod', selectCodUC.trim() === "");
-                validarInputs(adicionarRowThree, spanACNUC, 'spanAdicionarAcn', selectACNUC.trim() === "");
-                validarInputs(adicionarRowThree, spanHoras, 'spanAdicionarHoras', selectHoras.trim() === "");
-                validarInputs(adicionarRowFour, spanResponsavel, 'spanAdicionarResponsavel', selectResponsavel.trim() === "");
-
-                let hasError = selectedOptions.length === 0 || selectNomeUC.trim() === "" || selectCodUC.trim() === "" || 
-                   selectACNUC.trim() === "" || selectHoras.trim() === "" || selectResponsavel.trim() === "";
-
-                if (hasError) {
-                    console.log("Form has errors");
-                    return;
-                }
+                //innertext = ""
+                spanCurso.innerHTML = "&nbsp;";
+                spanNomeUC.innerHTML = "&nbsp;";
+                spanCodUC.innerHTML = "&nbsp;";
+                spanACNUC.innerHTML = "&nbsp;";
+                spanHoras.innerHTML = "&nbsp;";
+                spanResponsavel.innerHTML = "&nbsp;";
 
                 const data = {
                     curso_uc: selectedOptions,
@@ -353,19 +361,45 @@
 
                 console.log(data);
                 
-                fetch('{{ route ('adicionar.unidadeCurricular') }}', {
+                fetch(insertUCUrl, {
                     method: 'POST',
                     body: JSON.stringify(data),
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': token
                     },
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-                    alert(data.message);
-                    location.reload();
+                    if (data.errors) {
+                        console.log(data.errors);
+                        Object.keys(data.errors).forEach(errorKey => {
+                            var error = data.errors[errorKey];
+                            switch (errorKey) {
+                                case "curso_uc":
+                                    spanCurso.textContent = error;
+                                    break;
+                                case "nome_uc":
+                                    spanNomeUC.textContent = error;
+                                    break;
+                                case "cod_uc":
+                                    spanCodUC.textContent = error;
+                                    break;
+                                case "acn_uc":
+                                    spanACNUC.textContent = error;
+                                    break;
+                                case "horas_uc":
+                                    spanHoras.textContent = error;
+                                    break;
+                                case "num_func_resp":
+                                    spanResponsavel.textContent = error;
+                                    break;
+                            }
+                        });
+                    }else{
+                        alert(data.message);
+                        location.reload();
+                    }
                 })
                 .catch(error => {
                     console.error('Erro ao adicionar Unidade Curricular:', error);
@@ -389,23 +423,11 @@
                 
                 var spans = document.querySelectorAll('.text-danger');
                 spans.forEach(function (span) {
-                    span.remove();
-                });
-
-                var rows = document.querySelectorAll('.rowAdd');
-                rows.forEach(function (row) {
-                    row.classList.remove('mb-4');
-                    row.classList.add('mb-5');
+                    span.innerHTML = "&nbsp;";
                 });
             });
 
             editarModal.addEventListener('hidden.bs.modal', function () {
-                document.getElementById('inputEditarNome').value = '';
-                document.getElementById('inputEditarCod').value = '';
-                document.getElementById('inputEditarAcn').value = '';
-                document.getElementById('inputEditarHoras').value = '';
-                document.getElementById('selectEditarResponsavel').value = '';
-
                 var checkboxes = document.querySelectorAll('.curso-checkbox');
                 checkboxes.forEach(function (checkbox) {
                     checkbox.checked = false;
@@ -413,53 +435,12 @@
                 
                 var spans = document.querySelectorAll('.text-danger');
                 spans.forEach(function (span) {
-                    span.remove();
-                });
-
-                var rows = document.querySelectorAll('.rowAdd');
-                rows.forEach(function (row) {
-                    row.classList.remove('mb-4');
-                    row.classList.add('mb-5');
+                    span.innerHTML = "&nbsp;";
                 });
             });
         });
 
-        //Validar se input´s do modal têm valores
-        function validarInputs(row, element, spanId, isEmpty) {
-            var spanElement = document.getElementById(spanId);
-            if (isEmpty) {
-                if (!spanElement) {
-                    var span = document.createElement('span');
-                    span.textContent = "Tem de introduzir um valor!";
-                    span.id = spanId;
-                    span.classList = "text-danger";
-                    element.appendChild(span);
-                    row.classList.remove('mb-5');
-                    row.classList.add('mb-4');
-                }
-            } else {
-                if (spanElement) {
-                    spanElement.remove();
-
-                    var otherErrors = Array.from(row.children).some(function(child) {
-                        var childSpan = child.querySelector('span');
-                        return childSpan && childSpan.id && childSpan.id !== spanId;
-                    });
-
-                    if (!otherErrors) {
-                        row.classList.remove('mb-4');
-                        row.classList.add('mb-5');
-                    }
-                }
-            }
-        }
-
-
-
-
         //Editar UC
-        const updateUCUrl = "{{ route('update.unidadeCurricular', ':id') }}";
-        const deleteUCUrl = "{{ route('eliminar.unidadeCurricular', ':id') }}";
         var codUC = "";
 
         $(document).ready(function () {
@@ -495,34 +476,22 @@
             const selectHoras = document.getElementById('inputEditarHoras').value;
             const selectResponsavel = document.getElementById('selectEditarResponsavel').value;
 
-            var spanCurso = document.getElementById('divEditarCurso');
-            var spanNomeUC = document.getElementById('divEditarNome');
-            var spanACNUC = document.getElementById('divEditarAcn');
-            var spanHoras = document.getElementById('divEditarHoras');
-            var spanResponsavel = document.getElementById('divEditarResponsavel');
+            var spanCurso = document.getElementById('spanEditarCurso');
+            var spanNomeUC = document.getElementById('spanEditarNome');
+            var spanACNUC = document.getElementById('spanEditarAcn');
+            var spanHoras = document.getElementById('spanEditarHoras');
+            var spanResponsavel = document.getElementById('spanEditarResponsavel');
+            
+            //innertext = ""
+            spanCurso.innerHTML = "&nbsp;";
+            spanNomeUC.innerHTML = "&nbsp;";
+            spanACNUC.innerHTML = "&nbsp;";
+            spanHoras.innerHTML = "&nbsp;";
+            spanResponsavel.innerHTML = "&nbsp;";
 
-            var editarRowOne = document.getElementById('editarRowOne');
-            var editarRowTwo = document.getElementById('editarRowTwo');
-            var editarRowThree = document.getElementById('editarRowThree');
-            var editarRowFour = document.getElementById('editarRowFour');
-
-            validarInputs(editarRowOne, spanCurso, 'spanEditarCurso', selectedOptions.length === 0);
-            validarInputs(editarRowTwo, spanNomeUC, 'spanEditarNome', selectNomeUC.trim() === "");
-            validarInputs(editarRowThree, spanACNUC, 'spanEditarAcn', selectACNUC.trim() === "");
-            validarInputs(editarRowThree, spanHoras, 'spanEditarHoras', selectHoras.trim() === "");
-            validarInputs(editarRowFour, spanResponsavel, 'spanEditarResponsavel', selectResponsavel.trim() === "");
-
-            let hasError = selectedOptions.length === 0 || selectNomeUC.trim() === "" || selectCodUC.trim() === "" || 
-                selectACNUC.trim() === "" || selectHoras.trim() === "" || selectResponsavel.trim() === "";
-
-            if (hasError) {
-                console.log("Form has errors");
-                return;
-            }
             const data = {
                 nome_uc: selectNomeUC,
                 curso_uc: selectedOptions,
-                cod_uc: selectCodUC,
                 acn_uc: selectACNUC,
                 horas_uc: selectHoras,
                 num_func_resp: selectResponsavel
@@ -536,14 +505,37 @@
                 body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': token
                 },
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                alert(data.message);
-                location.reload();
+                if (data.errors) {
+                    console.log(data.errors);
+                    Object.keys(data.errors).forEach(errorKey => {
+                        var error = data.errors[errorKey];
+                        switch (errorKey) {
+                            case "curso_uc":
+                                spanCurso.textContent = error;
+                                break;
+                            case "nome_uc":
+                                spanNomeUC.textContent = error;
+                                break;
+                            case "acn_uc":
+                                spanACNUC.textContent = error;
+                                break;
+                            case "horas_uc":
+                                spanHoras.textContent = error;
+                                break;
+                            case "num_func_resp":
+                                spanResponsavel.textContent = error;
+                                break;
+                        }
+                    });
+                }else{
+                    alert(data.message);
+                    location.reload();
+                }
             })
             .catch(error => {
                 console.error('Erro ao adicionar Unidade Curricular:', error);
@@ -553,54 +545,56 @@
         
         //Eliminar UC
         document.getElementById("btnEliminar").onclick = function() {
-                console.log(codUC);
-                const url = deleteUCUrl.replace(':id', codUC);
-                console.log(url);
+            console.log(codUC);
+            const url = deleteUCUrl.replace(':id', codUC);
+            console.log(url);
 
-                fetch(url, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    alert(data.message);
-                    location.reload();
-                })
-                .catch(error => {
-                    console.error('Erro ao eliminar Unidade Curricular:', error);
-                    alert('Erro ao eliminar Unidade Curricular. Por favor, tente novamente.');
-                });
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert(data.message);
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Erro ao eliminar Unidade Curricular:', error);
+                alert('Erro ao eliminar Unidade Curricular. Por favor, tente novamente.');
+            });
         }
 
 
         //Pesquisar UC
         $(document).ready(function() {
-            $('.pesquisar-uc').on('keyup', function() {
-                var searchText = $(this).val().toLowerCase();
+            $('.pesquisar-uc').on('input', function() {
+                var searchText = $(this).val();
+                var counter = 0;
 
                 $('tbody tr').each(function() {
-                    var codUC = $(this).find('td:eq(0)').text().toLowerCase();
-                    var acnUC = $(this).find('td:eq(1)').text().toLowerCase();
-                    var docResponsavel = $(this).find('td:eq(2)').text().toLowerCase();
-                    var nomeUC = $(this).find('td:eq(3)').text().toLowerCase();
-                    var cursos = $(this).find('td:eq(4)').text().toLowerCase();
-                    var horasUC = $(this).find('td:eq(5)').text().toLowerCase();
+                    var codUC = $(this).find('td:eq(0)').text();
+                    var nomeUC = $(this).find('td:eq(3)').text();
 
-                    if (codUC.includes(searchText) || acnUC.includes(searchText) ||
-                        docResponsavel.includes(searchText) ||
-                        nomeUC.includes(searchText) || cursos.includes(searchText) ||
-                        horasUC.includes(searchText)) {
+                    if (codUC.includes(searchText) || nomeUC.includes(searchText)) {
                         $(this).show();
+                        counter += 1;
                     } else {
                         $(this).hide();
                     }
                 });
+
+                if (counter == 0) {
+                    $('.no-result').show();
+                    $('#noResultsMessage').removeClass('d-none').addClass('d-block');
+                } else {
+                    $('.no-result').hide();
+                    $('#noResultsMessage').addClass('d-none').removeClass('d-block');
+                }
             });
-            
         });
     </script>
 @endsection

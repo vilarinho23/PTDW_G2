@@ -1,6 +1,6 @@
 @extends('partials._document')
 @section('head')
-@include('partials._head', ["titulo" => "Atribuição de UC's"])
+@include('partials._head', ["titulo" => "Gestor de Atribuições"])
 @endsection
 @section('header')
 @include('partials._headerComissao')
@@ -12,7 +12,7 @@
     <div class="border-atribuicao mx-auto">
         <div class="d-flex justify-content-between">
             <div class="d-flex align-items-center gap-2 ms-4">
-                <div class="input-group rounded"><input type="search" class="form-control rounded searchInput" placeholder="Número" aria-label="Pesquisa"></div>
+                <div class="input-group rounded"><input type="search" class="form-control rounded searchInput" placeholder="Número/Nome" aria-label="Pesquisa"></div>
             </div>
 
             <div class="d-flex gap-5">
@@ -57,6 +57,10 @@
                     @endforeach
                 </tbody>
             </table>
+            @php
+                $block = count($dados) == 0 ? "d-block" : "d-none";
+            @endphp
+            <p id="noResultsMessage" class="text-center mt-5 {{ $block }}">Sem resultados.</p>
         </div>
     </div>
 </div>
@@ -267,23 +271,6 @@
     @endphp
     const atribuicoes = @json($atribuicoes);
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const searchInput = document.querySelector('.form-control.rounded');
-        const tableRows = document.querySelectorAll('.table tbody tr');
-
-        searchInput.addEventListener('input', function () {
-            const searchTerm = this.value.toLowerCase();
-
-            tableRows.forEach(function (row) {
-                const docenteNome = row.querySelector('td:nth-child(2)').innerText.toLowerCase();
-                const ucNome = row.querySelector('td:nth-child(7)').innerText.toLowerCase();
-
-                if (docenteNome.includes(searchTerm) || ucNome.includes(searchTerm)) { row.style.display = ''; }
-                else { row.style.display = 'none'; }
-            });
-        });
-    });
-
     $('#confirmarBtn').click(function () {
         const form = $('#formCarregar')[0];
         $("#carregarModal").modal('hide');
@@ -365,9 +352,9 @@
     });
 
     $("#btnCancelarModalEditar").click(function () {
-            $("#inputEditarPerc").val("");
-            $("#divMensagemErroEditar").text('');
-        });
+        $("#inputEditarPerc").val("");
+        $("#divMensagemErroEditar").text('');
+    });
 
     $("#btnEliminar").click(function () {
         const numFunc = $("#editarModal").data('num-func');
@@ -416,7 +403,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.error){
-                $("#divMessagemErroAtribuir").text( data.error);
+                $("#divMessagemErroAtribuir").text(data.error);
             }else{
                 console.log(data);
                 alert("Registo criado com sucesso");
@@ -442,10 +429,42 @@
             }
         })
         .then(() => {
+            console.log(data);
+            alert("Registos eliminados com sucesso");
             window.location.reload();
         })
         .catch(error => {
             console.error('Erro ao eliminar todas as atribuições:', error);
+        });
+    });
+
+    //Pesquisar UC
+    $(document).ready(function() {
+        $('.searchInput').on('input', function() {
+            var searchText = $(this).val();
+            var counter = 0;
+
+            $('tbody tr').each(function() {
+                var nDocente = $(this).find('td:eq(0)').text();
+                var nomeDocente = $(this).find('td:eq(1)').text();
+                var nUC = $(this).find('td:eq(3)').text();
+                var nomeUC = $(this).find('td:eq(6)').text();
+
+                if (nDocente.includes(searchText) || nomeDocente.includes(searchText) || nUC.includes(searchText) || nomeUC.includes(searchText)) {
+                    $(this).show();
+                    counter += 1;
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            if (counter == 0) {
+                $('.no-result').show();
+                $('#noResultsMessage').removeClass('d-none').addClass('d-block');
+            } else {
+                $('.no-result').hide();
+                $('#noResultsMessage').addClass('d-none').removeClass('d-block');
+            }
         });
     });
 </script>

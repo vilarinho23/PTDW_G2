@@ -26,29 +26,28 @@ class GestorUcController extends Controller
     public function adicionarUnidadeCurricular(Request $request)
     {
         $data = $request->json()->all();
-
-        $dataValidator = Validator::make($data, [
-            'cod_uc' => 'required|integer',
-            'nome_uc' => 'required|string',
-            'horas_uc' => 'required|integer',
-            'acn_uc' => 'required|string',
-            'num_func_resp' => 'required|integer',
-            'curso_uc' => 'required|array',
-        ]);
-
-        if ($dataValidator->fails()) {
-            Log::error($dataValidator->errors()->first());
-            return response()->json(['message' => 'Não foi possível adicionar a Unidade Curricular.'], 500);
-        }
-
-        $existingUnidadeCurricular = UnidadeCurricular::find($data['cod_uc']);
-
-        if ($existingUnidadeCurricular) {
-            Log::error("Unidade Curricular com o código já existe.");
-            return response()->json(['message' => 'Já existe uma Unidade Curricular com esse código.'], 404);
-        }
-
         try {
+            $request->validate([
+                'cod_uc' => 'required|integer|unique:unidade_curricular,cod_uc',
+                'nome_uc' => 'required|string',
+                'horas_uc' => 'required|integer',
+                'acn_uc' => 'required|string',
+                'num_func_resp' => 'required|integer',
+                'curso_uc' => 'required|array',
+            ], [
+                'cod_uc.unique' => 'Já existe uma UC com este código.',
+                'cod_uc.required' => 'Deve inserir um código.',
+                'cod_uc.integer' => 'Deve ser um número.',
+                'nome_uc.required' => 'Deve inserir um nome.',
+                'horas_uc.required' => 'Deve inserir uma hora.',
+                'horas_uc.integer' => 'Deve ser um número.',
+                'acn_uc.required' => 'Deve inserir uma UCN',
+                'num_func_resp.required' => 'Deve selecionar o docente.',
+                'num_func_resp.integer' => 'Deve ser um número.',
+                'curso_uc.required' => 'Deve selecionar um curso.',
+            ]);
+
+
             $ucModel = UnidadeCurricular::updateOrCreate(
                 ['cod_uc' => $data['cod_uc']],
                 [
@@ -67,11 +66,13 @@ class GestorUcController extends Controller
                 }
             }
 
-            Log::info('Response Data: ' . json_encode(['message' => 'Unidade Curricular adicionada/atualizada com sucesso']));
-            return response()->json(['message' => 'Unidade Curricular adicionada/atualizada com sucesso!'], 200);
+            Log::info('Response Data: ' . json_encode(['message' => 'Unidade Curricular adicionada com sucesso']));
+            return response()->json(['message' => 'Unidade Curricular adicionada com sucesso!'], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['message' => 'Não foi possível adicionar/atualizar a Unidade Curricular.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -83,18 +84,20 @@ class GestorUcController extends Controller
         try {
             $uc = UnidadeCurricular::find($id);
 
-            if (!$uc) {
-                Log::error("Unidade Curricular não encontrada.");
-                return response()->json(['message' => 'Não existe uma Unidade Curricular com esse código.'], 404);
-            }
-
             $request->validate([
-                'cod_uc' => 'required|integer',
                 'nome_uc' => 'required|string',
                 'horas_uc' => 'required|integer',
                 'acn_uc' => 'required|string',
                 'num_func_resp' => 'required|integer',
                 'curso_uc' => 'required|array',
+            ], [
+                'nome_uc.required' => 'Deve inserir um nome.',
+                'horas_uc.required' => 'Deve inserir uma hora.',
+                'horas_uc.integer' => 'Deve ser um número.',
+                'acn_uc.required' => 'Deve inserir uma UCN',
+                'num_func_resp.required' => 'Deve selecionar o docente.',
+                'num_func_resp.integer' => 'Deve ser um número.',
+                'curso_uc.required' => 'Deve selecionar um curso.',
             ]);
 
             $uc->update([
@@ -117,9 +120,11 @@ class GestorUcController extends Controller
             Log::info($request);
             Log::info('Response Data: ' . json_encode(['message' => 'Unidade Curricular atualizada com sucesso']));
             return response()->json(['message' => 'Unidade Curricular atualizada com sucesso!'], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error('Exception: ' . $e->getMessage());
-            return response()->json(['message' => 'Não foi possível editar a Unidade Curricular.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 

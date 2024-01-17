@@ -122,7 +122,7 @@
 
                     <div class="modal-footer d-flex justify-content-center border-0">
                         <button id="btnAtribuir" type="button" class="mx-2 button-style" style="width: 130px; height: 30px;">Confirmar</button>
-                        <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btnCancelarAtribuir" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
             </div>
@@ -194,7 +194,7 @@
                 
             </div>
 
-            <div class="d-flex justify-content-center" id="mensagemErroEditar" style="color: red;"></div>
+            <div id="divMensagemErroEditar" class="d-flex justify-content-center" style="color: red;"></div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
                 <button type="button" class="mx-2 button-style" id="btnConfirmarEditar"
@@ -335,6 +335,11 @@
         });
     });
 
+    $("#btnCancelarModalEditar").click(function () {
+            $("#inputEditarPerc").val("");
+            $("#divMensagemErroEditar").text('');
+        });
+
     $("#btnEliminar").click(function () {
         const numFunc = $("#editarModal").data('num-func');
         const codUc = $("#editarModal").data('cod-uc');
@@ -392,5 +397,11 @@
             console.error('Erro ao atribuir UC:', error);
         });
     });
+
+    $("#btnCancelarAtribuir").click(function() {   
+        $("#inputAtribuirPerc").val("");
+        $("#divMessagemErroAtribuir").text('');
+    });
+    
 </script>
 @endsection

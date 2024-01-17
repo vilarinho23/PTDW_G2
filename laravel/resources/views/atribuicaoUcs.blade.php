@@ -315,6 +315,8 @@
         const codUc = $("#editarModal").data('cod-uc');
         const percHoras = $("#inputEditarPerc").val();
 
+        $("#divMensagemErroEditar").text('');
+
         const url = updateUrl.replace(':num_func', numFunc).replace(':cod_uc', codUc);
         const data = { perc_horas: percHoras };
 
@@ -326,9 +328,16 @@
             },
             body: JSON.stringify(data)
         })
+        .then(response=>response.json())
         .then(data => {
-            console.log(data);
-            window.location.reload();
+            if(data.error){
+                $("#divMensagemErroEditar").text(data.error);
+            }else{
+                console.log(data);
+                alert("Atribuição atualizada com sucesso");
+                window.location.reload();
+            }
+            
         })
         .catch(error => {
             console.error('Erro ao editar atribuição:', error);
@@ -355,6 +364,7 @@
         })
         .then(data => {
             console.log(data);
+            alert("Registo eliminado com sucesso");
             window.location.reload();
         })
         .catch(error => {
@@ -389,6 +399,7 @@
                 $("#divMessagemErroAtribuir").text( data.error);
             }else{
                 console.log(data);
+                alert("Registo criado com sucesso");
                 window.location.reload();
             }
             

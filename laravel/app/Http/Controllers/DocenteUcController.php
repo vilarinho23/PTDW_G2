@@ -128,4 +128,14 @@ class DocenteUcController extends Controller
         $docente->unidadesCurriculares()->detach($cod_uc);
         return redirect()->route('atribuicaoUcs')->with('success', 'Atribuição excluída com sucesso.');
     }
+
+
+    public function destroyAll()
+    {
+        // For each UnidadeCurricular:
+        // detach all docentes
+        UnidadeCurricular::all()->each(function ($uc) {
+            $uc->docentes()->detach();
+        });
+    }
 }

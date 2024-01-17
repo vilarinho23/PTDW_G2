@@ -50,6 +50,7 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
         Route::get('/', [SubmissoesController::class, 'submissoes'])->name('submissoes');
         Route::post('/', [SubmissoesController::class, 'submeterData'])->name('submeter.data');
         Route::get('/{id}', [SubmissoesController::class, 'restricoes'])->name('submissoes.restricoes');
+        Route::delete('/', [SubmissoesController::class, 'limparSubmissoes'])->name('submissoes.clear');
     });
     Route::get('/export', [ImportExportController::class, 'export'])->name('export.all');
     Route::get('/export/{docente}', [ImportExportController::class, 'exportDocente'])->name('export.docente');
@@ -75,11 +76,15 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
         Route::post('/', [DocenteUcController::class, 'store'])->name('atribuicaoUcs.store');
         Route::put('/{num_func}/{cod_uc}', [DocenteUcController::class, 'update'])->name('atribuicaoUcs.update');
         Route::delete('/{num_func}/{cod_uc}', [DocenteUcController::class, 'destroy'])->name('atribuicaoUcs.destroy');
+        Route::delete('/', [DocenteUcController::class, 'destroyAll'])->name('atribuicaoUcs.clear');
     });
     Route::post('/import', [ImportExportController::class, 'import'])->name('import');
 });
 
-// Testes
-Route::prefix('/testar')->group(function () {
-    Route::get('/models', [TesteController::class, 'testarModels']);
-});
+// Testes (apenas em ambiente local)
+if (env('APP_ENV', 'local') == 'local')
+{
+    Route::prefix('/testar')->group(function () {
+        Route::get('/models', [TesteController::class, 'testarModels']);
+    });
+}

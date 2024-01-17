@@ -83,7 +83,7 @@
                     </table>
                 </div>
                 <div class="d-flex justify-content-end position-absolute" style="bottom: 30px; right: 30px">
-                    <button type="button" onclick="window.location.href = '{{ route('submissoes') }}'" class="button-style botao-fechar" style="width: 130px; height: 30px;">Fechar</button>
+                    <button type="button" class="button-style botao-seguinte" style="width: 130px; height: 30px;">Seguinte</button>
                 </div>
             </div>
             {{-- Tab para cada UC --}}
@@ -153,4 +153,20 @@
         </div>
     </div>
 </div>
+
+<script>
+    const submissoesUrl = '{{ route('submissoes') }}';
+
+    $(document).ready(function() {
+        const lastBtn = $('.botao-seguinte').last();
+
+        lastBtn.addClass('botao-fechar');
+        lastBtn.removeClass('botao-seguinte');
+        lastBtn.text('Fechar');
+
+        lastBtn.click(function() {
+            window.location.href = submissoesUrl;
+        });
+    });
+</script>
 @endsection

@@ -176,7 +176,7 @@
             <div class="modal-footer d-flex justify-content-center border-0">
                 <button type="button" class="mx-2 button-style" id="btnConfirmarEditar"
                     style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
+                <button type="button" id="btnCancelarModalEditar" class="mx-2 button-style" style="width: 130px; height: 30px;"
                     data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="mx-2 button-style-red" id="btnEliminarModal"
                 style="width: 130px; height: 30px;" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
@@ -268,6 +268,15 @@
         });
     }
 
+    document.getElementById("btnCancelarModalEditar").onclick = function() {
+        document.getElementById('inputEditarNFuncionario').value = '';
+        document.getElementById('inputEditarNome').value = '';
+        document.getElementById('inputEditarAcn').value = '';
+        document.getElementById('inputEditarContacto').value = '';
+        document.getElementById('inputEditarEmail').value = '';
+        document.getElementById('mensagemErroEditar').innerText = '';
+    };
+
     document.getElementById('btnConfirmarAdicionar').onclick = function() {
         const data = {
             num_func: document.getElementById('inputAdicionarNFuncionario').value,
@@ -306,14 +315,12 @@
     };
 
     document.getElementById('btnCancelarModalAdicionar').onclick = function() {
-    
         document.getElementById('inputAdicionarNFuncionario').value = '';
         document.getElementById('inputAdicionarNome').value = '';
         document.getElementById('inputAdicionarAcn').value = '';
         document.getElementById('inputAdicionarContacto').value = '';
         document.getElementById('inputAdicionarEmail').value = '';
-
-        document.getElementById('mensagemErroAdicionar').innerText= '';
+        document.getElementById('mensagemErroAdicionar').innerText = '';
     };
 
 

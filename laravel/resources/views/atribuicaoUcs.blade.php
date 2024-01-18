@@ -10,22 +10,18 @@
 <div class="container">
     <div class="mx-auto">
         <div class="ms-4 mt-3 mb-5">
-            <nav class="" role="navigation" aria-label="Breadcrumb">
+            <nav>
                 <ol class="breadcrumb d-none d-md-flex">
                     <li>
-                        <span itemscope="" itemtype="">
-                            <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" href="{{route("comissao")}}">
-                                <span itemprop="title">Comissão</span>
-                            </a>
-                        </span>
+                        <a class="link-underline link-dark link-underline-opacity-0" href="{{route("comissao")}}">
+                            <span >Comissão</span>
+                        </a>
                     </li>
-                    <span class="separator mx-1"><i class="fa-angle-right fa"></i></span>
+                    <li><i class="fa-angle-right fa mx-1"></i></li>
                     <li>
-                        <span itemscope="" itemtype="">
-                            <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" title="Atribuições" aria-current="page" href="{{route("atribuicaoUcs")}}">
-                                <span itemprop="title">Atribuições</span>
-                            </a>
-                        </span>
+                        <a class="link-underline link-dark link-underline-opacity-0" href="{{route("atribuicaoUcs")}}">
+                            <span >Atribuições</span>
+                        </a>
                     </li>
                 </ol>
             </nav>

@@ -11,22 +11,18 @@
     <div class="d-flex w-75 mx-auto mt-3">
         <div class="d-flex flex-column">
             <div >
-                <nav class="" role="navigation" aria-label="Breadcrumb">
+                <nav>
                     <ol class="breadcrumb d-none d-md-flex">
                         <li>
-                            <span itemscope="" itemtype="">
-                                <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" href="{{route("comissao")}}">
-                                    <span itemprop="title">Comissão</span>
-                                </a>
-                            </span>
+                            <a class="link-underline link-dark link-underline-opacity-0" href="{{route("comissao")}}">
+                                <span>Comissão</span>
+                            </a>
                         </li>
-                        <span class="separator mx-1"><i class="fa-angle-right fa"></i></span>
+                        <li><i class="fa-angle-right fa mx-1"></i></li>
                         <li>
-                            <span itemscope="" itemtype="">
-                                <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" title="Submissões" aria-current="page" href="{{route("submissoes")}}">
-                                    <span itemprop="title">Submissões</span>
-                                </a>
-                            </span>
+                            <a class="link-underline link-dark link-underline-opacity-0" title="Submissões" href="{{route("submissoes")}}">
+                                <span>Submissões</span>
+                            </a>
                         </li>
                     </ol>
                 </nav>

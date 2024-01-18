@@ -9,8 +9,8 @@
 @section('content')
 <div class="container-sm">
     <div class="d-flex w-75 mx-auto mt-3">
-        <div class="d-flex flex-column">
-            <div >
+        <div class="d-flex flex-column w-100">
+            <div>
                 <nav>
                     <ol class="breadcrumb d-none d-md-flex">
                         <li>
@@ -27,35 +27,39 @@
                     </ol>
                 </nav>
             </div>
+            <div class="d-flex justify-content-between" id="opcoesTopoSubmissoes" >
 
-            <div class="d-flex text-center justify-content-center mx-auto gap-5 mt-4" >
-                <div class="d-flex align-items-center">
-                    <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2 border border-dark border-2 hover" style="background-color:#D9D9D9" id="btnsubmetidas">
-                        <p class="m-0 px-5"><strong>Submetidas</strong></p>
-                        <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
+                <div class="d-flex text-center justify-content-center  gap-5 mt-4" >
+                    <div class="d-flex align-items-center">
+                        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 border border-dark border-2 hover" style="background-color:#D9D9D9" id="btnsubmetidas">
+                            <p class="m-0 px-5"><strong>Submetidas</strong></p>
+                            <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 hover" style="background-color:#D9D9D9" id="btnpendente">
+                            <p class="m-0 px-4"><strong>Não Submetidas</strong></p>
+                            <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center">
-                    <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms2 hover" style="background-color:#D9D9D9" id="btnpendente">
-                        <p class="m-0 px-4"><strong>Não Submetidas</strong></p>
-                        <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
+    
+                <div class="d-flex flex-column align-items-center gap-2 mt-3">
+                    <div class="h-50">
+                        <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Conclusão</button>
+                    </div>
+                    <div class="h-50">
+                        <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Submissões</button>
+                    </div>
+                    <div class="h-50">
+                        <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
                     </div>
                 </div>
+                
             </div>
-        </div>
 
-
-        <div class="d-flex flex-column align-items-center mx-auto justify-content-around gap-2 mt-3">
-            <div class="h-50">
-                <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Conclusão</button>
-            </div>
-            <div class="h-50">
-                <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Submissões</button>
-            </div>
-            <div class="h-50">
-                <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
-            </div>
         </div>
+        
     </div>
 
     <div class="w-75 mx-auto mt-5" id="tableContainer">

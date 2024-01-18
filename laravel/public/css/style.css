@@ -104,3 +104,11 @@ input.impedimento-check:checked.form-check-input:checked[type="checkbox"] {
 .inputsize {
     width: 200px;
 }
+
+@media screen and (max-width: 1200px) {
+    #opcoesTopoSubmissoes {
+        flex-direction: column; 
+        
+    }
+
+}

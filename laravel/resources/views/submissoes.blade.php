@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="container-sm">
-    <div class="d-flex pt-5 pb-3 text-center justify-content-center w-75 mx-auto gap-5" >
+    <div class="d-flex pt-5 pb-3 text-center justify-content-center w-100 mx-auto gap-5" >
         <div class="d-flex align-items-center">
             <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2 border border-dark border-2 hover" style="background-color:#D9D9D9" id="btnsubmetidas">
                 <p class="m-0 px-5"><strong>Submetidas</strong></p>
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="d-flex align-items-center">
-            <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-5 hover" style="background-color:#D9D9D9" id="btnpendente">
+            <div class="border rounded d-flex flex-column gap-2 px-4 py-2 hover" style="background-color:#D9D9D9" id="btnpendente">
                 <p class="m-0 px-4"><strong>Não Submetidas</strong></p>
                 <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
             </div>

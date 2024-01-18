@@ -152,7 +152,7 @@
                 </div>
                 @endif
 
-                <p>
+                <div>
                     <span class="fw-bold">Notas:</span>
                     <ul>
                         <li>Os dados que já existam serão atualizados.</li>
@@ -162,7 +162,7 @@
                         <li>O ficheiro deve ser fornecido pela DSD (Distribuição de Serviço Docente).</li>
                         <li>O ficheiro deve ser um Excel (.xlsx ou .xls).</li>
                     </ul>
-                </p>
+                </div>
                 <form id="formCarregar" enctype="multipart/form-data">
                     <label for="fileUploadCarregar" class="form-label fw-bold text-decoration-underline">Selecione o ficheiro</label>
                     <input class="form-control" type="file" id="fileUploadCarregar" name="file" accept=".xlsx, .xls">

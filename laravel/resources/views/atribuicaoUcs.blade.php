@@ -7,14 +7,12 @@
 @endsection
 
 @section('content')
-
 <div class="container">
     <div class="border-atribuicao mx-auto">
         <div class="d-flex justify-content-between">
             <div class="d-flex align-items-center gap-2 ms-4">
                 <div class="input-group rounded"><input type="search" class="form-control rounded searchInput" placeholder="Número/Nome" aria-label="Pesquisa"></div>
             </div>
-
             <div class="d-flex gap-5">
                 <button type="button" class="button-style" style="width: 170px; height: 40px;" data-bs-toggle="modal" data-bs-target="#carregarModal">Carregar Ficheiro</button>
                 <button type="button" class="button-style" style="width: 150px; height: 40px;" data-bs-toggle="modal" data-bs-target="#atribuirUcModal">Atribuir UC</button>
@@ -67,7 +65,6 @@
             <div class="modal-body">
                 <div class="container">
                     <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
-                       
                         <div class="w-100">
                             <label for="dropdownAtribuirNomeDocente" class="col-form-label">Nome Docente:</label>
                             <select class="form-select" id="dropdownAtribuirNomeDocente" aria-label="Nome do Funcionário">
@@ -76,7 +73,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    
+
                         <div class="w-100">
                             <label for="dropdownAtribuirNomeUc" class="col-form-label">Nome UC:</label>
                             <select class="form-select " id="dropdownAtribuirNomeUc" aria-label="Nome da Unidade Curricular">
@@ -85,7 +82,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        
                     </div>
 
                     <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
@@ -137,7 +133,7 @@
             <div class="modal-body">
                 @if ($dadosImportacao != null)
                 <div class="mb-3">
-                    <p class="text-danger fw-bold">JÁ FOI CARREGADO UM FICHEIRO</p>
+                    <p class="fw-bold">Dados da última importação:</p>
 
                     <div class="m-1">
                         <span class="fw-bold">Data:</span> {{ $dadosImportacao->timestamp ?? 'Timestamp não encontrado' }}
@@ -156,12 +152,22 @@
                 </div>
                 @endif
 
-                <p>Se carregar um ficheiro, os dados atuais serão sobrescritos.</p>
-                <form id="formCarregar" enctype="multipart/form-data">
+                <p>
+                    <span class="fw-bold">Notas:</span>
+                    <ul>
+                        <li>Os dados que já existam serão atualizados.</li>
+                        <li>Os dados que não existam serão criados.</li>
+                        <li>Os dados que não sejam fornecidos serão mantidos.</li>
 
+                        <li>O ficheiro deve ser fornecido pela DSD (Distribuição de Serviço Docente).</li>
+                        <li>O ficheiro deve ser um Excel (.xlsx ou .xls).</li>
+                    </ul>
+                </p>
+                <form id="formCarregar" enctype="multipart/form-data">
                     <label for="fileUploadCarregar" class="form-label fw-bold text-decoration-underline">Selecione o ficheiro</label>
-                    <input class="form-control" type="file" id="fileUploadCarregar" name="file" accept=".xlsx, .xls" required>
+                    <input class="form-control" type="file" id="fileUploadCarregar" name="file" accept=".xlsx, .xls">
                 </form>
+                <div id="divMensagemErroCarregar" class="d-flex justify-content-center text-danger"></div>
             </div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
@@ -185,24 +191,17 @@
                     <div class="d-flex justify-content-center">
                         <input type="text" class="form-control w-25" id="inputEditarPerc" name="inputEditarPerc" value="">
                     </div>
-                    
-                    
                 </div>
-                
             </div>
-
-            <div id="divMensagemErroEditar" class="d-flex justify-content-center" style="color: red;"></div>
+            <div id="divMensagemErroEditar" class="d-flex justify-content-center text-danger"></div>
 
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" id="btnConfirmarEditar"
-                    style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" id="btnCancelarModalEditar" class="mx-2 button-style" style="width: 130px; height: 30px;"
-                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="mx-2 button-style" id="btnConfirmarEditar" style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" id="btnCancelarModalEditar" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="mx-2 button-style-red" id="btnEliminarModal"
                 style="width: 130px; height: 30px;" data-bs-toggle="modal" data-bs-target="#eliminarModal">Eliminar</button>
             </div>
         </div>
-        
     </div>
 </div>
 
@@ -215,10 +214,8 @@
 
             <div class="modal-body"></div>
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" id="btnEliminar"
-                    style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
-                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="mx-2 button-style" id="btnEliminar" style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -233,10 +230,8 @@
 
             <div class="modal-body"></div>
             <div class="modal-footer d-flex justify-content-center border-0">
-                <button type="button" class="mx-2 button-style" id="btnEliminarTodas"
-                    style="width: 130px; height: 30px;">Confirmar</button>
-                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;"
-                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="mx-2 button-style" id="btnEliminarTodas" style="width: 130px; height: 30px;">Confirmar</button>
+                <button type="button" class="mx-2 button-style" style="width: 130px; height: 30px;" data-bs-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
@@ -263,9 +258,10 @@
     @endphp
     const atribuicoes = @json($atribuicoes);
 
+    $("#fileUploadCarregar").val('');
     $('#confirmarBtn').click(function () {
         const form = $('#formCarregar')[0];
-        $("#carregarModal").modal('hide');
+        $("#divMensagemErroCarregar").text('');
 
         fetch(importUrl, {
             method: 'POST',
@@ -274,8 +270,17 @@
             },
             body: new FormData(form)
         })
-        .then(() => {
-            window.location.reload();
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.error) {
+                $("#fileUploadCarregar").val('');
+                $("#divMensagemErroCarregar").text(data.error);
+            } else {
+                const nrErros = Object.keys(data.errors).length;
+                alert(data.message + '\nOcorreram ' + nrErros + ' erros.');
+                location.reload();
+            }
         })
         .catch(error => {
             console.error('Erro ao enviar ficheiro:', error);
@@ -336,7 +341,6 @@
                 alert("Atribuição atualizada com sucesso");
                 window.location.reload();
             }
-            
         })
         .catch(error => {
             console.error('Erro ao editar atribuição:', error);
@@ -401,18 +405,17 @@
                 alert("Registo criado com sucesso");
                 window.location.reload();
             }
-            
         })
         .catch(error => {
             console.error('Erro ao atribuir UC:', error);
         });
     });
 
-    $("#btnCancelarAtribuir").click(function() {   
+    $("#btnCancelarAtribuir").click(function() {
         $("#inputAtribuirPerc").val("");
         $("#divMessagemErroAtribuir").text('');
     });
-    
+
     $('#btnEliminarTodas').click(function () {
         fetch(deleteAllUrl, {
             method: 'DELETE',
@@ -458,6 +461,11 @@
                 $('#noResultsMessage').addClass('d-none').removeClass('d-block');
             }
         });
+    });
+
+    $("#carregarModal").on("hidden.bs.modal", function () {
+        $("#divMensagemErroCarregar").text('');
+        $("#fileUploadCarregar").val('');
     });
 </script>
 @endsection

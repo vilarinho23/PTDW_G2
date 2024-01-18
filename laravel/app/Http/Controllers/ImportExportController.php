@@ -30,40 +30,51 @@ class ImportExportController extends Controller
 
     public function import(Request $request)
     {
-        // Check if file is valid
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls'
-        ]);
+        try
+        {
+            // Check if file is valid
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls'
+            ], [
+                'file.required' => 'É necessário selecionar um ficheiro',
+                'file.mimes' => 'O ficheiro tem de ser do tipo .xlsx ou .xls'
+            ]);
 
-        // Get file, filename and uploader
-        $file = $request->file('file');
-        $filename = $file->getClientOriginalName();
-        $uploader = $this->getComissaoName();
+            // Get file, filename and uploader
+            $file = $request->file('file');
+            $filename = $file->getClientOriginalName();
+            $uploader = $this->getComissaoName();
 
-        // Import file
-        $import = new DSDImport;
-        Excel::import($import, $file);
-        $timestamp = $this->getCurrentTimestamp();
+            // Import file
+            $import = new DSDImport;
+            Excel::import($import, $file);
+            $timestamp = $this->getCurrentTimestamp();
 
-        // Set last import filename, uploader and timestamp
-        KeyValue::set('last_import:filename', $filename);
-        KeyValue::set('last_import:uploader', $uploader);
-        KeyValue::set('last_import:timestamp', $timestamp);
+            // Set last import filename, uploader and timestamp
+            KeyValue::set('last_import:filename', $filename);
+            KeyValue::set('last_import:uploader', $uploader);
+            KeyValue::set('last_import:timestamp', $timestamp);
 
-        // Set last import errors (line numbers)
-        $errors = $import->getErrors();
-        $errorLines = array_keys($errors);
-        $errorLines = $errorLines == [] ? null : implode(',', $errorLines);
-        KeyValue::set('last_import:line_errors', $errorLines);
+            // Set last import errors (line numbers)
+            $errors = $import->getErrors();
+            $errorLines = array_keys($errors);
+            $errorLines = $errorLines == [] ? null : implode(',', $errorLines);
+            KeyValue::set('last_import:line_errors', $errorLines);
 
-        // Return response
-        return response()->json([
-            'message' => "Importação do ficheiro $filename concluída",
-            'filename' => $filename,
-            'uploader' => $uploader,
-            'timestamp' => $timestamp,
-            'errors' => $errors
-        ]);
+            // Return response
+            return response()->json([
+                'message' => "Importação do ficheiro $filename concluída",
+                'filename' => $filename,
+                'uploader' => $uploader,
+                'timestamp' => $timestamp,
+                'errors' => $errors
+            ]);
+        }
+        catch (\Exception $e)
+        {
+            // Capture exception and return error response
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function export()

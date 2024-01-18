@@ -7,8 +7,8 @@
 @endsection
 
 @section('content')
-<div class="d-flex align-items-center justify-content-center">
-    <div class="p-5" style="min-height: 80vh;">
+<div class="d-flex justify-content-center">
+    <div class="p-5">
         {{-- Erros --}}
         @foreach ($errors->all() as $error)
             <div class="alert alert-danger alert-dismissible fade show" role="alert">

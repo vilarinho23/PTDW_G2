@@ -1,9 +1,9 @@
-<nav class="navbar w-100 position-relative" id="mainNavBar" style="background-color: #0EB4BD; height: 60px;">
+<nav class="navbar position-relative" id="mainNavBar" style="background-color: #0EB4BD; height: 60px;">
     @yield('navbar_content')
 
     @auth
         <div class="position-absolute end-0 d-flex align-items-center">
-            <p class="m-0 p-0 me-3" style="color: black; font-family: 'Inter', sans-serif;">
+            <p class="m-0 p-0 me-3" style="color: black; font-family: 'Inter', sans-serif;" id="nomeDocenteHeader">
                 @php
                     $user = Auth::user();
                     $nomeDisplay = $user->docente->nome_docente ?? ($user->name ?? 'Nome não encontrado');

@@ -95,7 +95,7 @@ class DocenteUcController extends Controller
                 return response()->json(['error' => 'Erro ao criar registo. Docente ou UC não encontrados']);
             }
 
-            $atribuicaoExistente = $docente->unidadesCurriculares()->exists($cod_uc);
+            $atribuicaoExistente = $docente->unidadesCurriculares()->where('docente_uc.cod_uc', $cod_uc)->exists();
 
             if ($atribuicaoExistente) {
                 return response()->json(['error' => 'Já existe uma atribuição para este docente e UC']);

@@ -7,8 +7,38 @@
 @endsection
 
 @section('content')
+
 <div class="d-flex align-items-center justify-content-center">
-    <div class="p-5" style="min-height: 80vh;">
+    <div class="p-5 pt-0" style="min-height: 80vh;">
+        <div class="mt-3">
+            <nav class="" role="navigation" aria-label="Breadcrumb">
+                <ol class="breadcrumb d-none d-md-flex">
+                    <li>
+                        <span itemscope="" itemtype="">
+                            <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" href="{{route("comissao")}}">
+                                <span itemprop="title">Comissão</span>
+                            </a>
+                        </span>
+                    </li>
+                    <span class="separator mx-1"><i class="fa-angle-right fa"></i></span>
+                    <li>
+                        <span itemscope="" itemtype="">
+                            <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" title="Submissões" aria-current="page" href="{{route("submissoes")}}">
+                                <span itemprop="title">Submissões</span>
+                            </a>
+                        </span>
+                    </li>
+                    <span class="separator mx-1"><i class="fa-angle-right fa"></i></span>
+                    <li>
+                        <span itemscope="" itemtype="">
+                            <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" title="Submissões" aria-current="page" href="{{ route('submissoes.restricoes', $numFunc) }}">
+                                <span itemprop="title">{{ $numFunc }} - {{ $nomeDocente }}</span>
+                            </a>
+                        </span>
+                    </li>
+                </ol>
+            </nav>
+        </div>
         <div class="text-center fs-4 fw-bold mb-4">{{ $numFunc }} - {{ $nomeDocente }}</div>
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">

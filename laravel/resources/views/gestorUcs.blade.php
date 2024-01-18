@@ -8,7 +8,28 @@
 
 @section('content')
     <div class="container">
-        <div class="border-atribuicao mx-auto">
+        <div class="mx-auto">
+            <div class="ms-4 mt-3 mb-5">
+                <nav class="" role="navigation" aria-label="Breadcrumb">
+                    <ol class="breadcrumb d-none d-md-flex">
+                        <li>
+                            <span itemscope="" itemtype="">
+                                <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" href="{{route("comissao")}}">
+                                    <span itemprop="title">Comissão</span>
+                                </a>
+                            </span>
+                        </li>
+                        <span class="separator mx-1"><i class="fa-angle-right fa"></i></span>
+                        <li>
+                            <span itemscope="" itemtype="">
+                                <a itemprop="url" class="link-underline link-dark link-underline-opacity-0" title="UC" aria-current="page" href="{{route("gestorUcs")}}">
+                                    <span itemprop="title">Unidades Curriculares</span>
+                                </a>
+                            </span>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center gap-2 ms-4">
                     <div class="input-group rounded">

@@ -24,14 +24,10 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Nº</th>
-                        <th>Nome Docente</th>
-                        <th>ACN Docente</th>
+                        <th class="text-center">Nº</th>
+                        <th class="text-start">Nome Docente</th>
                         <th>Cód. UC</th>
-                        <th>ACN UC</th>
-                        <th>Doc. Responsável</th>
-                        <th>Nome UC</th>
-                        <th>Curso</th>
+                        <th class="text-start">Nome UC</th>
                         <th>Horas</th>
                         <th>%</th>
                         <th></th>
@@ -41,13 +37,9 @@
                     @foreach ($dados as $item)
                     <tr class="listrow" data-num-func={{$item->docente->num_func}} data-cod-uc={{$item->unidadeCurricular->cod_uc}}>
                         <td>{{ $item->docente->num_func }}</td>
-                        <td>{{ $item->docente->nome_docente }}</td>
-                        <td>{{ $item->docente->acn_docente }}</td>
+                        <td class="text-start">{{ $item->docente->nome_docente }}</td>
                         <td>{{ $item->unidadeCurricular->cod_uc }}</td>
-                        <td>{{ $item->unidadeCurricular->acn_uc }}</td>
-                        <td>{{ $item->unidadeCurricular->responsavel->nome_docente }}</td>
-                        <td>{{ $item->unidadeCurricular->nome_uc }}</td>
-                        <td>{{ $item->unidadeCurricular->cursos->implode('acron_curso', ', ') }}</td>
+                        <td class="text-start">{{ $item->unidadeCurricular->nome_uc }}</td>
                         <td>{{ $item->unidadeCurricular->horas_uc }}</td>
                         <td>{{ $item->perc_horas }}</td>
                         <td><img src="{{ asset('images/edit.svg') }}" alt="Editar"></td>
@@ -160,7 +152,7 @@
                 </div>
                 @endif
 
-                <p>
+                <div>
                     <span class="fw-bold">Notas:</span>
                     <ul>
                         <li>Os dados que já existam serão atualizados.</li>
@@ -170,7 +162,7 @@
                         <li>O ficheiro deve ser fornecido pela DSD (Distribuição de Serviço Docente).</li>
                         <li>O ficheiro deve ser um Excel (.xlsx ou .xls).</li>
                     </ul>
-                </p>
+                </div>
                 <form id="formCarregar" enctype="multipart/form-data">
                     <label for="fileUploadCarregar" class="form-label fw-bold text-decoration-underline">Selecione o ficheiro</label>
                     <input class="form-control" type="file" id="fileUploadCarregar" name="file" accept=".xlsx, .xls">
@@ -450,8 +442,8 @@
             $('tbody tr').each(function() {
                 var nDocente = $(this).find('td:eq(0)').text();
                 var nomeDocente = $(this).find('td:eq(1)').text();
-                var nUC = $(this).find('td:eq(3)').text();
-                var nomeUC = $(this).find('td:eq(6)').text();
+                var nUC = $(this).find('td:eq(2)').text();
+                var nomeUC = $(this).find('td:eq(3)').text();
 
                 if (nDocente.includes(searchText) || nomeDocente.includes(searchText) || nUC.includes(searchText) || nomeUC.includes(searchText)) {
                     $(this).show();

@@ -2,9 +2,8 @@
 @section('head')
 @include('partials._head', ["titulo" => "Comissão"])
 @endsection
-@extends("partials._header")
-@section("navbar_content")
-<a class="navbar-brand m-0 p-0 position-absolute top-50 start-50 translate-middle" style="color: black; font-family: 'Inter', sans-serif;" href="{{route("comissao")}}">Comissão</a>
+@section('header')
+@include("partials._headerComissao")
 @endsection
 
 @section('content')
@@ -17,10 +16,11 @@
         </div>
         <div class="d-flex gap-5 mt-5">
             <button class="button-style me-4" style="width: 250px; height: 70px; font-size: 20px" id="docentes-button" >Docentes</button>
-            <button class="button-style" style="width: 250px; height: 70px; font-size: 20px" id="uc-button" >Unidades Curriculares</button>
+            <button class="button-style" style="width: 250px; height: 70px; font-size: 20px" id="uc-button">Unidades Curriculares</button>
         </div>
-    </div>    
+    </div>
 </div>
+
 <script>
     $('#submissao-button').on('click', function () {
         window.location.href = "{{route('submissoes')}}";
@@ -35,5 +35,4 @@
         window.location.href = "{{route('gestorUcs')}}";
     });
 </script>
-
 @endsection

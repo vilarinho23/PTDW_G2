@@ -3,17 +3,19 @@
 namespace App\Imports;
 
 use App\AppUtilities;
+use App\Models\Curso;
 use App\Models\Docente;
 use App\Models\UnidadeCurricular;
 use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Support\Collection;
+use Illuminate\Support\MessageBag as SupportMessageBag;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class DSDImport implements ToCollection, WithHeadingRow
 {
-    private static function docente($row)
+    function docente($row)
     {
         // Get data from row (or other sources)
         $num_func = intval($row['n.º Func']);
@@ -34,7 +36,7 @@ class DSDImport implements ToCollection, WithHeadingRow
         return $docente;
     }
 
-    private static function unidadeCurricular($row, $docente)
+    private function unidadeCurricular($row, Docente $docente, int $rowNumber)
     {
         // Get data from row (or other sources)
         $cod_uc = intval($row['cód UC']);
@@ -63,10 +65,19 @@ class DSDImport implements ToCollection, WithHeadingRow
         $uc->save();
 
         // Attach Cursos to UnidadeCurricular
-        foreach ($cursos as $curso)
+        foreach ($cursos as $acron_curso)
         {
-            $cursoOnUC = $uc->cursos->contains($curso);
+            $cursoOnUC = $uc->cursos->contains($acron_curso);
             if ($cursoOnUC) continue;
+
+            // Check if Curso exists and add error if not
+            $curso = Curso::find($acron_curso);
+            if (!$curso)
+            {
+                $msgBag = new SupportMessageBag(['curso', 'O curso ' . $acron_curso . ' não existe']);
+                $this->addErrors($msgBag, $rowNumber);
+                continue;
+            }
 
             $uc->cursos()->attach($curso);
         }
@@ -111,8 +122,8 @@ class DSDImport implements ToCollection, WithHeadingRow
             $perc_horas = floatval($row['Perc']) * 100;
 
             // Docente and UnidadeCurricular
-            $docente = self::docente($row);
-            $uc = self::unidadeCurricular($row, $docente);
+            $docente = $this->docente($row);
+            $uc = $this->unidadeCurricular($row, $docente, $rowNr);
 
             // Check if Docente is Responsavel
             if ($isResponsavel) $docente->respUnidadesCurriculares()->save($uc);

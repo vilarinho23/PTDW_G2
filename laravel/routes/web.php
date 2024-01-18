@@ -43,7 +43,7 @@ Route::prefix('/docente')->middleware('auth_docente')->group(function () {
 // Comissão
 Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
     Route::get('/', function () {
-        return redirect()->route('submissoes');
+        return view('comissao');
     })->name('comissao');
 
     Route::prefix('/submissoes')->group(function () {

@@ -70,50 +70,76 @@ class DocenteUcController extends Controller
 
     public function store(Request $request)
     {
-        // Valida os dados do formulário
-        $request->validate([
-            'num_func' => 'required|numeric',
-            'cod_uc' => 'required|numeric',
-            'perc_horas' => 'required|numeric',
-        ]);
+        try{
+            // Valida os dados do formulário
+            $request->validate([
+                'num_func' => 'required|numeric',
+                'cod_uc' => 'required|numeric',
+                'perc_horas' => 'required|numeric',
+            ],[
+                'perc_horas.required' => 'O campo percentual de horas é obrigatório',
+                'perc_horas.numeric' => 'O campo percentual apenas aceita números'
+            ]);
 
-        // Obtém os dados do formulário
-        $num_func = $request->input('num_func');
-        $cod_uc = $request->input('cod_uc');
-        $perc_horas = $request->input('perc_horas');
+            // Obtém os dados do formulário
+            $num_func = $request->input('num_func');
+            $cod_uc = $request->input('cod_uc');
+            $perc_horas = $request->input('perc_horas');
 
-        // Obtém o docente e a unidade curricular
-        $docente = Docente::find($num_func);
-        $uc = UnidadeCurricular::find($cod_uc);
+            // Obtém o docente e a unidade curricular
+            $docente = Docente::find($num_func);
+            $uc = UnidadeCurricular::find($cod_uc);
 
-        // Verifica se o docente e a unidade curricular existem
-        if ($docente == null || $uc == null) return redirect()->route('atribuicaoUcs')->with('error', 'Erro ao criar registro. Docente ou UC não encontrados.');
+            // Verifica se o docente e a unidade curricular existem
+            if ($docente == null || $uc == null) {
+                return response()->json(['error' => 'Erro ao criar registo. Docente ou UC não encontrados']);
+            }
 
-        // Cria a atribuição (se já existir, atualiza)
-        $docente->unidadesCurriculares()->syncWithoutDetaching([$cod_uc => ['perc_horas' => $perc_horas]]);
-        return redirect()->route('atribuicaoUcs')->with('success', 'Registro criado com sucesso.');
+            $atribuicaoExistente = $docente->unidadesCurriculares()->exists($cod_uc);
+
+            if ($atribuicaoExistente) {
+                return response()->json(['error' => 'Já existe uma atribuição para este docente e UC']);
+            }
+
+            // Cria a atribuição (se já existir, atualiza)
+            $docente->unidadesCurriculares()->syncWithoutDetaching([$cod_uc => ['perc_horas' => $perc_horas]]);
+            return response()->json(['message' => 'Registo criado com sucesso'],201);
+        } catch (\Exception $e) {
+            // Captura a exceção e retorna um JSON com detalhes do erro
+            return response()->json(['error' => $e->getMessage()],500);
+        }
     }
 
     public function update(Request $request, $num_func, $cod_uc)
-    {
-        // Valida os dados do formulário
-        $request->validate([
-            'perc_horas' => 'required|numeric',
-        ]);
+    {   
+        try{
+            // Valida os dados do formulário
+            $request->validate([
+                'perc_horas' => 'required|numeric',
+            ],[
+                'perc_horas.required' => 'O campo percentual de horas é obrigatório',
+                'perc_horas.numeric' => 'O campo percentual apenas aceita números'
+            ]);
 
-        // Obtém os dados do formulário
-        $perc_horas = $request->input('perc_horas');
+            // Obtém os dados do formulário
+            $perc_horas = $request->input('perc_horas');
 
-        // Obtém o docente e a unidade curricular
-        $docente = Docente::find($num_func);
-        $uc = UnidadeCurricular::find($cod_uc);
+            // Obtém o docente e a unidade curricular
+            $docente = Docente::find($num_func);
+            $uc = UnidadeCurricular::find($cod_uc);
 
-        // Verifica se o docente e a unidade curricular existem
-        if ($docente == null || $uc == null) return redirect()->route('atribuicaoUcs')->with('error', 'Erro ao atualizar registro. Docente ou UC não encontrados.');
+            // Verifica se o docente e a unidade curricular existem
+            if ($docente == null || $uc == null) {
+                return response()->json(['error'=> 'Erro ao atualizar registro. Docente ou UC não encontrados.']);
+            }
 
-        // Atualiza a atribuição (se não existir, cria)
-        $docente->unidadesCurriculares()->syncWithoutDetaching([$cod_uc => ['perc_horas' => $perc_horas]]);
-        return redirect()->route('atribuicaoUcs')->with('success', 'Atribuição atualizada com sucesso.');
+            // Atualiza a atribuição (se não existir, cria)
+            $docente->unidadesCurriculares()->syncWithoutDetaching([$cod_uc => ['perc_horas' => $perc_horas]]);
+            return response()->json(['message'=> 'Atribuição atualizada com sucesso'],201);
+        }catch(\Exception $e){
+            // Captura a exceção e retorna um JSON com detalhes do erro
+            return response()->json(['error' => $e->getMessage()],500);
+        }
     }
 
     public function destroy($num_func, $cod_uc)

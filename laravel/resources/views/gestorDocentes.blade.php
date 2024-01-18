@@ -10,16 +10,12 @@
 <div class="container">
     <div class="border-atribuicao mx-auto">
         <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center gap-2 ms-4">
-                <div class="input-group rounded">
-                    <input id="inputPesquisar" type="search" class="form-control rounded searchInput" placeholder="Número" aria-label="Search">
+            <div class="d-flex align-items-center gap-2 ms-4 w-25   ">
+                <div class="input-group rounded pe-3 w-75">
+                    <input id="inputPesquisar" type="search" class="form-control rounded searchInput" placeholder="Número/Nome Docente" aria-label="Search">
                 </div>
             </div>
-
-            <div class="d-flex gap-5">
-                <button type="button" class="button-style" style="width: 200px; height: 40px;"
-                    data-bs-toggle="modal" data-bs-target="#adicionarModal">Adicionar docente</button>
-            </div>
+            <button type="button" class="button-style" style="width: 200px; height: 40px;" data-bs-toggle="modal" data-bs-target="#adicionarModal">Adicionar docente</button>
         </div>
         <div>
 
@@ -48,6 +44,10 @@
                         @endforeach
                     </tbody>
                 </table>
+                @php
+                    $block = count($docentes) == 0 ? "d-block" : "d-none";
+                @endphp
+                <p id="noResultsMessage" class="text-center mt-5 {{ $block }}">Sem resultados.</p>
             </div>
         </div>
     </div>
@@ -209,6 +209,7 @@
     const updateDocenteUrl = "{{ route('editar.docente', ':id') }}";
     const insertDocenteUrl = "{{ route('adicionar.docente') }}";
     const deleteDocenteUrl = "{{ route('eliminar.docente', ':id') }}";
+    const token = '{{ csrf_token() }}';
 
     $(document).ready(function () {
         $('body').on('click', 'tr', function () {
@@ -246,7 +247,7 @@
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': token
             },
             body: JSON.stringify(data)
         })
@@ -258,9 +259,7 @@
                 console.log('Dados enviados com sucesso:', data);
                 $('#editarModal').modal('hide');
                 alert('Docente editado com sucesso!');
-                setTimeout(function() {
-                window.location.reload();
-                }, 2000);
+                location.reload();
             }
         })
         .catch(error => {
@@ -292,7 +291,7 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': token
             },
             body: JSON.stringify(data)
         })
@@ -304,9 +303,7 @@
                 console.log('Dados enviados com sucesso:', data);
                 $('#adicionarModal').modal('hide');
                 alert('Docente adicionado com sucesso!');
-                setTimeout(function() {
-                window.location.reload();
-                }, 2000);
+                location.reload();
             }
         })
         .catch(error => {
@@ -333,7 +330,7 @@
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': token
             }
         })
         .then(response => {
@@ -341,9 +338,7 @@
                 console.log('Docente excluído com sucesso');
                 $('#editarModal').modal('hide');
                 alert('Docente excluído com sucesso!');
-                setTimeout(function() {
-                window.location.reload();
-                }, 2000);
+                location.reload();
             } else {
                 console.error('Erro ao excluir docente');
             }
@@ -355,20 +350,29 @@
     }
 
     $(document).ready(function () {
-        $('#inputPesquisar').on('keyup', function () {
-            var searchText = $(this).val().toLowerCase();
-
+        $('#inputPesquisar').on('input', function () {
+            var searchText = $(this).val();
+            var counter = 0;
+            
             $('tbody tr').each(function () {
-                var numFunc = $(this).data('id').toString().toLowerCase();
-                var nomeDocente = $(this).find('td:eq(1)').text().toLowerCase();
-                var acnDocente = $(this).find('td:eq(2)').text().toLowerCase();
+                var numFunc = $(this).find('td:eq(0)').text();
+                var nomeDocente = $(this).find('td:eq(1)').text();
 
-                if (numFunc.includes(searchText) || nomeDocente.includes(searchText) || acnDocente.includes(searchText)) {
+                if (numFunc.includes(searchText) || nomeDocente.includes(searchText)) {
                     $(this).show();
+                    counter += 1;
                 } else {
                     $(this).hide();
                 }
             });
+
+            if (counter == 0) {
+                $('.no-result').show();
+                $('#noResultsMessage').removeClass('d-none').addClass('d-block');
+            } else {
+                $('.no-result').hide();
+                $('#noResultsMessage').addClass('d-none').removeClass('d-block');
+            }
         });
     });
 </script>

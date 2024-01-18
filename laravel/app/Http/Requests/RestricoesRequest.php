@@ -131,7 +131,10 @@ class RestricoesRequest extends FormRequest
             $docente = AppUtilities::getDocente();
 
             $ucsSubmetidas = array_keys($ucs);
-            $ucsDocente = $docente->respUnidadesCurriculares->pluck('cod_uc')->toArray();
+            $ucsDocente = $docente->respUnidadesCurriculares
+                ->where('semestre_uc', AppUtilities::getSemestre())
+                ->pluck('cod_uc')
+                ->toArray();
 
             // Verificar se foram submetidas apenas UCs para as quais o docente é responsável
             $diff = array_diff($ucsSubmetidas, $ucsDocente);

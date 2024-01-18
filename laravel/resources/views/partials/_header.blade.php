@@ -15,10 +15,10 @@
         </div>
     @endauth
 </nav>
-<div id="wrapper">
+<div id="wrapper" style="display: none;">
     <div class="overlay"></div>
-    <nav class="navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
-        <ul class="nav sidebar-nav">
+    <nav class="navbar-inverse fixed-top" id="sidebar-wrapper">
+        <div class="nav sidebar-nav">
             <div class="sidebar-header">
                 <div class="d-flex sidebar-brand align-items-center p-0">
                     <div class="d-flex w-75 align-items-center justify-content-center">
@@ -37,10 +37,10 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-column gap-5 mt-5 ps-4">
+            <ul class="d-flex flex-column gap-5 mt-5 ps-4">
                 @yield('sidebar_content')
-            </div>
-        </ul>
+            </ul>
+        </div>
     </nav>
     <div id="page-content-wrapper">
         <button type="button" class="hamburger animated fadeInLeft is-closed" id="hambImg" data-toggle="offcanvas">

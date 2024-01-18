@@ -3,7 +3,6 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
-@yield('custom_css')
 
 <style>
     :root {

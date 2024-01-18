@@ -16,7 +16,7 @@
     <li><a class="m-0 p-0 text-decoration-none {{ Request::is('comissao/atribuicaoucs*') ? 'fw-bold' : '' }}"  href="{{ route("atribuicaoUcs") }}">Atribuições</a></li>
 @endsection
 
-@section("custom_css")
+@section("head_plus")
 <link rel="stylesheet" href="{{ asset('css/headerStyle.css') }}">
 <script src="{{ asset('js/header.js') }}"></script>
 @endsection

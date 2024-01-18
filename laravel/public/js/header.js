@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    $('#wrapper').show();
+
     var trigger = $('.hamburger'),
         overlay = $('.overlay'),
         isClosed = false;

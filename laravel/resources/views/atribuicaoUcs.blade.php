@@ -442,7 +442,6 @@
             }
         })
         .then(() => {
-            console.log(data);
             alert("Registos eliminados com sucesso");
             window.location.reload();
         })

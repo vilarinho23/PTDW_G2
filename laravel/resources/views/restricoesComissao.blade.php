@@ -7,8 +7,32 @@
 @endsection
 
 @section('content')
+
 <div class="d-flex align-items-center justify-content-center">
-    <div class="p-5" style="min-height: 80vh;">
+    <div class="p-5 pt-0" style="min-height: 80vh;">
+        <div class="mt-3">
+            <nav>
+                <ol class="breadcrumb d-none d-md-flex">
+                    <li>
+                        <a class="link-underline link-dark link-underline-opacity-0" href="{{route("comissao")}}">
+                            <span>Comissão</span>
+                        </a>
+                    </li>
+                    <li><i class="fa-angle-right fa mx-1"></i></li>
+                    <li>
+                        <a class="link-underline link-dark link-underline-opacity-0" href="{{route("submissoes")}}">
+                            <span>Submissões</span>
+                        </a>
+                    </li>
+                    <li><i class="fa-angle-right fa mx-1"></i></li>
+                    <li>
+                        <a class="link-underline link-dark link-underline-opacity-0" href="{{ route('submissoes.restricoes', $numFunc) }}">
+                            <span>{{ $numFunc }} - {{ $nomeDocente }}</span>
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
         <div class="text-center fs-4 fw-bold mb-4">{{ $numFunc }} - {{ $nomeDocente }}</div>
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">

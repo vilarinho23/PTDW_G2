@@ -32,13 +32,11 @@ class SubmissoesController extends Controller
 
         $filteredDocentes = $docentes->filter(function ($docente) {
             $dadosDocente = AppUtilities::getDadosDocente($docente);
-
             $areUCsNotEmptyOrNull = $dadosDocente['ucs']->isNotEmpty();
             $isDataSubmissaoNotDefined = empty($dadosDocente['dataSubmissao']);
 
             return $areUCsNotEmptyOrNull && $isDataSubmissaoNotDefined;
         });
-
         return $filteredDocentes;
     }
 
@@ -51,7 +49,7 @@ class SubmissoesController extends Controller
             'submissoes' => $getSubmissoes,
             'nrSubmissoes' => count($getSubmissoes),
             'nrPorSubmeter' => count($getPendentes),
-            'dataConclusao' => AppUtilities::getDataConclusao(),
+            'dataConclusao' => AppUtilities::getDataConclusao()->format('d/m/Y'),
         ];
 
         return view('submissoes', $data);

@@ -8,31 +8,61 @@
 
 @section('content')
 <div class="container-sm">
-    <div class="d-flex pt-5 pb-3 text-center justify-content-center w-100 mx-auto gap-5" >
-        <div class="d-flex align-items-center">
-            <div class="border rounded d-flex flex-column gap-2 px-4 py-2 ms-2 border border-dark border-2 hover" style="background-color:#D9D9D9" id="btnsubmetidas">
-                <p class="m-0 px-5"><strong>Submetidas</strong></p>
-                <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
+    <div class="d-flex w-75 mx-auto mt-3">
+        <div class="d-flex flex-column w-100">
+            <div>
+                <nav>
+                    <ol class="breadcrumb d-none d-md-flex">
+                        <li>
+                            <a class="link-underline link-dark link-underline-opacity-0" href="{{route("comissao")}}">
+                                <span>Comissão</span>
+                            </a>
+                        </li>
+                        <li><i class="fa-angle-right fa mx-1"></i></li>
+                        <li>
+                            <a class="link-underline link-dark link-underline-opacity-0" title="Submissões" href="{{route("submissoes")}}">
+                                <span>Submissões</span>
+                            </a>
+                        </li>
+                    </ol>
+                </nav>
             </div>
-        </div>
-        <div class="d-flex align-items-center">
-            <div class="border rounded d-flex flex-column gap-2 px-4 py-2 hover" style="background-color:#D9D9D9" id="btnpendente">
-                <p class="m-0 px-4"><strong>Não Submetidas</strong></p>
-                <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
+            <div class="d-flex justify-content-between" id="opcoesTopoSubmissoes" >
+
+                <div class="d-flex text-center justify-content-center  gap-5 mt-4" >
+                    <div class="d-flex align-items-center">
+                        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 border border-dark border-2 hover" style="background-color:#D9D9D9" id="btnsubmetidas">
+                            <p class="m-0 px-5"><strong>Submetidas</strong></p>
+                            <p class="m-0 fs-5">{{ $nrSubmissoes }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="border rounded d-flex flex-column gap-2 px-4 py-2 hover" style="background-color:#D9D9D9" id="btnpendente">
+                            <p class="m-0 px-4"><strong>Não Submetidas</strong></p>
+                            <p class="m-0 fs-5">{{ $nrPorSubmeter }}</p>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="d-flex flex-column align-items-center gap-2 mt-3">
+                    <div class="h-50">
+                        <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Conclusão</button>
+                    </div>
+                    <div class="h-50">
+                        <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Submissões</button>
+                    </div>
+                    <div class="h-50">
+                        <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
+                    </div>
+                </div>
+                
+
             </div>
+
         </div>
+        
     </div>
-    <div class="d-flex align-items-center mx-auto justify-content-around mt-4 w-75">
-        <div class="h-50">
-            <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Conclusão</button>
-        </div>
-        <div class="h-50">
-            <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar Submissões</button>
-        </div>
-        <div class="h-50">
-            <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
-        </div>
-    </div>
+
     <div class="w-75 mx-auto mt-5" id="tableContainer">
         <div class="d-flex justify-content-between mt-3">
             <div class="input-group w-25">
@@ -55,51 +85,55 @@
             </div>
         </div>
         <div class="tableFixHead mt-2">
-            <table class="table"  id="tableSubmissoes">
-                <thead>
-                    <tr>
-                        <th class="text-center col-3">Nº</th>
-                        <th class="text-start">Nome Docente</th>
-                        <th class="text-center aligned-td">Data</th>
-                        <th class="text-center"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($submissoes->sortBy('data_submissao', SORT_REGULAR, false) as $item)
-                        <tr class="hover listrow" data-num-func="{{ $item->num_func }}">
-                            <td class="col-3">{{ $item->num_func }}</td>
-                            <td class="text-start">{{ $item->nome_docente }}</td>
-                            <td class="aligned-td">{{ $item->data_submissao->format('d-m-Y') }}</td>
-                            <td><img src="{{ asset('images/arrow.svg') }}" alt="Ver Mais"></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            @php
-                $block = count($submissoes) == 0 ? "d-block" : "d-none";
-            @endphp
-            <p id="noResultsMessageSubmissoes" class="text-center mt-5 {{ $block }}">Sem resultados.</p>
-            
-            <table class="table" id="tablePendentes">
-                <thead>
-                    <tr>
-                        <th class="text-center col-3">Nº</th>
-                        <th class="text-start">Nome Docente</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($pendentes as $item)
+            <div id="noResultsMessageSubmissoes">
+                <table class="table"  id="tableSubmissoes">
+                    <thead>
                         <tr>
-                            <td class="col-3">{{ $item->num_func }}</td>
-                            <td class="text-start">{{ $item->nome_docente }}</td>
+                            <th class="text-center col-3">Nº</th>
+                            <th class="text-start">Nome Docente</th>
+                            <th class="text-center aligned-td">Data</th>
+                            <th class="text-center"></th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            @php
-                $block = count($pendentes) == 0 ? "d-block" : "d-none";
-            @endphp
-            <p id="noResultsMessagePendentes" class="text-center mt-5 {{ $block }}">Sem resultados.</p>
+                    </thead>
+                    <tbody>
+                        @foreach($submissoes->sortBy('data_submissao', SORT_REGULAR, false) as $item)
+                            <tr class="hover listrow" data-num-func="{{ $item->num_func }}">
+                                <td class="col-3">{{ $item->num_func }}</td>
+                                <td class="text-start">{{ $item->nome_docente }}</td>
+                                <td class="aligned-td">{{ $item->data_submissao->format('d-m-Y') }}</td>
+                                <td><img src="{{ asset('images/arrow.svg') }}" alt="Ver Mais"></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @php
+                    $block = count($submissoes) == 0 ? "d-block" : "d-none";
+                @endphp
+                <p class="text-center mt-5 {{ $block }}">Sem resultados.</p>
+            </div>
+        
+            <div id="noResultsMessagePendentes">
+                <table class="table" id="tablePendentes">
+                    <thead>
+                        <tr>
+                            <th class="text-center col-3">Nº</th>
+                            <th class="text-start">Nome Docente</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pendentes as $item)
+                            <tr>
+                                <td class="col-3">{{ $item->num_func }}</td>
+                                <td class="text-start">{{ $item->nome_docente }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @php
+                    $block = count($pendentes) == 0 ? "d-block" : "d-none";
+                @endphp
+                <p class="text-center mt-5 {{ $block }}">Sem resultados.</p>
+            </div>
         </div>
     </div>
 
@@ -153,7 +187,7 @@
     const lista = [];
 
     document.addEventListener('DOMContentLoaded', function() {
-        $("#tablePendentes").hide();
+        $("#noResultsMessagePendentes").hide();
         var searchInput = document.getElementById('searchInput');
         var tableRows = document.querySelectorAll('.table tbody tr');
         var sortDropdown = document.getElementById('sortDropdown');
@@ -335,24 +369,20 @@
     });
 
     $("#btnsubmetidas").click(() => {
-        $("#tableSubmissoes").show();
-        $("#tablePendentes").hide();
+        $("#noResultsMessageSubmissoes").show();
+        $("#noResultsMessagePendentes").hide();
         $("#ordemBtn").removeClass("invisible");
         $("#btnsubmetidas").addClass("border border-dark border-2");
         $("#btnpendente").removeClass("border border-dark border-2");
-        $('#noResultsMessageSubmissoes').removeClass('d-none').addClass('d-block');
-        $('#noResultsMessagePendente').removeClass('d-block').addClass('d-none');
     });
 
 
     $("#btnpendente").click(() => {
-        $("#tableSubmissoes").hide();
-        $("#tablePendentes").show();
+        $("#noResultsMessagePendentes").show();
+        $("#noResultsMessageSubmissoes").hide();
         $("#ordemBtn").addClass("invisible");
         $("#btnsubmetidas").removeClass("border border-dark border-2");
         $("#btnpendente").addClass("border border-dark border-2");
-        $('#noResultsMessagePendente').removeClass('d-none').addClass('d-block');
-        $('#noResultsMessageSubmissoes').removeClass('d-block').addClass('d-none');
     });
 </script>
 @endsection

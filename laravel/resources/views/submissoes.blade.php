@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="d-flex flex-column align-items-center gap-2 mt-3">
                     <div class="h-50">
                         <button type="button" class="button-style" style="width: 230px;height: 40px" data-bs-toggle="modal" data-bs-target="#modalTerminar">Definir Data de Conclusão</button>
@@ -55,12 +55,12 @@
                         <button id="transferirBtn" type="button" class="button-style" style="width: 230px;height: 40px">Transferir Submissões</button>
                     </div>
                 </div>
-                
+
 
             </div>
 
         </div>
-        
+
     </div>
 
     <div class="w-75 mx-auto mt-5" id="tableContainer">
@@ -77,11 +77,7 @@
             </div>
 
             <div class="d-flex align-items-center" id="dataContainer">
-                @if ($dataConclusao)
-                    <p class="m-0"><strong>Data de Conclusão:</strong> {{ $dataConclusao }}</p>
-                @else
-                    <p class="m-0"><strong>Data de Conclusão:</strong> Sem Data Definida</p>
-                @endif
+                <p class="m-0"><strong>Data de Conclusão:</strong> {{ $dataConclusao }}</p>
             </div>
         </div>
         <div class="tableFixHead mt-2">
@@ -111,7 +107,7 @@
                 @endphp
                 <p class="text-center mt-5 {{ $block }}">Sem resultados.</p>
             </div>
-        
+
             <div id="noResultsMessagePendentes">
                 <table class="table" id="tablePendentes">
                     <thead>

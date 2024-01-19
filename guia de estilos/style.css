@@ -1,0 +1,51 @@
+.button-style {
+    background-color: #3F3F3F;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.button-style-red {
+    background-color: #3F3F3F;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.button-style:hover {
+    cursor: pointer;
+    background-color: #616161
+}
+
+.button-style-red:hover {
+    cursor: pointer;
+    background-color: rgb(174, 36, 36);
+}
+
+.listrow:hover {
+    cursor: pointer;
+    border-collapse: collapse;
+    border-top: 2px solid #3F3F3F;
+    border-bottom: 2px solid #3F3F3F;
+}
+
+.searchInput{
+    background-position: calc(100% - 10px) center;
+    background-image: url('/images/search-interface-symbol.svg');
+    background-repeat: no-repeat;
+}
+
+input.impedimento-check:checked.form-check-input:checked[type="checkbox"] {
+    
+    background-color: var(--bs-form-check-bg);
+    border-color: var(--bs-border-color);
+    background-image: url('/images/close.svg');
+}
+
+.hover:hover {
+    cursor: pointer;
+}  

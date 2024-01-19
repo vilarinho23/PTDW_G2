@@ -416,6 +416,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.error){
+                console.log(data);
                 $("#divMessagemErroAtribuir").text(data.error);
             }else{
                 console.log(data);

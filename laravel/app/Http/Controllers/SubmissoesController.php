@@ -49,7 +49,7 @@ class SubmissoesController extends Controller
             'submissoes' => $getSubmissoes,
             'nrSubmissoes' => count($getSubmissoes),
             'nrPorSubmeter' => count($getPendentes),
-            'dataConclusao' => AppUtilities::getDataConclusao()->format('d/m/Y'),
+            'dataConclusao' => AppUtilities::getDataConclusao()->format('d/m/Y') ?? "Sem Data Definida",
         ];
 
         return view('submissoes', $data);

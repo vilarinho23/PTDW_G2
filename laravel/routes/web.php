@@ -76,7 +76,7 @@ Route::prefix('/comissao')->middleware('auth_comissao')->group(function () {
         Route::post('/', [DocenteUcController::class, 'store'])->name('atribuicaoUcs.store');
         Route::put('/{num_func}/{cod_uc}', [DocenteUcController::class, 'update'])->name('atribuicaoUcs.update');
         Route::delete('/{num_func}/{cod_uc}', [DocenteUcController::class, 'destroy'])->name('atribuicaoUcs.destroy');
-        Route::delete('/', [DocenteUcController::class, 'destroyAll'])->name('atribuicaoUcs.clear');
+        Route::delete('/limpar', [DocenteUcController::class, 'destroyAll'])->name('atribuicaoUcs.clear');
     });
     Route::post('/import', [ImportExportController::class, 'import'])->name('import');
 });

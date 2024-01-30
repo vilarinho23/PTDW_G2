@@ -16,12 +16,15 @@ class AppUtilities
     public static function getDadosDocente(Docente $docente): array
     {
         $semestre = AppUtilities::getSemestre();
+
         // Unidades Curriculares
         $ucs = $docente->unidadesCurriculares;
         $respUCs = $docente->respUnidadesCurriculares;
+
         // Filtrar UCs por semestre
         $ucs = $ucs->where('semestre_uc', $semestre);
         $respUCs = $respUCs->where('semestre_uc', $semestre);
+
         // Merge das UCs e das UCs que o docente é responsável (sem repetições)
         $ucs = $respUCs->merge($ucs);
 
@@ -29,7 +32,9 @@ class AppUtilities
         foreach ($ucs as $uc) $uc->isresponsavel = $respUCs->contains($uc);
 
         // Ordenar UCs por isresponsavel e cod_uc
-        $ucs->sortBy('isresponsavel')->sortBy('cod_uc');
+        $ucs = $ucs->sortBy(function ($uc) {
+            return $uc->isresponsavel . "_" . $uc->cod_uc;
+        });
 
         // Restrições, data de submissao, nome e num_func
         $restricoes = $docente->restricoes;

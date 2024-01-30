@@ -46,6 +46,7 @@
                                 <th>ACN UC</th>
                                 <th>Doc. Responsável</th>
                                 <th>Nome UC</th>
+                                <th>Semestre</th>
                                 <th>Curso</th>
                                 <th>Horas</th>
                                 <th></th>
@@ -59,6 +60,7 @@
                                     <td>{{ $uc->acn_uc }}</td>
                                     <td>{{ $uc->responsavel->nome_docente }}</td>
                                     <td>{{ $uc->nome_uc }}</td>
+                                    <td>{{ $uc->semestre_uc }}</td>
                                     <td>{{ $uc->cursos->implode('acron_curso', ', ') }}</td>
                                     <td>{{ $uc->horas_uc }}</td>
                                     <td>
@@ -160,7 +162,7 @@
                             </div>
 
                             <div class="d-flex justify-content-center gap-5 mb-4 rowAdd" id="adicionarRowFour">
-                                <div class="d-flex gap-2">
+                                <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="selectAdicionarResponsavel" class="col-form-label">Doc. Responsável:
                                         </label>
@@ -176,6 +178,25 @@
                                         <span class="text-danger" id="spanAdicionarResponsavel">&nbsp;</span>
                                     </div>
                                 </div>
+
+                                <div class="d-flex gap-2 w-100 justify-content-end">
+                                    <div>
+                                        <label for="selectAdicionarSemestre" class="col-form-label">Semestre:
+                                        </label>
+                                    </div>
+                                    <div class="inputsize" id="divAdicionarSemestre">
+                                        <select class="form-control" id="selectAdicionarSemestre" name="semestre_uc">
+                                            @for ($i = 1; $i <= 2; $i++)
+                                                @php
+                                                    $selected = $i == $semestreAtual ? 'selected' : '';
+                                                @endphp
+                                                <option value="{{ $i }}" {{ $selected }}>{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                        <span class="text-danger" id="spanAdicionarSemestre">&nbsp;</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 w-25 justify-content-end "></div>
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center border-0">
@@ -209,7 +230,7 @@
                                         <div class="inputsize mb-1" style="height: 100px; overflow: auto; width: 630px">
                                             @foreach ($cursos as $curso)
                                                 <div class="form-check" >
-                                                    <input class="form-check-input curso-checkbox" type="checkbox" id="curso_{{ $curso->acron_curso }}" 
+                                                    <input class="form-check-input curso-checkbox" type="checkbox" id="curso_{{ $curso->acron_curso }}"
                                                     name="cursos" value="{{ $curso->acron_curso }}">
                                                     <label class="form-check-label" for="curso_{{ $curso->acron_curso }}">
                                                         {{ $curso->nome_curso }}
@@ -274,7 +295,7 @@
                             </div>
 
                             <div class="d-flex justify-content-center gap-5 mb-4 rowAdd" id="editarRowFour">
-                                <div class="d-flex gap-2">
+                                <div class="d-flex gap-2 w-100 justify-content-end">
                                     <div>
                                         <label for="selectEditarResponsavel" class="col-form-label">Doc. Responsável:
                                         </label>
@@ -290,6 +311,22 @@
                                         <span class="text-danger" id="spanEditarResponsavel">&nbsp;</span>
                                     </div>
                                 </div>
+
+                                <div class="d-flex gap-2 w-100 justify-content-end">
+                                    <div>
+                                        <label for="selectEditarSemestre" class="col-form-label">Semestre:
+                                        </label>
+                                    </div>
+                                    <div class="inputsize" id="divEditarSemestre">
+                                        <select class="form-control" id="selectEditarSemestre" name="semestre_uc">
+                                            @for ($i = 1; $i <= 2; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                        <span class="text-danger" id="spanEditarSemestre">&nbsp;</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 w-25 justify-content-end "></div>
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center border-0">
@@ -351,6 +388,7 @@
                 const selectACNUC = document.getElementById('inputAdicionarAcn').value;
                 const selectHoras = document.getElementById('inputAdicionarHoras').value;
                 const selectResponsavel = document.getElementById('selectAdicionarResponsavel').value;
+                const selectSemestre = document.getElementById('selectAdicionarSemestre').value;
 
                 var spanCurso = document.getElementById('spanAdicionarCurso');
                 var spanNomeUC = document.getElementById('spanAdicionarNome');
@@ -358,6 +396,7 @@
                 var spanACNUC = document.getElementById('spanAdicionarAcn');
                 var spanHoras = document.getElementById('spanAdicionarHoras');
                 var spanResponsavel = document.getElementById('spanAdicionarResponsavel');
+                var spanSemestre = document.getElementById('spanAdicionarSemestre');
 
                 //innertext = ""
                 spanCurso.innerHTML = "&nbsp;";
@@ -366,6 +405,7 @@
                 spanACNUC.innerHTML = "&nbsp;";
                 spanHoras.innerHTML = "&nbsp;";
                 spanResponsavel.innerHTML = "&nbsp;";
+                spanSemestre.innerHTML = "&nbsp;";
 
                 const data = {
                     curso_uc: selectedOptions,
@@ -373,11 +413,12 @@
                     cod_uc: selectCodUC,
                     acn_uc: selectACNUC,
                     horas_uc: selectHoras,
-                    num_func_resp: selectResponsavel
+                    num_func_resp: selectResponsavel,
+                    semestre_uc: selectSemestre
                 };
 
                 console.log(data);
-                
+
                 fetch(insertUCUrl, {
                     method: 'POST',
                     body: JSON.stringify(data),
@@ -411,6 +452,9 @@
                                 case "num_func_resp":
                                     spanResponsavel.textContent = error;
                                     break;
+                                case "semestre_uc":
+                                    spanSemestre.textContent = error;
+                                    break;
                             }
                         });
                     }else{
@@ -432,12 +476,13 @@
                 document.getElementById('inputAdicionarAcn').value = '';
                 document.getElementById('inputAdicionarHoras').value = '';
                 document.getElementById('selectAdicionarResponsavel').value = '';
+                document.getElementById('selectAdicionarSemestre').value = '';
 
                 var checkboxes = document.querySelectorAll('.curso-checkbox');
                 checkboxes.forEach(function (checkbox) {
                     checkbox.checked = false;
                 });
-                
+
                 var spans = document.querySelectorAll('.text-danger');
                 spans.forEach(function (span) {
                     span.innerHTML = "&nbsp;";
@@ -449,7 +494,7 @@
                 checkboxes.forEach(function (checkbox) {
                     checkbox.checked = false;
                 });
-                
+
                 var spans = document.querySelectorAll('.text-danger');
                 spans.forEach(function (span) {
                     span.innerHTML = "&nbsp;";
@@ -471,6 +516,7 @@
                     $('#inputEditarAcn').val(data.uc.acn_uc);
                     $('#inputEditarHoras').val(data.uc.horas_uc);
                     $('#selectEditarResponsavel').val(data.uc.num_func_resp);
+                    $('#selectEditarSemestre').val(data.uc.semestre_uc);
                     data.cursos.forEach(curso => {
                         $('#curso_' + curso.acron_curso).prop('checked', true);
                     });
@@ -492,26 +538,30 @@
             const selectACNUC = document.getElementById('inputEditarAcn').value;
             const selectHoras = document.getElementById('inputEditarHoras').value;
             const selectResponsavel = document.getElementById('selectEditarResponsavel').value;
+            const selectSemestre = document.getElementById('selectEditarSemestre').value;
 
             var spanCurso = document.getElementById('spanEditarCurso');
             var spanNomeUC = document.getElementById('spanEditarNome');
             var spanACNUC = document.getElementById('spanEditarAcn');
             var spanHoras = document.getElementById('spanEditarHoras');
             var spanResponsavel = document.getElementById('spanEditarResponsavel');
-            
+            var spanSemestre = document.getElementById('spanEditarSemestre');
+
             //innertext = ""
             spanCurso.innerHTML = "&nbsp;";
             spanNomeUC.innerHTML = "&nbsp;";
             spanACNUC.innerHTML = "&nbsp;";
             spanHoras.innerHTML = "&nbsp;";
             spanResponsavel.innerHTML = "&nbsp;";
+            spanSemestre.innerHTML = "&nbsp;";
 
             const data = {
                 nome_uc: selectNomeUC,
                 curso_uc: selectedOptions,
                 acn_uc: selectACNUC,
                 horas_uc: selectHoras,
-                num_func_resp: selectResponsavel
+                num_func_resp: selectResponsavel,
+                semestre_uc: selectSemestre
             };
 
             console.log(data);
@@ -547,6 +597,9 @@
                             case "num_func_resp":
                                 spanResponsavel.textContent = error;
                                 break;
+                            case "semestre_uc":
+                                spanSemestre.textContent = error;
+                                break;
                         }
                     });
                 }else{
@@ -559,7 +612,7 @@
                 alert('Erro ao adicionar Unidade Curricular. Por favor, tente novamente.');
             });
         }
-        
+
         //Eliminar UC
         document.getElementById("btnEliminar").onclick = function() {
             console.log(codUC);

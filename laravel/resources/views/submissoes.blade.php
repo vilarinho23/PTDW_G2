@@ -232,7 +232,7 @@
 
             tableRows.forEach(function(row) {
                 var numFunc = row.querySelector('td:first-child').textContent.toLowerCase();
-                var nomeDoc = row.querySelector('td:nth-child()').textContent.toLowerCase();
+                var nomeDoc = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
 
                 if (numFunc.includes(searchText) || nomeDoc.includes(searchText)) {
                     row.style.display = 'table-row';

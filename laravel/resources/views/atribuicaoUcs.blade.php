@@ -84,7 +84,8 @@
                     <div class="d-flex justify-content-center align-items-center gap-5 mb-5">
                         <div class="w-100">
                             <label for="dropdownAtribuirNomeDocente" class="col-form-label">Nome Docente:</label>
-                            <select class="form-select" id="dropdownAtribuirNomeDocente" aria-label="Nome do Funcionário">
+                            <select class="form-select" id="dropdownAtribuirNomeDocente" aria-label="Nome do Docente">
+                                <option value="">Selecione o Docente</option>
                                 @foreach($funcionarios->sortBy('nome_docente') as $funcionario)
                                     <option value="{{ $funcionario->num_func }}">{{ $funcionario->nome_docente }}</option>
                                 @endforeach
@@ -94,6 +95,7 @@
                         <div class="w-100">
                             <label for="dropdownAtribuirNomeUc" class="col-form-label">Nome UC:</label>
                             <select class="form-select " id="dropdownAtribuirNomeUc" aria-label="Nome da Unidade Curricular">
+                                <option value="">Selecione a UC</option>
                                 @foreach($ucs->sortBy('nome_uc') as $uc)
                                     <option value="{{ $uc->cod_uc }}">{{ $uc->nome_uc }}</option>
                                 @endforeach
@@ -106,6 +108,7 @@
                         <div class="w-100">
                             <label for="dropdownAtribuirNFuncionario" class="col-form-label">Nº funcionário</label>
                             <select class="form-select" id="dropdownAtribuirNFuncionario" name="dropdownAtribuirNFuncionario" aria-label="Número do Funcionário">
+                                <option value="">Selecione o Docente</option>
                                 @foreach($funcionarios->sortBy('num_func') as $funcionario)
                                     <option value="{{ $funcionario->num_func }}">{{ $funcionario->num_func }}</option>
                                 @endforeach
@@ -115,6 +118,7 @@
                         <div class="w-100">
                             <label for="dropdownAtribuirCodUc" class="col-form-label">Código UC</label>
                             <select class="form-select" id="dropdownAtribuirCodUc" name="dropdownAtribuirCodUc" aria-label="Código da UC">
+                                <option value="">Selecione a UC</option>
                                 @foreach($ucs->sortBy('cod_uc') as $uc)
                                     <option value="{{ $uc->cod_uc }}">{{ $uc->cod_uc }}</option>
                                 @endforeach
@@ -309,12 +313,14 @@
         $("#dropdownAtribuirNFuncionario").val(numFunc);
         $("#dropdownAtribuirNomeDocente").val(numFunc);
     });
+    $("#dropdownAtribuirNFuncionario").change();
 
     $("#dropdownAtribuirCodUc, #dropdownAtribuirNomeUc").change(function () {
         const codUc = $(this).val();
         $("#dropdownAtribuirCodUc").val(codUc);
         $("#dropdownAtribuirNomeUc").val(codUc);
     });
+    $("#dropdownAtribuirCodUc").change();
 
     $(".listrow").click(function () {
         const numFunc = $(this).data('num-func');

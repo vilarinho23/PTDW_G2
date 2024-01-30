@@ -12,7 +12,7 @@ class GestorDocenteController extends Controller
     public function listarDocentes()
     {
         $docentes = Docente::orderBy('num_func', 'asc')->get();
-        
+
         return view('gestorDocentes', compact('docentes'));
     }
 
@@ -26,18 +26,19 @@ class GestorDocenteController extends Controller
     {
         try {
             $request->validate([
-                'num_func' => 'required|integer',
+                'num_func' => 'required|integer|min:1',
                 'nome_docente' => 'required|string',
                 'acn_docente' => 'required|string',
-                'telef_docente' => 'required|integer',
+                'telef_docente' => 'required|regex:/^[0-9]{9}$/',
                 'email_docente' => 'required|email',
             ], [
                 'num_func.required' => 'O número de funcionário é obrigatório.',
                 'num_func.integer' => 'O número de funcionário deve ser um número.',
+                'num_func.min' => 'O número de funcionário deve ser um número positivo.',
                 'nome_docente.required' => 'O nome do docente é obrigatório.',
                 'acn_docente.required' => 'A ACN do docente é obrigatório.',
                 'telef_docente.required' => 'O telefone do docente é obrigatório.',
-                'telef_docente.integer' => 'O telefone do docente deve ser um número.',
+                'telef_docente.regex' => 'O telefone do docente deve ser um número de 9 dígitos.',
                 'email_docente.required' => 'O email do docente é obrigatório.',
                 'email_docente.email' => 'Por favor, insira um endereço de email válido.',
             ]);
@@ -56,7 +57,6 @@ class GestorDocenteController extends Controller
                 'acn_docente' => $request->input('acn_docente'),
                 'telef_docente' => $request->input('telef_docente'),
                 'email_docente' => $request->input('email_docente'),
-
             ]);
 
 
@@ -76,18 +76,19 @@ class GestorDocenteController extends Controller
         $docente = Docente::findOrFail($id);
         try{
             $request->validate([
-                'num_func' => 'required|integer',
+                'num_func' => 'required|integer|min:1',
                 'nome_docente' => 'required|string',
                 'acn_docente' => 'required|string',
-                'telef_docente' => 'required|integer',
+                'telef_docente' => 'required|regex:/^[0-9]{9}$/',
                 'email_docente' => 'required|email',
             ], [
                 'num_func.required' => 'O número de funcionário é obrigatório.',
                 'num_func.integer' => 'O número de funcionário deve ser um número.',
+                'num_func.min' => 'O número de funcionário deve ser positivo.',
                 'nome_docente.required' => 'O nome do docente é obrigatório.',
                 'acn_docente.required' => 'A ACN do docente é obrigatório.',
                 'telef_docente.required' => 'O telefone do docente é obrigatório.',
-                'telef_docente.integer' => 'O telefone do docente deve ser um número.',
+                'telef_docente.regex' => 'O telefone do docente deve ser um número de 9 dígitos.',
                 'email_docente.required' => 'O email do docente é obrigatório.',
                 'email_docente.email' => 'Por favor, insira um endereço de email válido.',
             ]);
@@ -98,7 +99,6 @@ class GestorDocenteController extends Controller
                 'acn_docente' => $request->input('acn_docente'),
                 'telef_docente' => $request->input('telef_docente'),
                 'email_docente' => $request->input('email_docente'),
-                
             ]);
 
             Log::info($request);

@@ -73,12 +73,19 @@ class DocenteUcController extends Controller
         try{
             // Valida os dados do formulário
             $request->validate([
-                'num_func' => 'required|numeric',
-                'cod_uc' => 'required|numeric',
-                'perc_horas' => 'required|numeric',
+                'num_func' => 'required|integer|exists:docente,num_func',
+                'cod_uc' => 'required|integer|exists:unidade_curricular,cod_uc',
+                'perc_horas' => 'required|numeric|min:0',
             ],[
+                'num_func.required' => 'A escolha de um docente é obrigatória',
+                'num_func.integer' => 'O número do docente deve ser um número inteiro',
+                'num_func.exists' => 'O docente não existe',
+                'cod_uc.required' => 'A escolha de uma UC é obrigatória',
+                'cod_uc.integer' => 'O código da UC deve ser um número inteiro',
+                'cod_uc.exists' => 'A UC não existe',
                 'perc_horas.required' => 'O campo percentual de horas é obrigatório',
-                'perc_horas.numeric' => 'O campo percentual apenas aceita números'
+                'perc_horas.numeric' => 'O campo percentual apenas aceita números',
+                'perc_horas.min' => 'O campo percentual deve ser um número positivo ou zero'
             ]);
 
             // Obtém os dados do formulário
@@ -111,14 +118,15 @@ class DocenteUcController extends Controller
     }
 
     public function update(Request $request, $num_func, $cod_uc)
-    {   
+    {
         try{
             // Valida os dados do formulário
             $request->validate([
-                'perc_horas' => 'required|numeric',
+                'perc_horas' => 'required|numeric|min:0',
             ],[
                 'perc_horas.required' => 'O campo percentual de horas é obrigatório',
-                'perc_horas.numeric' => 'O campo percentual apenas aceita números'
+                'perc_horas.numeric' => 'O campo percentual apenas aceita números',
+                'perc_horas.min' => 'O campo percentual deve ser um número positivo ou zero'
             ]);
 
             // Obtém os dados do formulário
